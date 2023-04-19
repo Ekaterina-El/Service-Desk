@@ -1,0 +1,19 @@
+<resources>
+  <string name="app_name">Service Desk</string>
+  <string name="error_title">Упс...</string>
+
+
+  <string name="is_no_email">Не является адресом электронной почты</string>
+  <string name="is_require">Обязательное поле</string>
+  <string name="short_error">Минимальная длина не достигнута</string>
+  <string name="invalid_email_password">Неверный почта или пароль</string>
+  <string name="user_collision">Почта занята</string>
+  <string name="network_error">Проблемы с интернетом</string>
+  <string name="unknown_error">Неизвестная ошибка</string>
+  <string name="weak_password">Слабый пароль</string>
+  <string name="data_copied">Данные скопированы!</string>
+  <string name="continue_text">Продолжить</string>
+  <string name="analitic_added_hint">Вы больше не сможете увидеть авторизационные данные - сохраните их. Нажмите на них, чтобы скопировать в буфер обмена</string>
+  <string name="error">Упс...</string>
+
+</resources>
