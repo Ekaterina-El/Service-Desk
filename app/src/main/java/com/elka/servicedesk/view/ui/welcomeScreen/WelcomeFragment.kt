@@ -44,10 +44,10 @@ class WelcomeFragment : BaseFragment() {
   }
 
   fun goAuth() {
-//        navController.navigate(R.id.action_welcomeFragment_to_authFragment)
+    navController.navigate(R.id.action_welcomeFragment_to_authFragment)
   }
 
   fun goRegistration() {
-        navController.navigate(R.id.action_welcomeFragment_to_registrationFragment)
+    navController.navigate(R.id.action_welcomeFragment_to_registrationFragment)
   }
 }

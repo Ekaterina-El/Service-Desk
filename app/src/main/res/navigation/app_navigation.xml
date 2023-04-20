@@ -23,10 +23,22 @@
     <action
         android:id="@+id/action_welcomeFragment_to_registrationFragment"
         app:destination="@id/registrationFragment" />
+    <action
+        android:id="@+id/action_welcomeFragment_to_authFragment"
+        app:destination="@id/authFragment" />
   </fragment>
   <fragment
       android:id="@+id/registrationFragment"
       tools:layout="@layout/registration_fragment"
       android:name="com.elka.servicedesk.view.ui.registrationScreen.RegistrationFragment"
-      android:label="RegistrationFragment" />
+      android:label="RegistrationFragment" >
+    <action
+        android:id="@+id/action_registrationFragment_to_authFragment"
+        app:destination="@id/authFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/authFragment"
+      tools:layout="@layout/auth_fragment"
+      android:name="com.elka.servicedesk.view.ui.authScreen.AuthFragment"
+      android:label="AuthFragment" />
 </navigation>

@@ -3,6 +3,7 @@ package com.elka.servicedesk.viewModel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Field
 import com.elka.servicedesk.other.Role
 import com.elka.servicedesk.other.Work
@@ -59,10 +60,12 @@ class RegistrationViewModel(application: Application) : BaseViewModelWithFields(
       val user = newUser
       _error.value = UserRepository.registrationUser(user.email, password.value!!) { uid ->
         user.id = uid
-        _error.value = UserRepository.addUser(user)
+        _error.value = UserRepository.addUser(user) {
+        }
       }
 
       UserRepository.logout {}
+      if (_error.value == null) _externalAction.value = Action.GO_NEXT
       removeWork(work)
     }
 

@@ -62,4 +62,21 @@ object UserRepository {
   } catch (e: Exception) {
     Errors.unknown
   }
+
+  suspend fun loadCurrentUserProfile(onSuccess: (User) -> Unit): ErrorApp? = try {
+    val profile = getUserById(currentUid!!)
+    onSuccess(profile)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  private suspend fun getUserById(id: String): User {
+    val doc = FirebaseService.usersCollection.document(id).get().await()
+    val user = doc.toObject(User::class.java)
+    user!!.id = doc.id
+    return user
+  }
 }

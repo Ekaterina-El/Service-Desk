@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.RegistrationFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Field
@@ -37,7 +38,7 @@ class RegistrationFragment : BaseFragment() {
   private val externalActionObserver = Observer<Action?> {
     if (it == Action.GO_NEXT) {
       viewModel.clear()
-//      navController.navigate(R.id.action_createOrganizationFragment_to_authFragment)
+      navController.navigate(R.id.action_registrationFragment_to_authFragment)
     }
   }
 
