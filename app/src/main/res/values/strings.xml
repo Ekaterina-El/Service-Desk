@@ -15,5 +15,9 @@
   <string name="continue_text">Продолжить</string>
   <string name="analitic_added_hint">Вы больше не сможете увидеть авторизационные данные - сохраните их. Нажмите на них, чтобы скопировать в буфер обмена</string>
   <string name="error">Упс...</string>
+  <string name="app_description">Решение независимо от вашей проблемы</string>
+  <string name="welcome_text">Для использования сервиса необходимо авторизоваться или зарегистрироваться</string>
+  <string name="auth">Авторизоаваться</string>
+  <string name="registration">Зарегистрироваться</string>
 
 </resources>
