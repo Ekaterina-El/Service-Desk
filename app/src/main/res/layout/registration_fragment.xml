@@ -108,7 +108,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:spinnerMode="dropdown"
-              tools:listitem="@layout/spinner_item" />
+              tools:listitem="@layout/spinner_division_item" />
         </RelativeLayout>
 
         <TextView
@@ -132,7 +132,7 @@
           android:id="@+id/layoutEmail"
           style="@style/FieldWrapper"
 
-          android:layout_marginTop="20dp"
+          android:layout_marginTop="10dp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="@string/email">

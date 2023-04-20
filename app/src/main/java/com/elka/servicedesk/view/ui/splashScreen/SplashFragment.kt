@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,7 +14,9 @@ import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.SplashFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Constants
+import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.view.ui.BaseFragment
+import com.elka.servicedesk.viewModel.DivisionsViewModel
 import com.elka.servicedesk.viewModel.SplashViewModel
 
 class SplashFragment : BaseFragment() {

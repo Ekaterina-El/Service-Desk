@@ -4,21 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.elka.servicedesk.databinding.RegistrationFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Field
 import com.elka.servicedesk.other.FieldError
+import com.elka.servicedesk.other.Selector
+import com.elka.servicedesk.service.model.Division
+import com.elka.servicedesk.view.list.divisions.DivisionsAdapter
 import com.elka.servicedesk.view.ui.BaseFragment
+import com.elka.servicedesk.viewModel.DivisionsViewModel
 import com.elka.servicedesk.viewModel.RegistrationViewModel
 
-class RegistrationFragment: BaseFragment() {
+class RegistrationFragment : BaseFragment() {
   private lateinit var binding: RegistrationFragmentBinding
   private lateinit var viewModel: RegistrationViewModel
 
+  private val divisionsViewModel by activityViewModels<DivisionsViewModel>()
+
+
   private var fieldErrorsObserver = Observer<List<FieldError>> { errors ->
     showErrors(errors, fields)
+  }
+
+  private val divisionsObserver = Observer<List<Division>> {
+    val spinnerAdapter = DivisionsAdapter(requireContext(), it)
+    binding.divisionSpinner.adapter = spinnerAdapter
   }
 
   private val externalActionObserver = Observer<Action?> {
@@ -51,14 +64,21 @@ class RegistrationFragment: BaseFragment() {
     viewModel.error.observe(viewLifecycleOwner, errorObserver)
     viewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
     viewModel.work.observe(viewLifecycleOwner, workObserver)
+    divisionsViewModel.divisions.observe(viewLifecycleOwner, divisionsObserver)
+
+    binding.divisionSpinner.onItemSelectedListener = divisionSpinnerListener
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onStop() {
+    super.onStop()
+
+    divisionsViewModel.divisions.removeObserver(divisionsObserver)
     viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
     viewModel.error.removeObserver(errorObserver)
     viewModel.externalAction.removeObserver(externalActionObserver)
     viewModel.work.removeObserver(workObserver)
+
+    binding.divisionSpinner.onItemSelectedListener = null
   }
 
   fun goBack() {
@@ -80,5 +100,9 @@ class RegistrationFragment: BaseFragment() {
       Pair(Field.EMAIL, binding.layoutEmail),
       Pair(Field.DIVISION, binding.errorDivision),
     )
+  }
+
+  private val divisionSpinnerListener by lazy {
+    Selector { viewModel.setDivision(it as Division) }
   }
 }

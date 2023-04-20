@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
   val informDialog by lazy { InformDialog(this) }
   val loadingDialog by lazy { LoadingDialog(this) }
 
+
   val sharedPreferences: SharedPreferences by lazy {
     getSharedPreferences(Constants.SP_NAME, Context.MODE_PRIVATE)
   }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "491463813683",
+    "project_id": "service-desk-8fe6d",
+    "storage_bucket": "service-desk-8fe6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491463813683:android:12da1bb366568722b29146",
+        "android_client_info": {
+          "package_name": "com.elka.servicedesk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491463813683-a36ldt78m7nb8ced018cf3f8sql60q35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNawRcF36K7kyyGAdQrPix3R71VbBVrZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491463813683-a36ldt78m7nb8ced018cf3f8sql60q35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

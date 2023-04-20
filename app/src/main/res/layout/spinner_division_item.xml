@@ -6,8 +6,8 @@
   <data>
 
     <variable
-        name="value"
-        type="String" />
+        name="division"
+        type="com.elka.servicedesk.service.model.Division" />
   </data>
 
   <LinearLayout
@@ -18,10 +18,10 @@
 
     <TextView
         style="@style/text"
-        android:text="@{value}"
+        android:text="@{division.name}"
         android:paddingVertical="15dp"
         android:paddingHorizontal="10dp"
-        tools:text="Пользователь N" />
+        tools:text="Отдел N" />
 
   </LinearLayout>
 </layout>
