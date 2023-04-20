@@ -19,5 +19,14 @@
       android:id="@+id/welcomeFragment"
       tools:layout="@layout/welcome_fragment"
       android:name="com.elka.servicedesk.view.ui.welcomeScreen.WelcomeFragment"
-      android:label="WelcomeFragment" />
+      android:label="WelcomeFragment" >
+    <action
+        android:id="@+id/action_welcomeFragment_to_registrationFragment"
+        app:destination="@id/registrationFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/registrationFragment"
+      tools:layout="@layout/registration_fragment"
+      android:name="com.elka.servicedesk.view.ui.registrationScreen.RegistrationFragment"
+      android:label="RegistrationFragment" />
 </navigation>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.WelcomeFragmentBinding
 import com.elka.servicedesk.view.ui.BaseFragment
 
@@ -27,6 +28,6 @@ class WelcomeFragment : BaseFragment() {
   }
 
   fun goRegistration() {
-//        navController.navigate(R.id.action_welcomeFragment_to_createOrganizationFragment)
+        navController.navigate(R.id.action_welcomeFragment_to_registrationFragment)
   }
 }

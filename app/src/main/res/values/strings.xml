@@ -19,5 +19,11 @@
   <string name="welcome_text">Для использования сервиса необходимо авторизоваться или зарегистрироваться</string>
   <string name="auth">Авторизоаваться</string>
   <string name="registration">Зарегистрироваться</string>
+  <string name="email">Электронная почта</string>
+  <string name="password">Пароль</string>
+  <string name="registration_title">Регистрация</string>
+  <string name="firstName">Имя</string>
+  <string name="lastName">Фамилия</string>
+  <string name="phoneNumber">Номер телефона</string>
 
 </resources>
