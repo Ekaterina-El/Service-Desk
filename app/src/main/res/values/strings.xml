@@ -25,5 +25,6 @@
   <string name="firstName">Имя</string>
   <string name="lastName">Фамилия</string>
   <string name="phoneNumber">Номер телефона</string>
+  <string name="division">Подразделение</string>
 
 </resources>

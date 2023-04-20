@@ -3,13 +3,14 @@ package com.elka.servicedesk.viewModel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.elka.servicedesk.other.Field
 import com.elka.servicedesk.other.FieldError
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Division
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class RegistrationViewModel(application: Application) : BaseViewModel(application) {
+class RegistrationViewModel(application: Application) : BaseViewModelWithFields(application) {
   val firstName = MutableLiveData("")
   val lastName = MutableLiveData("")
   val phoneNumber = MutableLiveData("")
@@ -23,8 +24,15 @@ class RegistrationViewModel(application: Application) : BaseViewModel(applicatio
     _division.value = division
   }
 
-  private val _fieldErrors = MutableLiveData<List<FieldError>>(listOf())
-  val fieldErrors get() = _fieldErrors
+  override val fields: HashMap<Field, MutableLiveData<Any?>>
+    get() = hashMapOf(
+      Pair(Field.FIRST_NAME, firstName as MutableLiveData<Any?>),
+      Pair(Field.LAST_NAME, lastName as MutableLiveData<Any?>),
+      Pair(Field.PHONE_NUMBER, phoneNumber as MutableLiveData<Any?>),
+      Pair(Field.EMAIL, email as MutableLiveData<Any?>),
+      Pair(Field.DIVISION, division as MutableLiveData<Any?>),
+      Pair(Field.PASSWORD, password as MutableLiveData<Any?>),
+    )
 
   fun clear() {
     firstName.value = ""
@@ -40,6 +48,8 @@ class RegistrationViewModel(application: Application) : BaseViewModel(applicatio
   }
 
   fun tryRegistration() {
+    if (!checkFields()) return
+
     val work = Work.REGISTRATION_USER
     addWork(work)
 

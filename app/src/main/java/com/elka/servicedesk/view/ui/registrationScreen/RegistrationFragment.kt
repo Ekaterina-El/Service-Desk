@@ -72,6 +72,13 @@ class RegistrationFragment: BaseFragment() {
 
 
   private val fields by lazy {
-    hashMapOf<Field, Any>()
+    hashMapOf<Field, Any>(
+      Pair(Field.FIRST_NAME, binding.layoutFirstName),
+      Pair(Field.LAST_NAME, binding.layoutLastName),
+      Pair(Field.PASSWORD, binding.layoutPassword),
+      Pair(Field.PHONE_NUMBER, binding.layoutPhoneNumber),
+      Pair(Field.EMAIL, binding.layoutEmail),
+      Pair(Field.DIVISION, binding.errorDivision),
+    )
   }
 }

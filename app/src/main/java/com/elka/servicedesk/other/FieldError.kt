@@ -10,5 +10,5 @@ enum class FieldErrorType(val messageRes: Int) {
 }
 
 enum class Field {
-  EMAIL, PASSWORD,
+  EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, PHONE_NUMBER, DIVISION,
 }
