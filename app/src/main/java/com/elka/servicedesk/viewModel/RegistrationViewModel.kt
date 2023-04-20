@@ -4,9 +4,11 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.Field
-import com.elka.servicedesk.other.FieldError
+import com.elka.servicedesk.other.Role
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Division
+import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.service.repository.UserRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -54,10 +56,25 @@ class RegistrationViewModel(application: Application) : BaseViewModelWithFields(
     addWork(work)
 
     viewModelScope.launch {
-//    _error.value = ...
-      delay(1000)
+      val user = newUser
+      _error.value = UserRepository.registrationUser(user.email, password.value!!) { uid ->
+        user.id = uid
+        _error.value = UserRepository.addUser(user)
+      }
+
+      UserRepository.logout {}
       removeWork(work)
     }
+
   }
+
+  private val newUser get() = User(
+    firstName = firstName.value!!,
+    lastName = lastName.value!!,
+    phoneNumber = phoneNumber.value!!,
+    email = email.value!!,
+    divisionId = division.value!!.id,
+    role = Role.USER
+  )
 }
 

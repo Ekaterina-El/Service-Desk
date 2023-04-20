@@ -1,9 +1,11 @@
 package com.elka.servicedesk.service.repository
 
+import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.ErrorApp
 import com.elka.servicedesk.other.Errors
 import com.elka.servicedesk.service.model.Division
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
 
 object DivisionsRepository {
@@ -35,4 +37,25 @@ object DivisionsRepository {
   } catch (e: java.lang.Exception) {
     Errors.unknown
   }
+
+
+  private suspend fun changeList(field: String, divisionId: String, value: Any, action: Action) {
+    val fv = when (action) {
+      Action.REMOVE -> FieldValue.arrayRemove(value)
+      Action.ADD -> FieldValue.arrayUnion(value)
+      else -> return
+    }
+
+    FirebaseService.divisionsCollection.document(divisionId).update(field, fv).await()
+  }
+
+  suspend fun addEmployer(divisionId: String, userId: String) {
+    changeList(FIELD_EMPLOYERS, divisionId, userId, Action.ADD)
+  }
+
+  suspend fun removeEmployer(divisionId: String, userId: String) {
+    changeList(FIELD_EMPLOYERS, divisionId, userId, Action.REMOVE)
+  }
+
+  private const val FIELD_EMPLOYERS = "employers"
 }
