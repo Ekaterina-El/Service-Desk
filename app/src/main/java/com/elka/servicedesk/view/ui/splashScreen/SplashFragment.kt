@@ -6,7 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,12 +14,12 @@ import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.SplashFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Constants
-import com.elka.servicedesk.service.model.Division
-import com.elka.servicedesk.view.ui.BaseFragment
-import com.elka.servicedesk.viewModel.DivisionsViewModel
+import com.elka.servicedesk.other.Role
+import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.SplashViewModel
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : UserBaseFragment() {
   private lateinit var binding: SplashFragmentBinding
   private lateinit var viewModel: SplashViewModel
 
@@ -29,15 +29,26 @@ class SplashFragment : BaseFragment() {
     if (action == null) return@Observer
     when (action) {
       Action.GO_LOGIN -> goLogin()
-//      Action.GO_ORGANIZATION -> organizationViewModel.loadProfile()
       Action.RESTART -> restartApp()
+      Action.GO_PROFILE -> userViewModel.loadCurrentUserProfile()
       else -> Unit
     }
   }
 
-  private fun goOrganization() {
-//    val direction = SplashFragmentDirections.actionSplashFragmentToOrganizationFragment2()
-//    findNavController().navigate(direction)
+  private val profileObserver = Observer<User?> {
+    if (it == null) return@Observer
+    goProfile(it)
+  }
+
+  private fun goProfile(user: User) {
+    val dir = when(user.role) {
+      Role.USER -> SplashFragmentDirections.actionSplashFragmentToUserProfileFragment()
+      Role.ANALYST -> null
+      Role.ADMIN -> null
+      Role.OWNER -> null
+    }
+    dir?.let {navController.navigate(it) }
+    Toast.makeText(requireContext(), "Logined", Toast.LENGTH_SHORT).show()
   }
 
   private fun goLogin() {
@@ -65,23 +76,28 @@ class SplashFragment : BaseFragment() {
     return binding.root
   }
 
+  override fun onStart() {
+    super.onStart()
+    viewModel.checkLoginStatus()
+  }
+
   override fun onResume() {
     super.onResume()
 
-    goLogin()
     viewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
     viewModel.error.observe(viewLifecycleOwner, errorObserver)
-//    organizationViewModel.error.observe(viewLifecycleOwner, errorObserver)
-//    organizationViewModel.profile.observe(viewLifecycleOwner, profileObserver)
-//    organizationViewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
+
+    userViewModel.error.observe(viewLifecycleOwner, errorObserver)
+    userViewModel.profile.observe(viewLifecycleOwner, profileObserver)
+    userViewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
   }
 
   override fun onStop() {
     super.onStop()
     viewModel.externalAction.removeObserver(externalActionObserver)
     viewModel.error.removeObserver(errorObserver)
-//    organizationViewModel.error.removeObserver(errorObserver)
-//    organizationViewModel.profile.removeObserver(profileObserver)
-//    organizationViewModel.externalAction.removeObserver(externalActionObserver)
+    userViewModel.error.removeObserver(errorObserver)
+    userViewModel.profile.removeObserver(profileObserver)
+    userViewModel.externalAction.removeObserver(externalActionObserver)
   }
 }

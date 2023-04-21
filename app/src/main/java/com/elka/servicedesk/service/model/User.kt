@@ -13,4 +13,10 @@ data class User(
   var divisionLocal: Division? = null,
 
   var role: Role = Role.USER
-): java.io.Serializable
+) : java.io.Serializable {
+
+  var fullName
+    get() = listOf(lastName, firstName).joinToString(" ")
+    set(v) {}
+
+}

@@ -20,6 +20,14 @@ object DivisionsRepository {
     Errors.unknown
   }
 
+  suspend fun getDivisionById(divisionId: String): Division? {
+    val doc = FirebaseService.divisionsCollection.document(divisionId).get().await()
+    val division = doc.toObject(Division::class.java)!!
+    division.id = doc.id
+
+    return division
+  }
+
   suspend fun getAllDivisions(onSuccess: (List<Division>) -> Unit): ErrorApp? = try {
     val divisions = FirebaseService.divisionsCollection.get().await().mapNotNull {
       try {

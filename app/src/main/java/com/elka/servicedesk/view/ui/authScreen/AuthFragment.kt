@@ -5,24 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.elka.servicedesk.databinding.AuthFragmentBinding
-import com.elka.servicedesk.other.Action
-import com.elka.servicedesk.other.Field
-import com.elka.servicedesk.other.FieldError
+import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.User
-import com.elka.servicedesk.view.ui.BaseFragment
+import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AuthViewModel
-import com.elka.servicedesk.viewModel.UserViewModel
 
-class AuthFragment : BaseFragment() {
+class AuthFragment : UserBaseFragment() {
   private lateinit var binding: AuthFragmentBinding
   private lateinit var viewModel: AuthViewModel
-
-  private val userViewModel by activityViewModels<UserViewModel>()
-
 
   private var fieldErrorsObserver = Observer<List<FieldError>> { errors ->
     showErrors(errors, fields)
@@ -32,7 +25,7 @@ class AuthFragment : BaseFragment() {
     if (it == null) return@Observer
 
     when (it) {
-      Action.LOAD_PROFILE -> userViewModel.loadProfile()
+      Action.LOAD_PROFILE -> userViewModel.loadCurrentUserProfile()
       else -> Unit
     }
   }
@@ -40,9 +33,26 @@ class AuthFragment : BaseFragment() {
   private val profileObserver = Observer<User?> {
     if (it == null) return@Observer
 
+    navigateToUserScreen(it)
+  }
+
+  private fun navigateToUserScreen(user: User) {
+    setCredentials(
+      Credentials(
+        viewModel.email.value!!,
+        viewModel.password.value!!
+      )
+    )
     viewModel.clear()
+
+    val dir = when (user.role) {
+      Role.USER -> AuthFragmentDirections.actionAuthFragmentToUserProfileFragment()
+      Role.ANALYST -> null
+      Role.ADMIN -> null
+      Role.OWNER -> null
+    }
+    dir?.let { navController.navigate(it) }
     Toast.makeText(requireContext(), "Logined", Toast.LENGTH_SHORT).show()
-    //      navController.navigate(R.id.action_createOrganizationFragment_to_authFragment)
   }
 
   override fun onCreateView(

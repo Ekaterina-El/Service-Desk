@@ -77,6 +77,8 @@ object UserRepository {
     val doc = FirebaseService.usersCollection.document(id).get().await()
     val user = doc.toObject(User::class.java)
     user!!.id = doc.id
+
+    user.divisionLocal = DivisionsRepository.getDivisionById(user.divisionId)
     return user
   }
 }

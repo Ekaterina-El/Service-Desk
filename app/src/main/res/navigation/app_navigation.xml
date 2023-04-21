@@ -14,6 +14,10 @@
         android:id="@+id/action_splashFragment_to_welcomeFragment"
         app:destination="@id/welcomeFragment"
         app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_splashFragment_to_userProfileFragment"
+        app:destination="@id/userProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
   </fragment>
   <fragment
       android:id="@+id/welcomeFragment"
@@ -40,5 +44,15 @@
       android:id="@+id/authFragment"
       tools:layout="@layout/auth_fragment"
       android:name="com.elka.servicedesk.view.ui.authScreen.AuthFragment"
-      android:label="AuthFragment" />
+      android:label="AuthFragment" >
+    <action
+        android:id="@+id/action_authFragment_to_userProfileFragment"
+        app:destination="@id/userProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
+  </fragment>
+  <fragment
+      android:id="@+id/userProfileFragment"
+      tools:layout="@layout/user_profile_fragment"
+      android:name="com.elka.servicedesk.view.ui.user.profile.UserProfileFragment"
+      android:label="UserProfileFragment" />
 </navigation>

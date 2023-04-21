@@ -12,7 +12,7 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
   private val _profile = MutableLiveData<User?>()
   val profile get() = _profile
 
-  fun loadProfile() {
+  fun loadCurrentUserProfile() {
     val work = Work.LOAD_PROFILE
     addWork(work)
 
