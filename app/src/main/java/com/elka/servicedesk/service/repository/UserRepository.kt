@@ -73,6 +73,26 @@ object UserRepository {
     Errors.unknown
   }
 
+  suspend fun loadAdmins(onSuccess: (List<User>) -> Unit): ErrorApp? = try {
+    val admins = FirebaseService.usersCollection.whereEqualTo(FIELD_ROLE, Role.ADMIN).get().await()
+      .mapNotNull { doc ->
+        return@mapNotNull try {
+          val user = doc.toObject(User::class.java)
+          user.id = doc.id
+          user
+        } catch (e: Exception) {
+          null
+        }
+      }
+
+    onSuccess(admins)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
   private suspend fun getUserById(id: String): User {
     val doc = FirebaseService.usersCollection.document(id).get().await()
     val user = doc.toObject(User::class.java)
@@ -81,4 +101,6 @@ object UserRepository {
     user.divisionLocal = DivisionsRepository.getDivisionById(user.divisionId)
     return user
   }
+
+  const val FIELD_ROLE = "role"
 }

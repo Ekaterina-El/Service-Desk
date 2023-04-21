@@ -42,6 +42,8 @@ class ManagerProfileFragment : UserBaseFragment() {
     userViewModel.work.observe(this, workObserver)
     userViewModel.error.observe(this, errorObserver)
     userViewModel.externalAction.observe(this, externalActionObserver)
+
+    if (adminViewModel.admins.value!!.isEmpty()) adminViewModel.loadAdmins()
   }
 
   override fun onStop() {

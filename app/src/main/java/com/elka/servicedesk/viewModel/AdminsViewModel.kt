@@ -12,6 +12,18 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
   private val _admins = MutableLiveData<List<User>>(listOf())
   val admins get() = _admins
 
+  fun loadAdmins() {
+    val work = Work.LOAD_ADMINS
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = UserRepository.loadAdmins {
+        _admins.value = it
+      }
+      removeWork(work)
+    }
+  }
+
   private fun addNewAdmin(user: User) {
     val admins = _admins.value!!.toMutableList()
     admins.add(user)
@@ -81,7 +93,7 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
     clearDialog()
   }
 
-  fun clearDialog() {
+  private fun clearDialog() {
     firstName.value = ""
     lastName.value = ""
     email.value = ""
