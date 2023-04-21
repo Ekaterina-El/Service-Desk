@@ -18,6 +18,22 @@
         android:id="@+id/action_splashFragment_to_userProfileFragment"
         app:destination="@id/userProfileFragment"
         app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_splashFragment_to_analystProfileFragment"
+        app:destination="@id/analystProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_splashFragment_to_managerProfileFragment"
+        app:destination="@id/managerProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_splashFragment_to_adminProfileFragment"
+        app:destination="@id/adminProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_splashFragment_to_userProfileFragment2"
+        app:destination="@id/userProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
   </fragment>
   <fragment
       android:id="@+id/welcomeFragment"
@@ -49,10 +65,37 @@
         android:id="@+id/action_authFragment_to_userProfileFragment"
         app:destination="@id/userProfileFragment"
         app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_authFragment_to_analystProfileFragment"
+        app:destination="@id/analystProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_authFragment_to_adminProfileFragment"
+        app:destination="@id/adminProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_authFragment_to_managerProfileFragment"
+        app:destination="@id/managerProfileFragment"
+        app:popUpTo="@id/app_navigation.xml" />
   </fragment>
   <fragment
       android:id="@+id/userProfileFragment"
       tools:layout="@layout/user_profile_fragment"
       android:name="com.elka.servicedesk.view.ui.user.profile.UserProfileFragment"
       android:label="UserProfileFragment" />
+  <fragment
+      android:id="@+id/analystProfileFragment"
+      tools:layout="@layout/analyst_profile_fragment"
+      android:name="com.elka.servicedesk.view.ui.analyst.AnalystProfileFragment"
+      android:label="AnalystProfileFragment" />
+  <fragment
+      android:id="@+id/adminProfileFragment"
+      tools:layout="@layout/admin_profile_fragment"
+      android:name="com.elka.servicedesk.view.ui.admin.AdminProfileFragment"
+      android:label="AdminProfileFragment" />
+  <fragment
+      android:id="@+id/managerProfileFragment"
+      tools:layout="@layout/manager_profile_fragment"
+      android:name="com.elka.servicedesk.view.ui.manager.ManagerProfileFragment"
+      android:label="ManagerProfileFragment" />
 </navigation>

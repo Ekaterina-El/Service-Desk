@@ -45,13 +45,14 @@ class AuthFragment : UserBaseFragment() {
     )
     viewModel.clear()
 
+    val dirs = AuthFragmentDirections
     val dir = when (user.role) {
-      Role.USER -> AuthFragmentDirections.actionAuthFragmentToUserProfileFragment()
-      Role.ANALYST -> null
-      Role.ADMIN -> null
-      Role.OWNER -> null
+      Role.USER -> dirs.actionAuthFragmentToUserProfileFragment()
+      Role.ANALYST -> dirs.actionAuthFragmentToAnalystProfileFragment()
+      Role.ADMIN -> dirs.actionAuthFragmentToAdminProfileFragment()
+      Role.MANAGER -> dirs.actionAuthFragmentToManagerProfileFragment()
     }
-    dir?.let { navController.navigate(it) }
+    navController.navigate(dir)
     Toast.makeText(requireContext(), "Logined", Toast.LENGTH_SHORT).show()
   }
 

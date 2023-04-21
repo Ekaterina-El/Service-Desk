@@ -41,14 +41,14 @@ class SplashFragment : UserBaseFragment() {
   }
 
   private fun goProfile(user: User) {
+    val dirs = SplashFragmentDirections
     val dir = when(user.role) {
-      Role.USER -> SplashFragmentDirections.actionSplashFragmentToUserProfileFragment()
-      Role.ANALYST -> null
-      Role.ADMIN -> null
-      Role.OWNER -> null
+      Role.USER -> dirs.actionSplashFragmentToUserProfileFragment()
+      Role.ANALYST -> dirs.actionSplashFragmentToAnalystProfileFragment()
+      Role.ADMIN -> dirs.actionSplashFragmentToAdminProfileFragment()
+      Role.MANAGER -> dirs.actionSplashFragmentToManagerProfileFragment()
     }
-    dir?.let {navController.navigate(it) }
-    Toast.makeText(requireContext(), "Logined", Toast.LENGTH_SHORT).show()
+    navController.navigate(dir)
   }
 
   private fun goLogin() {
