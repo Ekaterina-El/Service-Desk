@@ -30,5 +30,11 @@
   <string name="exit_title">Выход</string>
   <string name="exit_message">Вы уверены что хотите выйти из аккаунта?</string>
   <string name="cancel">Отменить</string>
+  <string name="registation_admin">Регистрация администратора</string>
+  <string name="registration_editor_description">Для регистрации администратора заполните форму</string>
+  <string name="admin_added_hint">Вы больше не сможете увидеть авторизационные данные - сохраните их. Нажмите на них, чтобы скопировать в буфер обмена</string>
+  <string name="admin_auth_data">Новый администратор зарегистрирован!\n\nАвторизационные данные:\nПочта: %1$s\nПароль:%2$s</string>
+  <string name="admin_added">Администратор зарегистрирован</string>
+
 
 </resources>

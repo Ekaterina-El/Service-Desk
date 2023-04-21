@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+        name="master"
+        type="com.elka.servicedesk.view.dialog.RegistrationAdminDialog" />
+
+    <variable
+        name="viewModel"
+        type="com.elka.servicedesk.viewModel.AdminsViewModel" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="25dp">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+      <TextView
+          style="@style/text.h3"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="25dp"
+          android:gravity="start"
+          android:text="@string/registation_admin"
+          android:textStyle="bold" />
+
+      <TextView
+          style="@style/text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:text="@string/registration_editor_description" />
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutFirstName"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/firstName"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@={viewModel.firstName}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutLastName"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/lastName"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@={viewModel.lastName}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutEmail"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/email"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@={viewModel.email}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="25dp"
+          android:gravity="end"
+          android:orientation="horizontal">
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.disagree()}"
+            android:text="@string/cancel" />
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.agree()}"
+            android:text="@string/continue_text" />
+
+      </LinearLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:visibility="@{viewModel.work.size() == 0 ? View.GONE : View.VISIBLE}"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/shadow2"
+        app:layout_constraintBottom_toBottomOf="@id/content"
+        app:layout_constraintEnd_toEndOf="@id/content"
+        app:layout_constraintStart_toStartOf="@id/content"
+        app:layout_constraintTop_toTopOf="@id/content">
+
+      <ProgressBar
+          android:layout_width="70dp"
+          android:layout_height="70dp"
+          android:layout_centerInParent="true"
+          android:indeterminateTint="@color/accent" />
+
+    </RelativeLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

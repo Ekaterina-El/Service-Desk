@@ -22,9 +22,9 @@
 
     <TextView
         android:onClick="@{() -> master.logout()}"
-        android:id="@+id/companyName"
         android:clickable="true"
         android:focusable="true"
+        android:id="@+id/companyName"
         style="@style/text.h1"
         android:layout_width="wrap_content"
         android:text="Роль: Менаджер"
@@ -33,6 +33,9 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+        android:onClick="@{() -> master.openRegAdminDialog()}"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/slogan"
         style="@style/text.h3"
         tools:text="Иванов Иван"
