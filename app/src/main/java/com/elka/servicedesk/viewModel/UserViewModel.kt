@@ -1,8 +1,10 @@
 package com.elka.servicedesk.viewModel
 
 import android.app.Application
+import android.text.method.TextKeyListener.clear
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.service.repository.UserRepository
@@ -22,5 +24,22 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
       }
       removeWork(work)
     }
+  }
+
+  fun logout() {
+    val work = Work.LOGOUT
+    addWork(work)
+
+    viewModelScope.launch {
+      UserRepository.logout {
+        _externalAction.value = Action.RESTART
+        clear()
+      }
+      removeWork(work)
+    }
+  }
+
+  private fun clear() {
+    _profile.value = null
   }
 }

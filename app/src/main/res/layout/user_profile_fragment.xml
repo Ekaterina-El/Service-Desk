@@ -21,7 +21,10 @@
       android:layout_height="match_parent">
 
     <TextView
+        android:onClick="@{() -> master.logout()}"
         android:id="@+id/companyName"
+        android:clickable="true"
+        android:focusable="true"
         style="@style/text.h1"
         android:layout_width="wrap_content"
         android:text="Роль: Пользователь"

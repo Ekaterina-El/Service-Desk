@@ -25,7 +25,7 @@ class SplashFragment : UserBaseFragment() {
 
   private val handler by lazy { Handler(Looper.getMainLooper()) }
 
-  private val externalActionObserver = Observer<Action?> { action ->
+  override val externalActionObserver = Observer<Action?> { action ->
     if (action == null) return@Observer
     when (action) {
       Action.GO_LOGIN -> goLogin()

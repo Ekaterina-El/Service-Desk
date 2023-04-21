@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="master"
+            type="com.elka.servicedesk.view.dialog.ConfirmDialog" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="message"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            style="@style/text.h3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="start"
+            android:text="@{title}"
+            android:textStyle="bold"
+            tools:text="@string/exit_title" />
+
+
+        <TextView
+            style="@style/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{message}"
+            android:layout_marginTop="5dp"
+            tools:text="@string/exit_message" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="25dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:onClick="@{() -> master.disagree()}"
+                style="@style/text.bold.button"
+                android:layout_marginEnd="10dp"
+                android:layout_width="wrap_content"
+                android:background="@drawable/bubble_wrapper"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/cancel" />
+
+            <TextView
+                android:onClick="@{() -> master.agree()}"
+                style="@style/text.bold.button"
+                android:layout_width="wrap_content"
+                android:background="@drawable/bubble_wrapper"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/continue_text" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</layout>

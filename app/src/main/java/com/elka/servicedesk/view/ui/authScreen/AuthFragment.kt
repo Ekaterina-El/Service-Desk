@@ -21,7 +21,7 @@ class AuthFragment : UserBaseFragment() {
     showErrors(errors, fields)
   }
 
-  private val externalActionObserver = Observer<Action?> {
+  override val externalActionObserver = Observer<Action?> {
     if (it == null) return@Observer
 
     when (it) {

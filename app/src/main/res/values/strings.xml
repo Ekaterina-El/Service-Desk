@@ -27,5 +27,8 @@
   <string name="phoneNumber">Номер телефона</string>
   <string name="division">Подразделение</string>
   <string name="auth_title">Авторизация</string>
+  <string name="exit_title">Выход</string>
+  <string name="exit_message">Вы уверены что хотите выйти из аккаунта?</string>
+  <string name="cancel">Отменить</string>
 
 </resources>
