@@ -111,7 +111,7 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
   fun showAdminCredentials(user: User, password: String) {
     val title = getString(R.string.admin_added)
     val message = getString(R.string.admin_auth_data, user.email, password)
-    val hint = getString(R.string.admin_added_hint)
+    val hint = getString(R.string.user_added_hint)
 
     activity.informDialog.open(
       title,

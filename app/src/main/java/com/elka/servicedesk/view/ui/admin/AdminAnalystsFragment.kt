@@ -4,22 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AdminAnalystsFragmentBinding
-import com.elka.servicedesk.databinding.ManagerAdminsFragmentBinding
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.User
-import com.elka.servicedesk.view.dialog.ConfirmDialog
 import com.elka.servicedesk.view.dialog.InformDialog
-import com.elka.servicedesk.view.dialog.RegistrationAdminDialog
+import com.elka.servicedesk.view.dialog.RegistrationAnalystDialog
 import com.elka.servicedesk.view.list.admins.UsersAdapter
 import com.elka.servicedesk.view.list.admins.UsersViewHolder
+import com.elka.servicedesk.viewModel.DivisionsViewModel
 
 class AdminAnalystsFragment : AdminBaseFragment() {
   private lateinit var binding: AdminAnalystsFragmentBinding
+  private val divisionsViewModel by activityViewModels<DivisionsViewModel>()
 
   private val usersAdapter by lazy {
     UsersAdapter(object : UsersViewHolder.Companion.Listener {
@@ -72,6 +73,7 @@ class AdminAnalystsFragment : AdminBaseFragment() {
   override fun onResume() {
     super.onResume()
 
+    divisionsViewModel.loadDivisions()
     if (analystsViewModel.users.value!!.isEmpty()) analystsViewModel.loadUsers()
 
     analystsViewModel.work.observe(this, workObserver)
@@ -91,21 +93,39 @@ class AdminAnalystsFragment : AdminBaseFragment() {
     userViewModel.work.removeObserver(workObserver)
   }
 
+  private val regAnalystDialog: RegistrationAnalystDialog by lazy {
+    RegistrationAnalystDialog(
+      requireContext(),
+      viewLifecycleOwner,
+      analystsViewModel,
+      regAnalystDialogListener
+    )
+  }
 
-  private fun openConfirmDeleteDialog(admin: User) {}
-  fun openRegAdminDialog() {}
-/*
-private val regUserDialogListener by lazy {
-    object : RegistrationAdminDialog.Companion.Listener {
+  private val regAnalystDialogListener by lazy {
+    object : RegistrationAnalystDialog.Companion.Listener {
       override fun afterAdded(user: User, password: String) {
-        regAdminDialog.disagree()
-        showAdminCredentials(user, password)
+        regAnalystDialog.disagree()
+        showAnalystCredentials(user, password)
       }
     }
   }
 
+  fun showAnalystCredentials(user: User, password: String) {
+    val title = getString(R.string.analyst_added)
+    val message = getString(R.string.analyst_auth_data, user.email, password)
+    val hint = getString(R.string.user_added_hint)
 
-  private val adminCredentialsDialogListener by lazy {
+    activity.informDialog.open(
+      title,
+      message,
+      hint,
+      analystCredentialsDialogListener,
+      "${user.email} | $password"
+    )
+  }
+
+  private val analystCredentialsDialogListener by lazy {
     object : InformDialog.Companion.Listener {
       override fun copyMessage(message: String) {
         copyToClipboard(message)
@@ -113,42 +133,22 @@ private val regUserDialogListener by lazy {
     }
   }
 
-  fun showAdminCredentials(user: User, password: String) {
-    val title = getString(R.string.admin_added)
-    val message = getString(R.string.admin_auth_data, user.email, password)
-    val hint = getString(R.string.admin_added_hint)
 
-    activity.informDialog.open(
-      title,
-      message,
-      hint,
-      adminCredentialsDialogListener,
-      "${user.email} | $password"
-    )
-  }
-
-  private val regAdminDialog: RegistrationAdminDialog by lazy {
-    RegistrationAdminDialog(
-      requireContext(),
-      viewLifecycleOwner,
-      regAdminDialogListener
-    )
-  }
-
-  fun openRegAdminDialog() {
+  private fun openConfirmDeleteDialog(admin: User) {}
+  fun openRegAnalystDialog() {
     if (hasLoads) {
       showLoadingErrorMessage()
       return
     }
 
     val credentials = getCredentials() ?: return
-    regAdminDialog.open(
-      adminViewModel,
-      credentials.email,
-      credentials.password,
-      userViewModel.profile.value!!
+    regAnalystDialog.open(
+      credentials,
+      userViewModel.profile.value!!,
+      divisionsViewModel.divisions.value!!,
     )
   }
+/*
 
   private fun openConfirmDeleteDialog(admin: User) {
     val title = getString(R.string.block_admin_title)

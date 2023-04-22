@@ -32,9 +32,15 @@
   <string name="cancel">Отменить</string>
   <string name="registation_admin">Регистрация администратора</string>
   <string name="registration_editor_description">Для регистрации администратора заполните форму</string>
-  <string name="admin_added_hint">Вы больше не сможете увидеть авторизационные данные - сохраните их. Нажмите на них, чтобы скопировать в буфер обмена</string>
-  <string name="admin_auth_data">Новый администратор зарегистрирован!\n\nАвторизационные данные:\nПочта: %1$s\nПароль:%2$s</string>
+  <string name="registation_analyst">Регистрация аналитика</string>
+  <string name="registration_analyst_description">Для регистрации аналитика заполните форму</string>
+  <string name="user_added_hint">Вы больше не сможете увидеть авторизационные данные - сохраните их. Нажмите на них, чтобы скопировать в буфер обмена</string>
+  <string name="admin_auth_data">Новый администратор зарегистрирован!\n\nАвторизационные данные:\nПочта: %1$s\nПароль: %2$s</string>
   <string name="admin_added">Администратор зарегистрирован</string>
+
+  <string name="analyst_auth_data">Новый аналитик зарегистрирован!\n\nАвторизационные данные:\nПочта: %1$s\nПароль: %2$s</string>
+  <string name="analyst_added">Аналитик зарегистрирован</string>
+
   <string name="logs_title">Журнал событий</string>
   <string name="admins_title">Администрация</string>
   <string name="profile">Профиль</string>
@@ -50,5 +56,6 @@
   <string name="account_have_been_blocked_message_with_exit">Ваш аккаунт был заблокирован! Чтобы выйти из аккаунта нажмите на кнопку ниже</string>
   <string name="account_have_been_blocked_message">Ваш аккаунт был заблокирован!</string>
   <string name="analytics_title">Аналитики</string>
+  <string name="add_analyst_division_error">Добавьте перечень подразделений за которые аналитик будет нести ответственность</string>
 
 </resources>

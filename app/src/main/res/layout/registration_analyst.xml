@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+        name="master"
+        type="com.elka.servicedesk.view.dialog.RegistrationAnalystDialog" />
+
+    <variable
+        name="divisionsAdapter"
+        type="com.elka.servicedesk.view.list.divisions.DivisionsDinamicAdapter" />
+
+    <variable
+        name="viewModel"
+        type="com.elka.servicedesk.viewModel.AnalystsViewModel" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="25dp">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+      <TextView
+          style="@style/text.h3"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="25dp"
+          android:gravity="start"
+          android:text="@string/registation_analyst"
+          android:textStyle="bold" />
+
+      <TextView
+          style="@style/text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:text="@string/registration_analyst_description" />
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutFirstName"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/firstName"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@={viewModel.firstName}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutLastName"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/lastName"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@={viewModel.lastName}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutEmail"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/email"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@={viewModel.email}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <TextView
+          android:layout_marginTop="10dp"
+        style="@style/text.h3"
+        android:text="Перечень подразделений" />
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/divisionW"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/field_wrapper"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+          <Spinner
+              android:id="@+id/division_spinner"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:spinnerMode="dropdown"
+              tools:listitem="@layout/spinner_division_item" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/text.hint.field"
+            android:text="@string/division"
+            app:layout_constraintBottom_toTopOf="@id/divisionW"
+            app:layout_constraintStart_toStartOf="@id/divisionW"
+            app:layout_constraintTop_toTopOf="@id/divisionW" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/divisionsList"
+          android:layout_width="match_parent"
+          android:layout_height="250dp"
+          android:adapter="@{divisionsAdapter}"
+          android:visibility="@{viewModel.divisions.size() == 0 ? View.GONE : View.VISIBLE}"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:ignore="NestedWeights"
+          tools:listitem="@layout/division_item"
+          tools:visibility="visible" />
+
+      <TextView
+          android:layout_marginTop="6dp"
+          style="@style/text.field.error"
+          android:visibility="@{viewModel.divisions.size() == 0 ? View.VISIBLE : View.GONE}"
+          android:text="@string/add_analyst_division_error" />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="25dp"
+          android:gravity="end"
+          android:orientation="horizontal">
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.disagree()}"
+            android:text="@string/cancel" />
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.agree()}"
+            android:text="@string/continue_text" />
+
+      </LinearLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/shadow2"
+        android:visibility="@{viewModel.work.size() == 0 ? View.GONE : View.VISIBLE}"
+        app:layout_constraintBottom_toBottomOf="@id/content"
+        app:layout_constraintEnd_toEndOf="@id/content"
+        app:layout_constraintStart_toStartOf="@id/content"
+        app:layout_constraintTop_toTopOf="@id/content">
+
+      <ProgressBar
+          android:layout_width="70dp"
+          android:layout_height="70dp"
+          android:layout_centerInParent="true"
+          android:indeterminateTint="@color/accent" />
+
+    </RelativeLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

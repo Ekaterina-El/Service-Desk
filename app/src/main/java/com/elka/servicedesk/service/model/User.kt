@@ -9,8 +9,13 @@ data class User(
   var phoneNumber: String = "",
   var email: String = "",
 
+  // for user
   var divisionId: String = "",
   var divisionLocal: Division? = null,
+
+  // for analyst
+  var divisionsLocal: List<Division> = listOf(),
+  var divisionsId: List<String> = listOf(),
 
   var role: Role = Role.USER
 ) : java.io.Serializable {

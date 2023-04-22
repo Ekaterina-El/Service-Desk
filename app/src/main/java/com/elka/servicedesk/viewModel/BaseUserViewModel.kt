@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.*
+import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.service.model.filterBy
 import com.elka.servicedesk.service.repository.UserRepository
@@ -95,7 +96,7 @@ abstract class BaseUserViewModel(application: Application) : BaseViewModelWithFi
     currentUserPassword = password
   }
 
-  fun tryRegistration(editorProfile: User) {
+  fun tryRegistration(editorProfile: User, divisions: List<Division> = listOf()) {
     if (!checkFields()) return
 
     val work = Work.REGISTRATION_USER
@@ -103,6 +104,9 @@ abstract class BaseUserViewModel(application: Application) : BaseViewModelWithFi
 
     viewModelScope.launch {
       val user = newUser
+      user.divisionsLocal = divisions
+      user.divisionsId = divisions.map { it.id }
+
       password = Generator.genPassword()
 
       _error.value = UserRepository.registrationUser(user.email, password!!) { uid ->
@@ -127,7 +131,7 @@ abstract class BaseUserViewModel(application: Application) : BaseViewModelWithFi
     clearDialog()
   }
 
-  fun clearDialog() {
+  open fun clearDialog() {
     firstName.value = ""
     lastName.value = ""
     email.value = ""

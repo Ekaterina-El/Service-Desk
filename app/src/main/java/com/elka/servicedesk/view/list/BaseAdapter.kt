@@ -19,8 +19,8 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     notifyItemInserted(pos)
   }
 
-  fun removeItem(user: T) {
-    val idx = items.indexOf(user)
+  fun removeItem(item: T) {
+    val idx = items.indexOf(item)
     if (idx == -1) return
 
     items.removeAt(idx)
