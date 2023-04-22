@@ -11,6 +11,7 @@ import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.ManagerAdminsFragmentBinding
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.view.dialog.ConfirmDialog
 import com.elka.servicedesk.view.dialog.InformDialog
 import com.elka.servicedesk.view.dialog.RegistrationAdminDialog
 import com.elka.servicedesk.view.list.admins.AdminsAdapter
@@ -21,8 +22,10 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
 
   private val adminsAdapter by lazy {
     AdminsAdapter(object : AdminsViewHolder.Companion.Listener {
-      override fun onSelect(admin: User) {
+      override fun onSelect(admin: User) {}
 
+      override fun onBlock(admin: User) {
+        openConfirmDeleteDialog(admin)
       }
     })
   }
@@ -138,5 +141,22 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
       credentials.password,
       userViewModel.profile.value!!
     )
+  }
+
+  private fun openConfirmDeleteDialog(admin: User) {
+    val title = getString(R.string.block_admin_title)
+    val message = getString(R.string.block_admin_message, admin.fullName)
+    val listener = object : ConfirmDialog.Companion.Listener {
+      override fun agree() {
+        adminViewModel.blockAdmin(admin, userViewModel.profile.value!!)
+        confirmDialog.close()
+      }
+
+      override fun disagree() {
+        confirmDialog.close()
+      }
+    }
+
+    confirmDialog.open(title, message, listener)
   }
 }

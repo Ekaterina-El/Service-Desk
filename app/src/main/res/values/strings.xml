@@ -41,6 +41,9 @@
   <string name="search">Поиск</string>
   <string name="list_empty">Список пуст</string>
   <string name="await_loading">Дождитесь окончания загрузки</string>
+  <string name="block">Заблокировать</string>
 
+  <string name="block_admin_title">Блокировка администратора</string>
+  <string name="block_admin_message">Вы уверены что хотите заблокировать администратора \"%1$s\"?</string>
 
 </resources>

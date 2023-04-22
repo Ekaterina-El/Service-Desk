@@ -128,5 +128,24 @@ object UserRepository {
     return user
   }
 
+  suspend fun blockAdmin(admin: User, deletedBy: User, onSuccess: () -> Unit): ErrorApp? = try {
+    FirebaseService.usersCollection.document(admin.id).delete().await()
+
+    val log = Log(
+      date = Constants.getCurrentDate(),
+      editor = deletedBy,
+      division = admin.divisionLocal,
+      event = Event.BLOCKED_ADMIN,
+      param = admin.fullName)
+    LogsRepository.addLogSync(log)
+
+    onSuccess()
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
   const val FIELD_ROLE = "role"
 }

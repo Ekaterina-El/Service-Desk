@@ -37,6 +37,13 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
     filterAdmins()
   }
 
+  private fun removeAdmin(user: User) {
+    val admins = _admins.value!!.toMutableList()
+    admins.remove(user)
+    _admins.value = admins
+    filterAdmins()
+  }
+
   fun filterAdmins() {
     val items = _admins.value!!
     val filter = filter.value!!
@@ -122,6 +129,18 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
     firstName.value = ""
     lastName.value = ""
     email.value = ""
+  }
+
+  fun blockAdmin(admin: User, deletedBy: User) {
+    val work = Work.BLOCK_ADMIN
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = UserRepository.blockAdmin(admin, deletedBy) {
+        removeAdmin(admin)
+      }
+      removeWork(work)
+    }
   }
 
   private val newUser

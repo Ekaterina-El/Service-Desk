@@ -3,6 +3,7 @@ package com.elka.servicedesk.view.list.admins
 import android.content.Context
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AdminItemBinding
 import com.elka.servicedesk.service.model.User
 
@@ -15,9 +16,11 @@ class AdminsViewHolder(
 
   private val menu by lazy {
     val popupMenu = PopupMenu(context, binding.wrapper)
+    popupMenu.menu.add(0, BLOCK, 0, R.string.block)
 
     popupMenu.setOnMenuItemClickListener {
       when (it.itemId) {
+        BLOCK -> listener.onBlock(admin!!)
         else -> Unit
       }
       return@setOnMenuItemClickListener true
@@ -42,8 +45,10 @@ class AdminsViewHolder(
 
 
   companion object {
+    const val BLOCK = 1
     interface Listener {
       fun onSelect(admin: User)
+      fun onBlock(admin: User)
     }
   }
 }
