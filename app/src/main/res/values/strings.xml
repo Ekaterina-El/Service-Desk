@@ -38,6 +38,9 @@
   <string name="logs_title">Журнал событий</string>
   <string name="admins_title">Администрация</string>
   <string name="profile">Профиль</string>
+  <string name="search">Поиск</string>
+  <string name="list_empty">Список пуст</string>
+  <string name="await_loading">Дождитесь окончания загрузки</string>
 
 
 </resources>

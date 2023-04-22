@@ -18,5 +18,10 @@ data class User(
   var fullName
     get() = listOf(lastName, firstName).joinToString(" ")
     set(v) {}
+}
 
+fun List<User>.filterBy(search: String) = this.filter {
+  it.firstName.contains(search, false) ||
+  it.lastName.contains(search, false) ||
+  it.fullName.contains(search, false)
 }

@@ -81,7 +81,7 @@ class RegistrationAdminDialog(
   fun disagree() {
     viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
     viewModel.addedAdmin.removeObserver(addedEditorObserver)
-    viewModel.clear()
+    viewModel.clearDialog()
     dismiss()
   }
 

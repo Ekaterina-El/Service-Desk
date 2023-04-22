@@ -101,4 +101,8 @@ abstract class BaseFragment: Fragment() {
     } else 0
     spinner.setSelection(pos)
   }
+
+  fun showLoadingErrorMessage() {
+    Toast.makeText(requireContext(), getString(R.string.await_loading), Toast.LENGTH_SHORT).show()
+  }
 }

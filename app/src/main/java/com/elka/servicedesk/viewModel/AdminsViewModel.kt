@@ -5,12 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.service.model.filterBy
 import com.elka.servicedesk.service.repository.UserRepository
 import kotlinx.coroutines.launch
 
 class AdminsViewModel(application: Application) : BaseViewModelWithFields(application) {
   private val _admins = MutableLiveData<List<User>>(listOf())
   val admins get() = _admins
+
+  val filter = MutableLiveData("")
+  private val _filteredAdmins = MutableLiveData<List<User>>(listOf())
+  val filteredAdmins get() = _filteredAdmins
 
   fun loadAdmins() {
     val work = Work.LOAD_ADMINS
@@ -19,6 +24,7 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
     viewModelScope.launch {
       _error.value = UserRepository.loadAdmins {
         _admins.value = it
+        filterAdmins()
       }
       removeWork(work)
     }
@@ -28,6 +34,22 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
     val admins = _admins.value!!.toMutableList()
     admins.add(user)
     _admins.value = admins
+    filterAdmins()
+  }
+
+  fun filterAdmins() {
+    val items = _admins.value!!
+    val filter = filter.value!!
+
+    _filteredAdmins.value = when(filter) {
+      "" -> items
+      else -> items.filterBy(filter)
+    }
+  }
+
+  fun clearFilterAdmins() {
+    filter.value = ""
+    filterAdmins()
   }
 
   fun clear() {
@@ -35,6 +57,9 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
     _externalAction.value = null
     _error.value = null
     _fieldErrors.value = listOf()
+    filter.value = ""
+    _admins.value = listOf()
+    _filteredAdmins.value = listOf()
     clearWork()
   }
 
@@ -93,7 +118,7 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
     clearDialog()
   }
 
-  private fun clearDialog() {
+  fun clearDialog() {
     firstName.value = ""
     lastName.value = ""
     email.value = ""
