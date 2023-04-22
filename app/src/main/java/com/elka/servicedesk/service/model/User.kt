@@ -21,7 +21,7 @@ data class User(
 }
 
 fun List<User>.filterBy(search: String) = this.filter {
-  it.firstName.contains(search, false) ||
-  it.lastName.contains(search, false) ||
-  it.fullName.contains(search, false)
+  it.firstName.contains(search, true) ||
+  it.lastName.contains(search, true) ||
+  it.fullName.contains(search, true)
 }

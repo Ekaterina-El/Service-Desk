@@ -14,9 +14,8 @@ import com.elka.servicedesk.MainActivity
 import com.elka.servicedesk.R
 import com.elka.servicedesk.other.*
 import com.google.android.material.textfield.TextInputLayout
-import java.util.HashMap
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment() {
   protected fun restartApp() {
     try {
       val i =
@@ -96,7 +95,7 @@ abstract class BaseFragment: Fragment() {
 
 
   fun selectItemOnSpinner(spinner: Spinner, items: List<SpinnerItem>, value: Any?) {
-    val pos =  if (value != null) {
+    val pos = if (value != null) {
       items.indexOfFirst { it.value == value }
     } else 0
     spinner.setSelection(pos)
@@ -104,5 +103,10 @@ abstract class BaseFragment: Fragment() {
 
   fun showLoadingErrorMessage() {
     Toast.makeText(requireContext(), getString(R.string.await_loading), Toast.LENGTH_SHORT).show()
+  }
+
+  fun getHasLoads(w1: List<Work>, works: List<Work>): Boolean = when {
+    w1.isEmpty() -> false
+    else -> w1.map { item -> if (works.contains(item)) 1 else 0 }.reduce { a, b -> a + b } > 0
   }
 }

@@ -1,11 +1,11 @@
 package com.elka.servicedesk.other
 
-enum class Event {
-  ADDED_ANALYST,
-  BLOCKED_ANALYST,
+enum class Event(val text: String) {
+  ADDED_ANALYST("Добавлен аналитик"),
+  BLOCKED_ANALYST("Заблокирован аналитик"),
 
-  ADDED_ADMIN,
-  BLOCKED_ADMIN,
+  ADDED_ADMIN("Добавлен администратор"),
+  BLOCKED_ADMIN("Заблокирован администратор"),
 
-  REGISTERED_USER,
+  REGISTERED_USER("Зарегистрировался пользователь"),
 }

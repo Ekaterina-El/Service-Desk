@@ -4,25 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
+
+    <variable
+        name="logsAdapter"
+        type="com.elka.servicedesk.view.list.logs.LogsAdapter" />
+
     <variable
         name="master"
         type="com.elka.servicedesk.view.ui.manager.ManagerLogsFragment" />
+
+    <variable
+        name="viewModel"
+        type="com.elka.servicedesk.viewModel.LogsViewModel" />
   </data>
 
-  <LinearLayout
-      android:orientation="vertical"
-      android:gravity="center"
-      android:paddingHorizontal="@dimen/app_padding"
+
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swiper"
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/companyName"
-        style="@style/text.h1"
-        android:layout_width="wrap_content"
-        android:text="@string/logs_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-  </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/app_padding"
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="@drawable/field_wrapper"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+          <EditText
+              style="@style/text.h3"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:afterTextChanged="@{() -> viewModel.filterLogs()}"
+              android:background="@null"
+              android:ellipsize="end"
+              android:hint="@string/search"
+              android:maxLines="1"
+              android:paddingStart="0dp"
+              android:paddingEnd="10dp"
+              android:text="@={viewModel.filter}"
+              tools:ignore="NestedWeights" />
+
+          <ImageView
+              style="@style/icon"
+              android:src="@drawable/ic_search"
+              android:visibility="@{viewModel.filter.isEmpty() ? View.VISIBLE : View.GONE }" />
+
+          <ImageView
+              style="@style/icon"
+              android:onClick="@{() -> viewModel.clearFilterLogs()}"
+              android:src="@drawable/ic_close"
+              android:visibility="@{viewModel.filter.isEmpty() ? View.GONE : View.VISIBLE }" />
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/logsList"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_marginTop="20dp"
+          android:layout_weight="1"
+          android:visibility="@{viewModel.filteredLogs.size() == 0 ? View.GONE : View.VISIBLE}"
+          android:adapter="@{logsAdapter}"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:ignore="NestedWeights"
+          tools:listitem="@layout/admin_item"
+          tools:visibility="visible"
+          />
+
+      <RelativeLayout
+          android:layout_marginTop="20dp"
+          android:layout_width="match_parent"
+          android:gravity="center"
+          android:visibility="@{viewModel.filteredLogs.size() == 0 ? View.VISIBLE : View.GONE}"
+          android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/layoutNoFound"
+            layout="@layout/no_found" />
+
+      </RelativeLayout>
+    </LinearLayout>
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

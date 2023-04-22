@@ -9,20 +9,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.ManagerAdminsFragmentBinding
-import com.elka.servicedesk.databinding.WelcomeFragmentBinding
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.dialog.InformDialog
 import com.elka.servicedesk.view.dialog.RegistrationAdminDialog
 import com.elka.servicedesk.view.list.admins.AdminsAdapter
 import com.elka.servicedesk.view.list.admins.AdminsViewHolder
-import com.elka.servicedesk.view.ui.UserBaseFragment
 
 class ManagerAdminsFragment : ManagerBaseFragment() {
   private lateinit var binding: ManagerAdminsFragmentBinding
 
   private val adminsAdapter by lazy {
-    AdminsAdapter(object: AdminsViewHolder.Companion.Listener {
+    AdminsAdapter(object : AdminsViewHolder.Companion.Listener {
       override fun onSelect(admin: User) {
 
       }
@@ -134,6 +132,11 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
     }
 
     val credentials = getCredentials() ?: return
-    regAdminDialog.open(adminViewModel, credentials.email, credentials.password, userViewModel.profile.value!!)
+    regAdminDialog.open(
+      adminViewModel,
+      credentials.email,
+      credentials.password,
+      userViewModel.profile.value!!
+    )
   }
 }

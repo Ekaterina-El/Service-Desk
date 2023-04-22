@@ -8,11 +8,11 @@ import com.elka.servicedesk.viewModel.AdminsViewModel
 abstract class ManagerBaseFragment: UserBaseFragment() {
   protected val adminViewModel by activityViewModels<AdminsViewModel>()
 
-  protected val works = listOf(
+  protected open val works = listOf(
     Work.LOAD_ADMINS, Work.LOAD_PROFILE
   )
 
-  protected val hasLoads: Boolean
+  protected open val hasLoads: Boolean
     get() {
       val w1 = userViewModel.work.value!!.toMutableList()
       val w2 = adminViewModel.work.value!!
@@ -23,5 +23,4 @@ abstract class ManagerBaseFragment: UserBaseFragment() {
         else -> w1.map { item -> if (works.contains(item)) 1 else 0 }.reduce { a, b -> a + b } > 0
       }
     }
-
 }

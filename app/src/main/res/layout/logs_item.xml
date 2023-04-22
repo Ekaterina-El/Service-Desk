@@ -7,8 +7,8 @@
     <import type="android.view.View" />
 
     <variable
-        name="admin"
-        type="com.elka.servicedesk.service.model.User" />
+        name="log"
+        type="com.elka.servicedesk.service.model.Log" />
   </data>
 
   <androidx.cardview.widget.CardView
@@ -29,13 +29,9 @@
 
       <TextView
           style="@style/text"
-          android:text="@{admin.fullName}"
-          tools:text="Иванов Иван" />
+          android:text="@{log.text}"
+          tools:text="Log text ..." />
 
-      <TextView
-          style="@style/text.hint"
-          android:text="@{admin.email}"
-          tools:text="email@com.ru" />
 </LinearLayout>
 
 

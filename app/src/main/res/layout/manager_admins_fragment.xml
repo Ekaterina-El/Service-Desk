@@ -130,5 +130,4 @@
       </RelativeLayout>
     </LinearLayout>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 </layout>
