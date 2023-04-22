@@ -44,7 +44,7 @@ class RegistrationAdminDialog(
     val password = viewModel.password
 
     if (user == null || password == null) return@Observer
-    viewModel.afterNotifyAddedAdmin()
+    viewModel.afterNotifyAddedUser()
     listener.afterAdded(user, password)
 
   }
@@ -75,13 +75,13 @@ class RegistrationAdminDialog(
 
     viewModel.setCurrentUserCredentials(currentUserEmail, currentUserPassword)
     viewModel.fieldErrors.observe(owner, fieldErrorsObserver)
-    viewModel.addedAdmin.observe(owner, addedEditorObserver)
+    viewModel.addedUser.observe(owner, addedEditorObserver)
     show()
   }
 
   fun disagree() {
     viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
-    viewModel.addedAdmin.removeObserver(addedEditorObserver)
+    viewModel.addedUser.removeObserver(addedEditorObserver)
     viewModel.clearDialog()
     dismiss()
   }

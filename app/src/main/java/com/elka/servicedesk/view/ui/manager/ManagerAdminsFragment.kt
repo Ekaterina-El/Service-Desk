@@ -54,14 +54,13 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    if (adminViewModel.admins.value!!.isEmpty()) adminViewModel.loadAdmins()
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.adminsList.addItemDecoration(decorator)
 
     val refresherColor = requireContext().getColor(R.color.accent)
     val swipeRefreshListener =
-      SwipeRefreshLayout.OnRefreshListener { adminViewModel.loadAdmins() }
+      SwipeRefreshLayout.OnRefreshListener { adminViewModel.loadUsers() }
 
     binding.swiper1.setColorSchemeColors(refresherColor)
     binding.swiper1.setOnRefreshListener(swipeRefreshListener)
@@ -71,9 +70,12 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
 
   override fun onResume() {
     super.onResume()
+
+    if (adminViewModel.users.value!!.isEmpty()) adminViewModel.loadUsers()
+
     adminViewModel.work.observe(this, workObserver)
     adminViewModel.error.observe(this, errorObserver)
-    adminViewModel.filteredAdmins.observe(this, adminsObserver)
+    adminViewModel.filteredUsers.observe(this, adminsObserver)
     userViewModel.error.observe(this, errorObserver)
     userViewModel.work.observe(this, workObserver)
   }
@@ -82,7 +84,7 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
     super.onStop()
     adminViewModel.work.removeObserver(workObserver)
     adminViewModel.error.removeObserver(errorObserver)
-    adminViewModel.filteredAdmins.removeObserver(adminsObserver)
+    adminViewModel.filteredUsers.removeObserver(adminsObserver)
 
     userViewModel.error.removeObserver(errorObserver)
     userViewModel.work.removeObserver(workObserver)
@@ -148,7 +150,7 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
     val message = getString(R.string.block_admin_message, admin.fullName)
     val listener = object : ConfirmDialog.Companion.Listener {
       override fun agree() {
-        adminViewModel.blockAdmin(admin, userViewModel.profile.value!!)
+        adminViewModel.blockUser(admin, userViewModel.profile.value!!)
         confirmDialog.close()
       }
 

@@ -52,7 +52,7 @@
               android:layout_width="0dp"
               android:layout_height="match_parent"
               android:layout_weight="1"
-              android:afterTextChanged="@{() -> viewModel.filterAdmins()}"
+              android:afterTextChanged="@{() -> viewModel.filterUsers()}"
               android:background="@null"
               android:ellipsize="end"
               android:hint="@string/search"
@@ -69,7 +69,7 @@
 
           <ImageView
               style="@style/icon"
-              android:onClick="@{() -> viewModel.clearFilterAdmins()}"
+              android:onClick="@{() -> viewModel.clearFilterUsers()}"
               android:src="@drawable/ic_close"
               android:visibility="@{viewModel.filter.isEmpty() ? View.GONE : View.VISIBLE }" />
         </LinearLayout>
@@ -108,7 +108,7 @@
           android:layout_height="0dp"
           android:layout_marginTop="20dp"
           android:layout_weight="1"
-          android:visibility="@{viewModel.filteredAdmins.size() == 0 ? View.GONE : View.VISIBLE}"
+          android:visibility="@{viewModel.filteredUsers.size() == 0 ? View.GONE : View.VISIBLE}"
           android:adapter="@{adminsAdapter}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:ignore="NestedWeights"
@@ -120,7 +120,7 @@
           android:layout_marginTop="20dp"
           android:layout_width="match_parent"
           android:gravity="center"
-          android:visibility="@{viewModel.filteredAdmins.size() == 0 ? View.VISIBLE : View.GONE}"
+          android:visibility="@{viewModel.filteredUsers.size() == 0 ? View.VISIBLE : View.GONE}"
           android:layout_height="wrap_content">
 
         <include

@@ -17,7 +17,7 @@
   <string name="error">Упс...</string>
   <string name="app_description">Решение независимо от вашей проблемы</string>
   <string name="welcome_text">Для использования сервиса необходимо авторизоваться или зарегистрироваться</string>
-  <string name="auth">Авторизоаваться</string>
+  <string name="auth">Авторизоваться</string>
   <string name="registration">Зарегистрироваться</string>
   <string name="email">Электронная почта</string>
   <string name="password">Пароль</string>

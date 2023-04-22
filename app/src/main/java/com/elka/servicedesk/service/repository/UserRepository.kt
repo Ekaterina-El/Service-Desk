@@ -56,7 +56,8 @@ object UserRepository {
         editor = editor,
         division = division,
         event = event,
-        param = user.fullName)
+        param = user.fullName
+      )
       val logNew = LogsRepository.addLogSync(log)
       onSuccess(logNew)
     } else {
@@ -97,27 +98,6 @@ object UserRepository {
     Errors.network
   } catch (e: java.lang.NullPointerException) {
     Errors.userWasBlocked
-  }
-  catch (e: Exception) {
-    Errors.unknown
-  }
-
-  suspend fun loadAdmins(onSuccess: (List<User>) -> Unit): ErrorApp? = try {
-    val admins = FirebaseService.usersCollection.whereEqualTo(FIELD_ROLE, Role.ADMIN).get().await()
-      .mapNotNull { doc ->
-        return@mapNotNull try {
-          val user = doc.toObject(User::class.java)
-          user.id = doc.id
-          user
-        } catch (e: Exception) {
-          null
-        }
-      }
-
-    onSuccess(admins)
-    null
-  } catch (e: FirebaseNetworkException) {
-    Errors.network
   } catch (e: Exception) {
     Errors.unknown
   }
@@ -139,9 +119,58 @@ object UserRepository {
       editor = deletedBy,
       division = admin.divisionLocal,
       event = Event.BLOCKED_ADMIN,
-      param = admin.fullName)
+      param = admin.fullName
+    )
     LogsRepository.addLogSync(log)
 
+    onSuccess()
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun loadUsers(userRole: Role, onSuccess: (List<User>) -> Unit): ErrorApp? = try {
+    val users = FirebaseService.usersCollection.whereEqualTo(FIELD_ROLE, userRole).get().await()
+      .mapNotNull { doc ->
+        return@mapNotNull try {
+          val user = doc.toObject(User::class.java)
+          user.id = doc.id
+          user
+        } catch (e: Exception) {
+          null
+        }
+      }
+    onSuccess(users)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun blockUser(user: User, deletedBy: User, onSuccess: () -> Unit): ErrorApp? = try {
+    val event = when (user.role) {
+      Role.ADMIN -> Event.BLOCKED_ADMIN
+      Role.ANALYST -> Event.BLOCKED_ANALYST
+      else -> null
+    }
+
+    if (event != null) {
+      // delete user doc
+      FirebaseService.usersCollection.document(user.id).delete().await()
+
+      // add log about deleted
+      val log = Log(
+        date = Constants.getCurrentDate(),
+        editor = deletedBy,
+        division = user.divisionLocal,
+        event = event,
+        param = user.fullName
+      )
+      LogsRepository.addLogSync(log)
+    }
     onSuccess()
     null
   } catch (e: FirebaseNetworkException) {

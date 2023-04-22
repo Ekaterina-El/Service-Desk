@@ -23,7 +23,7 @@ class LogsViewModel(application: Application) : BaseViewModel(application) {
 
     viewModelScope.launch {
       _error.value = LogsRepository.loadAllLogs {
-        _logs.value = it
+        _logs.value = it.sortedByDescending { it.date }
         filterLogs()
       }
       removeWork(work)
