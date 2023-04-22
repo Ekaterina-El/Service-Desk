@@ -1,8 +1,8 @@
 package com.elka.servicedesk.service.repository
 
-import com.elka.servicedesk.other.ErrorApp
-import com.elka.servicedesk.other.Errors
-import com.elka.servicedesk.other.Role
+import com.elka.servicedesk.other.*
+import com.elka.servicedesk.service.model.Division
+import com.elka.servicedesk.service.model.Log
 import com.elka.servicedesk.service.model.User
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -33,10 +33,36 @@ object UserRepository {
     Errors.unknown
   }
 
-  suspend fun addUser(user: User, onSuccess: suspend (() -> Unit) = {}): ErrorApp? = try {
+  suspend fun addUser(
+    user: User,
+    editor: User? = null,
+    division: Division? = null,
+    onSuccess: suspend ((Log?) -> Unit) = {}
+  ): ErrorApp? = try {
     FirebaseService.usersCollection.document(user.id).set(user).await()
     if (user.role == Role.USER) DivisionsRepository.addEmployer(user.divisionId, user.id)
-    onSuccess()
+
+
+    val event = when (user.role) {
+      Role.USER -> Event.REGISTERED_USER
+      Role.ANALYST -> Event.ADDED_ANALYST
+      Role.ADMIN -> Event.ADDED_ADMIN
+      Role.MANAGER -> null
+    }
+
+    if (event != null) {
+      val log = Log(
+        date = Constants.getCurrentDate(),
+        editor = editor,
+        division = division,
+        event = event,
+        param = user.fullName)
+      val logNew = LogsRepository.addLogSync(log)
+      onSuccess(logNew)
+    } else {
+      onSuccess(null)
+    }
+
     null
   } catch (e: FirebaseNetworkException) {
     Errors.network

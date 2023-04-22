@@ -60,7 +60,7 @@ class RegistrationViewModel(application: Application) : BaseViewModelWithFields(
       val user = newUser
       _error.value = UserRepository.registrationUser(user.email, password.value!!) { uid ->
         user.id = uid
-        _error.value = UserRepository.addUser(user) {
+        _error.value = UserRepository.addUser(user, editor = null, division = division.value) {
         }
       }
 

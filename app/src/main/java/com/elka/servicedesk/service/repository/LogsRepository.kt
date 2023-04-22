@@ -6,17 +6,23 @@ import com.elka.servicedesk.service.model.Log
 import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
 
-class LogsRepository {
+object LogsRepository {
 
   suspend fun addLog(log: Log, onSuccess: (Log) -> Unit): ErrorApp? = try {
-    val doc = FirebaseService.logsCollection.add(log).await()
-    log.id = doc.id
-    onSuccess(log)
+    val logNew = addLogSync(log)
+    onSuccess(logNew)
     null
   } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: Exception) {
     Errors.unknown
+  }
+
+  suspend fun addLogSync(log: Log): Log {
+    log.editor?.divisionLocal = null
+    val doc = FirebaseService.logsCollection.add(log).await()
+    log.id = doc.id
+    return log
   }
 
   suspend fun loadAllLogs(onSuccess: (List<Log>) -> Unit): ErrorApp? = try {

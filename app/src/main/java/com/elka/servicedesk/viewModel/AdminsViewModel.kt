@@ -86,7 +86,7 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
   }
 
 
-  fun tryRegistration() {
+  fun tryRegistration(editorProfile: User) {
     if (!checkFields()) return
 
     val work = Work.REGISTRATION_USER
@@ -98,7 +98,7 @@ class AdminsViewModel(application: Application) : BaseViewModelWithFields(applic
 
       _error.value = UserRepository.registrationUser(user.email, password!!) { uid ->
         user.id = uid
-        _error.value = UserRepository.addUser(user) {
+        _error.value = UserRepository.addUser(user, editorProfile) {
           addNewAdmin(user)
           addedAdmin.value = user
         }

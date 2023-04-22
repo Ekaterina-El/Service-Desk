@@ -134,6 +134,6 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
     }
 
     val credentials = getCredentials() ?: return
-    regAdminDialog.open(adminViewModel, credentials.email, credentials.password)
+    regAdminDialog.open(adminViewModel, credentials.email, credentials.password, userViewModel.profile.value!!)
   }
 }

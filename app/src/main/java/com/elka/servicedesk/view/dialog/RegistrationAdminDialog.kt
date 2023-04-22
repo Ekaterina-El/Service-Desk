@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelStoreOwner
 import com.elka.servicedesk.databinding.RegistrationAdminBinding
 import com.elka.servicedesk.other.Field
 import com.elka.servicedesk.other.FieldError
@@ -20,6 +19,7 @@ class RegistrationAdminDialog(
 ) : Dialog(context) {
   private lateinit var binding: RegistrationAdminBinding
   private lateinit var viewModel: AdminsViewModel
+  private lateinit var profile: User
 
   private val fieldErrorsObserver = Observer<List<FieldError>> { fields ->
     binding.layoutEmail.error = ""
@@ -68,8 +68,9 @@ class RegistrationAdminDialog(
   }
 
 
-  fun open(viewModel: AdminsViewModel, currentUserEmail: String, currentUserPassword: String) {
+  fun open(viewModel: AdminsViewModel, currentUserEmail: String, currentUserPassword: String, profile: User) {
     this@RegistrationAdminDialog.viewModel = viewModel
+    this@RegistrationAdminDialog.profile = profile
     binding.viewModel = viewModel
 
     viewModel.setCurrentUserCredentials(currentUserEmail, currentUserPassword)
@@ -86,7 +87,7 @@ class RegistrationAdminDialog(
   }
 
   fun agree() {
-    viewModel.tryRegistration()
+    viewModel.tryRegistration(profile)
   }
 
   companion object {
