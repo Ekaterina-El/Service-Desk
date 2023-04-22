@@ -95,7 +95,10 @@ object UserRepository {
     null
   } catch (e: FirebaseNetworkException) {
     Errors.network
-  } catch (e: Exception) {
+  } catch (e: java.lang.NullPointerException) {
+    Errors.userWasBlocked
+  }
+  catch (e: Exception) {
     Errors.unknown
   }
 

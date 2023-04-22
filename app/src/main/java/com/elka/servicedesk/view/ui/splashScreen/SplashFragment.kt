@@ -12,9 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.SplashFragmentBinding
-import com.elka.servicedesk.other.Action
-import com.elka.servicedesk.other.Constants
-import com.elka.servicedesk.other.Role
+import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.SplashViewModel
@@ -49,6 +47,22 @@ class SplashFragment : UserBaseFragment() {
       Role.MANAGER -> dirs.actionSplashFragmentToManagerFragment()
     }
     navController.navigate(dir)
+  }
+
+  override val errorObserver = Observer<ErrorApp?> {
+    if (it == null) return@Observer
+    if (it == Errors.userWasBlocked) { showDialogAboutBlocked() }
+  }
+
+  private fun showDialogAboutBlocked() {
+    val title = getString(R.string.account_have_been_blocked)
+    val message = getString(R.string.account_have_been_blocked_message_with_exit)
+    activity.informDialog.open(
+      title,
+      message,
+      onButtonListener = { logoutWithoutConfirm() },
+      cancelable = false
+    )
   }
 
   private fun goLogin() {

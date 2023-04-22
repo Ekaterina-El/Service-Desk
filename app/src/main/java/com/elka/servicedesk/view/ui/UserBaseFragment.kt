@@ -37,4 +37,8 @@ abstract class UserBaseFragment: BaseFragment() {
     confirmDialog.open(title, message, exitListener)
   }
 
+  fun logoutWithoutConfirm() {
+    setCredentials(null)
+    userViewModel.logout()
+  }
 }

@@ -45,5 +45,9 @@
 
   <string name="block_admin_title">Блокировка администратора</string>
   <string name="block_admin_message">Вы уверены что хотите заблокировать администратора \"%1$s\"?</string>
+  <string name="user_was_blocked">Пользователь был заблокирован</string>
+  <string name="account_have_been_blocked">Аккаунт заблокирован</string>
+  <string name="account_have_been_blocked_message_with_exit">Ваш аккаунт был заблокирован! Чтобы выйти из аккаунта нажмите на кнопку ниже</string>
+  <string name="account_have_been_blocked_message">Ваш аккаунт был заблокирован!</string>
 
 </resources>
