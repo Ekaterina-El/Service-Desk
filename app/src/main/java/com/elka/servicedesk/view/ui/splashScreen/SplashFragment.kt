@@ -46,7 +46,7 @@ class SplashFragment : UserBaseFragment() {
       Role.USER -> dirs.actionSplashFragmentToUserProfileFragment()
       Role.ANALYST -> dirs.actionSplashFragmentToAnalystProfileFragment()
       Role.ADMIN -> dirs.actionSplashFragmentToAdminProfileFragment()
-      Role.MANAGER -> dirs.actionSplashFragmentToManagerProfileFragment()
+      Role.MANAGER -> dirs.actionSplashFragmentToManagerFragment()
     }
     navController.navigate(dir)
   }

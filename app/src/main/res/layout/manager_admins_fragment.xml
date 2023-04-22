@@ -6,11 +6,11 @@
   <data>
     <variable
         name="master"
-        type="com.elka.servicedesk.view.ui.manager.ManagerProfileFragment" />
+        type="com.elka.servicedesk.view.ui.manager.ManagerAdminsFragment" />
 
     <variable
         name="viewModel"
-        type="com.elka.servicedesk.viewModel.UserViewModel" />
+        type="com.elka.servicedesk.viewModel.AdminsViewModel" />
   </data>
 
   <LinearLayout
@@ -21,25 +21,16 @@
       android:layout_height="match_parent">
 
     <TextView
-        android:onClick="@{() -> master.logout()}"
+        android:onClick="@{() -> master.openRegAdminDialog()}"
         android:clickable="true"
         android:focusable="true"
         android:id="@+id/companyName"
         style="@style/text.h1"
         android:layout_width="wrap_content"
-        android:text="Роль: Менаджер"
+        android:text="@string/admins_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/slogan"
-        style="@style/text.h3"
-        tools:text="Иванов Иван"
-        android:gravity="center"
-        android:text="@{viewModel.profile.fullName}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/companyName" />
   </LinearLayout>
 </layout>

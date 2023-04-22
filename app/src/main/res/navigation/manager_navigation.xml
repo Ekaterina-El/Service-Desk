@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manager_navigations.xml"
+    app:startDestination="@id/managerAdminsFragment">
+
+  <fragment
+      android:id="@+id/managerAdminsFragment"
+      tools:layout="@layout/manager_admins_fragment"
+      android:name="com.elka.servicedesk.view.ui.manager.ManagerAdminsFragment"
+      android:label="ManagerAdminsFragment" />
+  <fragment
+      android:id="@+id/managerLogsFragment"
+      tools:layout="@layout/manager_logs_fragment"
+      android:name="com.elka.servicedesk.view.ui.manager.ManagerLogsFragment"
+      android:label="ManagerLogsFragment" />
+  <fragment
+      android:id="@+id/managerProfileFragment"
+      tools:layout="@layout/manager_profile_fragment"
+      android:name="com.elka.servicedesk.view.ui.manager.ManagerProfileFragment"
+      android:label="ManagerProfileFragment" />
+</navigation>

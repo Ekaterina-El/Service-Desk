@@ -50,7 +50,7 @@ class AuthFragment : UserBaseFragment() {
       Role.USER -> dirs.actionAuthFragmentToUserProfileFragment()
       Role.ANALYST -> dirs.actionAuthFragmentToAnalystProfileFragment()
       Role.ADMIN -> dirs.actionAuthFragmentToAdminProfileFragment()
-      Role.MANAGER -> dirs.actionAuthFragmentToManagerProfileFragment()
+      Role.MANAGER -> dirs.actionAuthFragmentToManagerFragment()
     }
     navController.navigate(dir)
     Toast.makeText(requireContext(), "Logined", Toast.LENGTH_SHORT).show()

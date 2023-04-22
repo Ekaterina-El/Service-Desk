@@ -35,6 +35,9 @@
   <string name="admin_added_hint">Вы больше не сможете увидеть авторизационные данные - сохраните их. Нажмите на них, чтобы скопировать в буфер обмена</string>
   <string name="admin_auth_data">Новый администратор зарегистрирован!\n\nАвторизационные данные:\nПочта: %1$s\nПароль:%2$s</string>
   <string name="admin_added">Администратор зарегистрирован</string>
+  <string name="logs_title">Журнал событий</string>
+  <string name="admins_title">Администрация</string>
+  <string name="profile">Профиль</string>
 
 
 </resources>

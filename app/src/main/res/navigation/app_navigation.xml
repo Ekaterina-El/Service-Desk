@@ -23,10 +23,6 @@
         app:destination="@id/analystProfileFragment"
         app:popUpTo="@id/app_navigation.xml" />
     <action
-        android:id="@+id/action_splashFragment_to_managerProfileFragment"
-        app:destination="@id/managerProfileFragment"
-        app:popUpTo="@id/app_navigation.xml" />
-    <action
         android:id="@+id/action_splashFragment_to_adminProfileFragment"
         app:destination="@id/adminProfileFragment"
         app:popUpTo="@id/app_navigation.xml" />
@@ -34,6 +30,9 @@
         android:id="@+id/action_splashFragment_to_userProfileFragment2"
         app:destination="@id/userProfileFragment"
         app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_splashFragment_to_managerFragment"
+        app:destination="@id/managerFragment" />
   </fragment>
   <fragment
       android:id="@+id/welcomeFragment"
@@ -74,9 +73,8 @@
         app:destination="@id/adminProfileFragment"
         app:popUpTo="@id/app_navigation.xml" />
     <action
-        android:id="@+id/action_authFragment_to_managerProfileFragment"
-        app:destination="@id/managerProfileFragment"
-        app:popUpTo="@id/app_navigation.xml" />
+        android:id="@+id/action_authFragment_to_managerFragment"
+        app:destination="@id/managerFragment" />
   </fragment>
   <fragment
       android:id="@+id/userProfileFragment"
@@ -94,8 +92,7 @@
       android:name="com.elka.servicedesk.view.ui.admin.AdminProfileFragment"
       android:label="AdminProfileFragment" />
   <fragment
-      android:id="@+id/managerProfileFragment"
-      tools:layout="@layout/manager_profile_fragment"
-      android:name="com.elka.servicedesk.view.ui.manager.ManagerProfileFragment"
-      android:label="ManagerProfileFragment" />
+      android:id="@+id/managerFragment"
+      android:name="com.elka.servicedesk.view.ui.manager.ManagerFragment"
+      android:label="ManagerFragment" />
 </navigation>
