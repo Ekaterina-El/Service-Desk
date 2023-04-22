@@ -11,7 +11,7 @@ import com.elka.servicedesk.databinding.UserProfileFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.view.ui.UserBaseFragment
 
-class AdminProfileFragment : UserBaseFragment() {
+class AdminProfileFragment : AdminBaseFragment() {
   private lateinit var binding: AdminProfileFragmentBinding
 
   override val externalActionObserver = Observer<Action?> {

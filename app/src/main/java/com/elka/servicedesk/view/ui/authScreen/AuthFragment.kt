@@ -70,7 +70,7 @@ class AuthFragment : UserBaseFragment() {
     val dir = when (user.role) {
       Role.USER -> dirs.actionAuthFragmentToUserProfileFragment()
       Role.ANALYST -> dirs.actionAuthFragmentToAnalystProfileFragment()
-      Role.ADMIN -> dirs.actionAuthFragmentToAdminProfileFragment()
+      Role.ADMIN -> dirs.actionAuthFragmentToAdminFragment()
       Role.MANAGER -> dirs.actionAuthFragmentToManagerFragment()
     }
     navController.navigate(dir)

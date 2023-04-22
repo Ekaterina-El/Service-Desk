@@ -43,7 +43,7 @@ class SplashFragment : UserBaseFragment() {
     val dir = when(user.role) {
       Role.USER -> dirs.actionSplashFragmentToUserProfileFragment()
       Role.ANALYST -> dirs.actionSplashFragmentToAnalystProfileFragment()
-      Role.ADMIN -> dirs.actionSplashFragmentToAdminProfileFragment()
+      Role.ADMIN -> dirs.actionSplashFragmentToAdminFragment()
       Role.MANAGER -> dirs.actionSplashFragmentToManagerFragment()
     }
     navController.navigate(dir)

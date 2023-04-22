@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.elka.servicedesk.databinding.LogsItemBinding
 import com.elka.servicedesk.service.model.Log
-import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.list.BaseAdapter
-import com.elka.servicedesk.view.list.admins.AdminsViewHolder
 
 class LogsAdapter() : BaseAdapter<Log>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

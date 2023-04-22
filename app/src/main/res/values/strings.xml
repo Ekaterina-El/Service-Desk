@@ -49,5 +49,6 @@
   <string name="account_have_been_blocked">Аккаунт заблокирован</string>
   <string name="account_have_been_blocked_message_with_exit">Ваш аккаунт был заблокирован! Чтобы выйти из аккаунта нажмите на кнопку ниже</string>
   <string name="account_have_been_blocked_message">Ваш аккаунт был заблокирован!</string>
+  <string name="analytics_title">Аналитики</string>
 
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_navigation.xml"
+    app:startDestination="@id/adminAnalystsFragment">
+  <fragment
+      android:id="@+id/adminAnalystsFragment"
+      tools:layout="@layout/admin_analysts_fragment"
+      android:name="com.elka.servicedesk.view.ui.admin.AdminAnalystsFragment"
+      android:label="AdminAnalystsFragment" />
+  <fragment
+      android:id="@+id/adminLogsFragment"
+      tools:layout="@layout/logs_fragment"
+      android:name="com.elka.servicedesk.view.ui.admin.AdminLogsFragment"
+      android:label="AdminLogsFragment" />
+  <fragment
+      android:id="@+id/adminProfileFragment"
+      tools:layout="@layout/admin_profile_fragment"
+      android:name="com.elka.servicedesk.view.ui.admin.AdminProfileFragment"
+      android:label="AdminProfileFragment" />
+</navigation>

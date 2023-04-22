@@ -1,4 +1,4 @@
-package com.elka.servicedesk.view.ui.manager
+package com.elka.servicedesk.view.ui.admin
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.elka.servicedesk.service.model.Log
 import com.elka.servicedesk.view.list.logs.LogsAdapter
 import com.elka.servicedesk.viewModel.LogsViewModel
 
-class ManagerLogsFragment : ManagerBaseFragment() {
+class AdminLogsFragment : AdminBaseFragment() {
   private val logsViewModel by activityViewModels<LogsViewModel>()
   private lateinit var binding: LogsFragmentBinding
 
@@ -25,16 +25,8 @@ class ManagerLogsFragment : ManagerBaseFragment() {
   }
 
   override val workObserver = Observer<List<Work>> {
-    val w1 = userViewModel.work.value!!.toMutableList()
-    val w2 = logsViewModel.work.value!!
-    w1.addAll(w2)
-
-    binding.swiper.isRefreshing = getHasLoads(w1, works)
+    binding.swiper.isRefreshing = hasLoads
   }
-
-  override val works = listOf(
-    Work.LOAD_LOGS, Work.LOAD_PROFILE
-  )
 
 
   override fun onCreateView(
@@ -43,8 +35,8 @@ class ManagerLogsFragment : ManagerBaseFragment() {
     binding = LogsFragmentBinding.inflate(layoutInflater, container, false)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
-      viewModel = this@ManagerLogsFragment.logsViewModel
-      logsAdapter = this@ManagerLogsFragment.logsAdapter
+      viewModel = this@AdminLogsFragment.logsViewModel
+      logsAdapter = this@AdminLogsFragment.logsAdapter
     }
 
     return binding.root

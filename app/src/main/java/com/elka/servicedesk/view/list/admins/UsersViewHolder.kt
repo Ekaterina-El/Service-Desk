@@ -7,7 +7,7 @@ import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AdminItemBinding
 import com.elka.servicedesk.service.model.User
 
-class AdminsViewHolder(
+class UsersViewHolder(
   val context: Context,
   val binding: AdminItemBinding,
   val listener: Listener

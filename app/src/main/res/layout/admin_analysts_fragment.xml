@@ -7,21 +7,21 @@
     <import type="android.view.View" />
 
     <variable
-        name="logsAdapter"
-        type="com.elka.servicedesk.view.list.logs.LogsAdapter" />
+        name="usersAdapter"
+        type="com.elka.servicedesk.view.list.admins.UsersAdapter" />
 
     <variable
         name="master"
-        type="com.elka.servicedesk.view.ui.manager.ManagerLogsFragment" />
+        type="com.elka.servicedesk.view.ui.admin.AdminAnalystsFragment" />
 
     <variable
         name="viewModel"
-        type="com.elka.servicedesk.viewModel.LogsViewModel" />
+        type="com.elka.servicedesk.viewModel.BaseUserViewModel" />
   </data>
 
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-      android:id="@+id/swiper"
+      android:id="@+id/swiper1"
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
@@ -52,7 +52,7 @@
               android:layout_width="0dp"
               android:layout_height="match_parent"
               android:layout_weight="1"
-              android:afterTextChanged="@{() -> viewModel.filterLogs()}"
+              android:afterTextChanged="@{() -> viewModel.filterUsers()}"
               android:background="@null"
               android:ellipsize="end"
               android:hint="@string/search"
@@ -69,21 +69,47 @@
 
           <ImageView
               style="@style/icon"
-              android:onClick="@{() -> viewModel.clearFilterLogs()}"
+              android:onClick="@{() -> viewModel.clearFilterUsers()}"
               android:src="@drawable/ic_close"
               android:visibility="@{viewModel.filter.isEmpty() ? View.GONE : View.VISIBLE }" />
         </LinearLayout>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.openRegAdminDialog()}"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp">
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:padding="10dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_add"
+                app:tint="@color/accent" />
+
+          </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
       </LinearLayout>
 
       <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/logsList"
+          android:id="@+id/adminsList"
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:layout_marginTop="20dp"
           android:layout_weight="1"
-          android:visibility="@{viewModel.filteredLogs.size() == 0 ? View.GONE : View.VISIBLE}"
-          android:adapter="@{logsAdapter}"
+          android:visibility="@{viewModel.filteredUsers.size() == 0 ? View.GONE : View.VISIBLE}"
+          android:adapter="@{usersAdapter}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:ignore="NestedWeights"
           tools:listitem="@layout/admin_item"
@@ -94,7 +120,7 @@
           android:layout_marginTop="20dp"
           android:layout_width="match_parent"
           android:gravity="center"
-          android:visibility="@{viewModel.filteredLogs.size() == 0 ? View.VISIBLE : View.GONE}"
+          android:visibility="@{viewModel.filteredUsers.size() == 0 ? View.VISIBLE : View.GONE}"
           android:layout_height="wrap_content">
 
         <include

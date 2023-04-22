@@ -107,7 +107,7 @@ object UserRepository {
     val user = doc.toObject(User::class.java)
     user!!.id = doc.id
 
-    user.divisionLocal = DivisionsRepository.getDivisionById(user.divisionId)
+    if (user.divisionId != "") user.divisionLocal = DivisionsRepository.getDivisionById(user.divisionId)
     return user
   }
 

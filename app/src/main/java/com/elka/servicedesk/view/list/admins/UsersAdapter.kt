@@ -7,14 +7,14 @@ import com.elka.servicedesk.databinding.AdminItemBinding
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.list.BaseAdapter
 
-class AdminsAdapter(val listener: AdminsViewHolder.Companion.Listener) : BaseAdapter<User>() {
+class UsersAdapter(val listener: UsersViewHolder.Companion.Listener) : BaseAdapter<User>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val binding = AdminItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    return AdminsViewHolder(parent.context, binding, listener)
+    return UsersViewHolder(parent.context, binding, listener)
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = items[position]
-    (holder as AdminsViewHolder).bind(item)
+    (holder as UsersViewHolder).bind(item)
   }
 }
