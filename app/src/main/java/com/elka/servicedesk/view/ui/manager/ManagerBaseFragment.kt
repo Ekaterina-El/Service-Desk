@@ -9,7 +9,7 @@ abstract class ManagerBaseFragment: UserBaseFragment() {
   protected val adminViewModel by activityViewModels<AdminsViewModel>()
 
   protected open val works = listOf(
-    Work.LOAD_ADMINS, Work.LOAD_PROFILE
+    Work.LOAD_USERS, Work.LOAD_PROFILE
   )
 
   protected open val hasLoads: Boolean

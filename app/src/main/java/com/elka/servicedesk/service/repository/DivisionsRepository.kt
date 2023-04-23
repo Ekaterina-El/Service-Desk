@@ -22,8 +22,8 @@ object DivisionsRepository {
 
   suspend fun getDivisionById(divisionId: String): Division? {
     val doc = FirebaseService.divisionsCollection.document(divisionId).get().await()
-    val division = doc.toObject(Division::class.java)!!
-    division.id = doc.id
+    val division = doc.toObject(Division::class.java)
+    division?.id = doc.id
 
     return division
   }
@@ -63,6 +63,21 @@ object DivisionsRepository {
 
   suspend fun removeEmployer(divisionId: String, userId: String) {
     changeList(FIELD_EMPLOYERS, divisionId, userId, Action.REMOVE)
+  }
+
+  suspend fun loadDivisions(userId: String, divisionsId: List<String>): List<Division> {
+    val divisions = divisionsId.mapNotNull {  id ->
+      try {
+        val doc = FirebaseService.divisionsCollection.document(id).get().await()
+        val division = doc.toObject(Division::class.java)!!
+        division.id = doc.id
+        return@mapNotNull division
+      } catch (e: java.lang.NullPointerException) {
+        UserRepository.deleteDivisionId(userId, id)
+        return@mapNotNull null
+      }
+    }
+    return divisions
   }
 
   private const val FIELD_EMPLOYERS = "employers"
