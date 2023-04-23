@@ -1,17 +1,27 @@
 package com.elka.servicedesk.service.repository
 
-import com.elka.servicedesk.other.Action
-import com.elka.servicedesk.other.ErrorApp
-import com.elka.servicedesk.other.Errors
+import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.Division
+import com.elka.servicedesk.service.model.Log
+import com.elka.servicedesk.service.model.User
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
 
 object DivisionsRepository {
-  suspend fun addDivision(division: Division, onSuccess: (Division) -> Unit): ErrorApp? = try {
+  suspend fun addDivision(division: Division,  editor: User, onSuccess: (Division) -> Unit): ErrorApp? = try {
     val doc = FirebaseService.divisionsCollection.add(division).await()
     division.id = doc.id
+
+    val log = Log(
+      date = Constants.getCurrentDate(),
+      editor = editor,
+      division = division,
+      event = Event.ADDED_DIVISION,
+      param = division.name
+    )
+    LogsRepository.addLogSync(log)
+
     onSuccess(division)
     null
   } catch (e: FirebaseNetworkException) {
@@ -19,6 +29,27 @@ object DivisionsRepository {
   } catch (e: java.lang.Exception) {
     Errors.unknown
   }
+
+  suspend fun removeDivision(division: Division, editor: User, onSuccess: () -> Unit): ErrorApp?  = try {
+    FirebaseService.divisionsCollection.document(division.id).delete().await()
+
+    val log = Log(
+      date = Constants.getCurrentDate(),
+      editor = editor,
+      division = division,
+      event = Event.REMOVED_DIVISION,
+      param = division.name
+    )
+    LogsRepository.addLogSync(log)
+
+    onSuccess()
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: java.lang.Exception) {
+    Errors.unknown
+  }
+
 
   suspend fun getDivisionById(divisionId: String): Division? {
     val doc = FirebaseService.divisionsCollection.document(divisionId).get().await()

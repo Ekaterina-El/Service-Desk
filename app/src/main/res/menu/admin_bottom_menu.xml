@@ -4,6 +4,10 @@
       android:icon="@drawable/ic_analyst"
       android:title="@string/analytics_title" />
 
+  <item android:id="@id/adminDivisionsFragment"
+      android:icon="@drawable/ic_divisions"
+      android:title="@string/divisions_title" />
+
   <item android:id="@id/adminLogsFragment"
       android:icon="@drawable/ic_logs"
       android:title="@string/logs_title" />

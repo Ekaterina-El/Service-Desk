@@ -13,4 +13,7 @@ enum class Event(val text: String) {
   UPDATE_ANALYST("Отредактированы данные аналитика"),
   UPDATE_ADMIN("Отредактированы данные админа"),
   UPDATE_MANAGER("Отредактированы данные менаджера"),
+
+  ADDED_DIVISION("Добавлено подразделение"),
+  REMOVED_DIVISION("Удалено подразделение"),
 }

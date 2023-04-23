@@ -32,6 +32,10 @@
   <string name="cancel">Отменить</string>
   <string name="registation_admin">Регистрация администратора</string>
   <string name="registration_editor_description">Для регистрации администратора заполните форму</string>
+
+  <string name="add_division">Добавление подразделения</string>
+  <string name="add_division_description">Для добавления подразделения заполните форму</string>
+
   <string name="registation_analyst">Регистрация аналитика</string>
   <string name="registration_analyst_description">Для регистрации аналитика заполните форму</string>
   <string name="user_added_hint">Вы больше не сможете увидеть авторизационные данные - сохраните их. Нажмите на них, чтобы скопировать в буфер обмена</string>
@@ -54,6 +58,7 @@
 
   <string name="block_analyst_title">Блокировка аналитика</string>
   <string name="block_analyst_message">Вы уверены что хотите заблокировать аналитика \"%1$s\"?</string>
+  <string name="delete_division_message">Вы уверены что хотите удалить подразделение \"%1$s\"?</string>
   <string name="user_was_blocked">Пользователь был заблокирован</string>
   <string name="account_have_been_blocked">Аккаунт заблокирован</string>
   <string name="account_have_been_blocked_message_with_exit">Ваш аккаунт был заблокирован! Чтобы выйти из аккаунта нажмите на кнопку ниже</string>
@@ -62,5 +67,10 @@
   <string name="add_analyst_division_error">Добавьте перечень подразделений за которые аналитик будет нести ответственность</string>
   <string name="change_divisions">Редактировать перечень подразделений</string>
   <string name="edit_divisions_analyst">Редактирование перечня подразделений аналитика</string>
+  <string name="delete_division_title">Удаление подразделения</string>
+  <string name="no_uniq_division">Подразделение с таким именем уже существует</string>
+  <string name="name">Название</string>
+  <string name="divisions_title">Подразделения</string>
+  <string name="delete">Удалить</string>
 
 </resources>

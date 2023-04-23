@@ -4,8 +4,7 @@ import java.util.*
 
 
 object Constants {
-  private val calendar: Calendar = Calendar.getInstance()
-  fun getCurrentDate(): Date = calendar.time
+  fun getCurrentDate(): Date = Calendar.getInstance().time
 
   const val SP_NAME = "the_office_club"
   const val SEPARATOR = ":"

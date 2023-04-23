@@ -9,6 +9,13 @@
       tools:layout="@layout/admin_analysts_fragment"
       android:name="com.elka.servicedesk.view.ui.admin.AdminAnalystsFragment"
       android:label="AdminAnalystsFragment" />
+
+  <fragment
+      android:id="@+id/adminDivisionsFragment"
+      tools:layout="@layout/admin_divisions_fragment"
+      android:name="com.elka.servicedesk.view.ui.admin.AdminDivisionsFragment"
+      android:label="AdminDivisionsFragment" />
+
   <fragment
       android:id="@+id/adminLogsFragment"
       tools:layout="@layout/logs_fragment"
@@ -19,4 +26,5 @@
       tools:layout="@layout/admin_profile_fragment"
       android:name="com.elka.servicedesk.view.ui.admin.AdminProfileFragment"
       android:label="AdminProfileFragment" />
+
 </navigation>

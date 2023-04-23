@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+        name="divisionsAdapter"
+        type="com.elka.servicedesk.view.list.divisions.DivisionsAdapter2" />
+
+    <variable
+        name="master"
+        type="com.elka.servicedesk.view.ui.admin.AdminDivisionsFragment" />
+
+    <variable
+        name="viewModel"
+        type="com.elka.servicedesk.viewModel.DivisionsViewModel" />
+  </data>
+
+
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swiper1"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/app_padding"
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="@drawable/field_wrapper"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+          <EditText
+              style="@style/text.h3"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:afterTextChanged="@{() -> viewModel.filterDivisions()}"
+              android:background="@null"
+              android:ellipsize="end"
+              android:hint="@string/search"
+              android:maxLines="1"
+              android:paddingStart="0dp"
+              android:paddingEnd="10dp"
+              android:text="@={viewModel.filter}"
+              tools:ignore="NestedWeights" />
+
+          <ImageView
+              style="@style/icon"
+              android:src="@drawable/ic_search"
+              android:visibility="@{viewModel.filter.isEmpty() ? View.VISIBLE : View.GONE }" />
+
+          <ImageView
+              style="@style/icon"
+              android:onClick="@{() -> viewModel.clearFilterDivisions()}"
+              android:src="@drawable/ic_close"
+              android:visibility="@{viewModel.filter.isEmpty() ? View.GONE : View.VISIBLE }" />
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.openAddDivisionDialog()}"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp">
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:padding="10dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_add"
+                app:tint="@color/accent" />
+
+          </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+      </LinearLayout>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/divisionsList"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_marginTop="20dp"
+          android:layout_weight="1"
+          android:adapter="@{divisionsAdapter}"
+          android:visibility="@{viewModel.filteredDivisions.size() == 0 ? View.GONE : View.VISIBLE}"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:ignore="NestedWeights"
+          tools:listitem="@layout/division_item_2"
+          tools:visibility="visible" />
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:gravity="center"
+          android:visibility="@{viewModel.filteredDivisions.size() == 0 ? View.VISIBLE : View.GONE}">
+
+        <include
+            android:id="@+id/layoutNoFound"
+            layout="@layout/no_found" />
+
+      </RelativeLayout>
+    </LinearLayout>
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>
