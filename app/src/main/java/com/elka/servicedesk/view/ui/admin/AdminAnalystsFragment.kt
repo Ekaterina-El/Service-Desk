@@ -12,6 +12,7 @@ import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AdminAnalystsFragmentBinding
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.view.dialog.ConfirmDialog
 import com.elka.servicedesk.view.dialog.InformDialog
 import com.elka.servicedesk.view.dialog.RegistrationAnalystDialog
 import com.elka.servicedesk.view.list.users.UsersAdapter
@@ -134,7 +135,22 @@ class AdminAnalystsFragment : AdminBaseFragment() {
   }
 
 
-  private fun openConfirmDeleteDialog(admin: User) {}
+  private fun openConfirmDeleteDialog(user: User) {
+    val title = getString(R.string.block_analyst_title)
+    val message = getString(R.string.block_analyst_message, user.fullName)
+    val listener = object : ConfirmDialog.Companion.Listener {
+      override fun agree() {
+        analystsViewModel.blockUser(user, userViewModel.profile.value!!)
+        confirmDialog.close()
+      }
+
+      override fun disagree() {
+        confirmDialog.close()
+      }
+    }
+
+    confirmDialog.open(title, message, listener)
+  }
   fun openRegAnalystDialog() {
     if (hasLoads) {
       showLoadingErrorMessage()
@@ -148,22 +164,4 @@ class AdminAnalystsFragment : AdminBaseFragment() {
       divisionsViewModel.divisions.value!!,
     )
   }
-/*
-
-  private fun openConfirmDeleteDialog(admin: User) {
-    val title = getString(R.string.block_admin_title)
-    val message = getString(R.string.block_admin_message, admin.fullName)
-    val listener = object : ConfirmDialog.Companion.Listener {
-      override fun agree() {
-        adminViewModel.blockUser(admin, userViewModel.profile.value!!)
-        confirmDialog.close()
-      }
-
-      override fun disagree() {
-        confirmDialog.close()
-      }
-    }
-
-    confirmDialog.open(title, message, listener)
-  }*/
 }
