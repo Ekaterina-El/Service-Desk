@@ -14,8 +14,8 @@ import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.dialog.InformDialog
 import com.elka.servicedesk.view.dialog.RegistrationAnalystDialog
-import com.elka.servicedesk.view.list.admins.UsersAdapter
-import com.elka.servicedesk.view.list.admins.UsersViewHolder
+import com.elka.servicedesk.view.list.users.UsersAdapter
+import com.elka.servicedesk.view.list.users.UsersViewHolder
 import com.elka.servicedesk.viewModel.DivisionsViewModel
 
 class AdminAnalystsFragment : AdminBaseFragment() {
