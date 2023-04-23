@@ -22,11 +22,13 @@ class ManagerAdminsFragment : ManagerBaseFragment() {
 
   private val adminsAdapter by lazy {
     UsersAdapter(object : UsersViewHolder.Companion.Listener {
-      override fun onSelect(admin: User) {}
+      override fun onSelect(user: User) {}
 
-      override fun onBlock(admin: User) {
-        openConfirmDeleteDialog(admin)
+      override fun onBlock(user: User) {
+        openConfirmDeleteDialog(user)
       }
+
+      override fun onChangeDivisions(user: User) {}
     })
   }
 

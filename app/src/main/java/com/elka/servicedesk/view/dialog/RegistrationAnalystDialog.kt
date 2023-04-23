@@ -102,7 +102,6 @@ class RegistrationAnalystDialog(
     val spinnerAdapter = DivisionsAdapter(context, divisions)
     binding.divisionSpinner.adapter = spinnerAdapter
 
-    binding.divisionSpinner.onItemSelectedListener = divisionSpinnerListener
     show()
   }
 
@@ -110,7 +109,6 @@ class RegistrationAnalystDialog(
     viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
     viewModel.addedUser.removeObserver(addedUserObserver)
 
-    binding.divisionSpinner.onItemSelectedListener = null
     divisionsAdapter.clear()
 
     viewModel.clearDialog()
@@ -120,16 +118,15 @@ class RegistrationAnalystDialog(
   fun agree() {
     val divisions = viewModel.divisions.value!!
     if (divisions.isEmpty()) return
-
     viewModel.tryRegistration(profile, divisions)
   }
 
-  private val divisionSpinnerListener by lazy {
-    Selector {
-      if (viewModel.divisions.value!!.contains(it)) return@Selector
-      viewModel.addDivision(it as Division)
-      divisionsAdapter.addItem(it)
-    }
+
+  fun addDivision() {
+    val division = binding.divisionSpinner.selectedItem as Division
+    if (divisionsAdapter.getAllItems().contains(division)) return
+    divisionsAdapter.addItem(division)
+    viewModel.addDivision(division)
   }
 
   companion object {

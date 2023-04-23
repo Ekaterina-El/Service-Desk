@@ -11,7 +11,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AdminAnalystsFragmentBinding
 import com.elka.servicedesk.other.Work
+import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.view.dialog.ChangeAnalystDivisionsDialog
 import com.elka.servicedesk.view.dialog.ConfirmDialog
 import com.elka.servicedesk.view.dialog.InformDialog
 import com.elka.servicedesk.view.dialog.RegistrationAnalystDialog
@@ -30,6 +32,10 @@ class AdminAnalystsFragment : AdminBaseFragment() {
       override fun onBlock(admin: User) {
         openConfirmDeleteDialog(admin)
       }
+
+      override fun onChangeDivisions(user: User) {
+        openChangeDivisionsDialog(user)
+      }
     })
   }
 
@@ -37,7 +43,7 @@ class AdminAnalystsFragment : AdminBaseFragment() {
     usersAdapter.setItems(it)
   }
 
-   override val workObserver = Observer<List<Work>> {
+  override val workObserver = Observer<List<Work>> {
     binding.swiper1.isRefreshing = hasLoads
   }
 
@@ -96,10 +102,7 @@ class AdminAnalystsFragment : AdminBaseFragment() {
 
   private val regAnalystDialog: RegistrationAnalystDialog by lazy {
     RegistrationAnalystDialog(
-      requireContext(),
-      viewLifecycleOwner,
-      analystsViewModel,
-      regAnalystDialogListener
+      requireContext(), viewLifecycleOwner, analystsViewModel, regAnalystDialogListener
     )
   }
 
@@ -118,11 +121,7 @@ class AdminAnalystsFragment : AdminBaseFragment() {
     val hint = getString(R.string.user_added_hint)
 
     activity.informDialog.open(
-      title,
-      message,
-      hint,
-      analystCredentialsDialogListener,
-      "${user.email} | $password"
+      title, message, hint, analystCredentialsDialogListener, "${user.email} | $password"
     )
   }
 
@@ -151,6 +150,7 @@ class AdminAnalystsFragment : AdminBaseFragment() {
 
     confirmDialog.open(title, message, listener)
   }
+
   fun openRegAnalystDialog() {
     if (hasLoads) {
       showLoadingErrorMessage()
@@ -163,5 +163,28 @@ class AdminAnalystsFragment : AdminBaseFragment() {
       userViewModel.profile.value!!,
       divisionsViewModel.divisions.value!!,
     )
+  }
+
+  private val changeAnalystDivisionsDialog: ChangeAnalystDivisionsDialog by lazy {
+    ChangeAnalystDivisionsDialog(requireContext(), changeAnalystDivisionsDialogListener)
+  }
+
+  private val changeAnalystDivisionsDialogListener by lazy {
+    object : ChangeAnalystDivisionsDialog.Companion.Listener {
+      override fun onSave(user: User) {
+        analystsViewModel.updateUser(user, userViewModel.profile.value!!)
+        changeAnalystDivisionsDialog.disagree()
+      }
+    }
+  }
+
+  private fun openChangeDivisionsDialog(user: User) {
+    if (hasLoads) {
+      showLoadingErrorMessage()
+      return
+    }
+
+    val allDivisions = divisionsViewModel.divisions.value!!
+    changeAnalystDivisionsDialog.open(user, allDivisions)
   }
 }

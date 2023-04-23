@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.ChipItemBinding
 import com.elka.servicedesk.databinding.UserItemBinding
+import com.elka.servicedesk.other.Role
 import com.elka.servicedesk.service.model.User
 import com.google.android.material.chip.Chip
 
@@ -17,10 +18,12 @@ class UsersViewHolder(
 
   private val menu by lazy {
     val popupMenu = PopupMenu(context, binding.wrapper)
+    if (user?.role == Role.ANALYST) popupMenu.menu.add(0, CHANGE_DIVISIONS, 0, R.string.change_divisions)
     popupMenu.menu.add(0, BLOCK, 0, R.string.block)
 
     popupMenu.setOnMenuItemClickListener {
       when (it.itemId) {
+        CHANGE_DIVISIONS -> listener.onChangeDivisions(user!!)
         BLOCK -> listener.onBlock(user!!)
         else -> Unit
       }
@@ -68,10 +71,12 @@ class UsersViewHolder(
 
   companion object {
     const val BLOCK = 1
+    const val CHANGE_DIVISIONS = 2
 
     interface Listener {
-      fun onSelect(admin: User)
-      fun onBlock(admin: User)
+      fun onSelect(user: User)
+      fun onBlock(user: User)
+      fun onChangeDivisions(user: User)
     }
   }
 }

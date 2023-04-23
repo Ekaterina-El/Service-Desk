@@ -4,11 +4,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
   protected open val items = mutableListOf<T>()
+  fun getAllItems() = items
 
   override fun getItemCount() = items.size
 
   open fun setItems(newItems: List<T>) {
-    if (items == newItems) return
     clear()
     newItems.forEach { setItem(it) }
   }

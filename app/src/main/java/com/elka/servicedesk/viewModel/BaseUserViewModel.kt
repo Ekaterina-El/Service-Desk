@@ -48,6 +48,21 @@ abstract class BaseUserViewModel(application: Application) : BaseViewModelWithFi
     filterUsers()
   }
 
+  fun updateUser(user: User, editorProfile: User) {
+    val work = Work.UPDATE_USER
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = UserRepository.updateUser(user, editorProfile) {
+        _users.value = _users.value!!.map {
+          if (it.id == user.id) user else it
+        }
+        filterUsers()
+      }
+      removeWork(work)
+    }
+  }
+
   fun filterUsers() {
     val items = _users.value!!
     val filter = filter.value!!

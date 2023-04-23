@@ -60,5 +60,7 @@
   <string name="account_have_been_blocked_message">Ваш аккаунт был заблокирован!</string>
   <string name="analytics_title">Аналитики</string>
   <string name="add_analyst_division_error">Добавьте перечень подразделений за которые аналитик будет нести ответственность</string>
+  <string name="change_divisions">Редактировать перечень подразделений</string>
+  <string name="edit_divisions_analyst">Редактирование перечня подразделений аналитика</string>
 
 </resources>

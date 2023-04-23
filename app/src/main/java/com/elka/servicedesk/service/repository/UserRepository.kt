@@ -179,5 +179,33 @@ object UserRepository {
     Errors.unknown
   }
 
+  suspend fun updateUser(user: User, editedBy: User, onSuccess: () -> Unit): ErrorApp? = try {
+    val divisions = user.divisionsLocal
+    FirebaseService.usersCollection.document(user.id).set(user).await()
+
+    val event = when(user.role) {
+      Role.USER -> Event.UPDATE_USER
+      Role.ANALYST -> Event.UPDATE_ANALYST
+      Role.ADMIN -> Event.UPDATE_ADMIN
+      Role.MANAGER -> Event.UPDATE_MANAGER
+    }
+
+    val log = Log(
+      date = Constants.getCurrentDate(),
+      editor = editedBy,
+       division = user.divisionLocal,
+      event = event,
+      param = user.fullName
+    )
+    LogsRepository.addLogSync(log)
+
+    onSuccess()
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
   const val FIELD_ROLE = "role"
 }
