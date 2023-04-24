@@ -127,6 +127,8 @@ abstract class BaseUserViewModel(application: Application) : BaseViewModelWithFi
       _error.value = UserRepository.registrationUser(user.email, password!!) { uid ->
         user.id = uid
         _error.value = UserRepository.addUser(user, editorProfile) {
+          user.divisionsLocal = divisions
+          user.divisionsId = divisions.map { it.id }
           addNewUser(user)
           addedUser.value = user
         }
