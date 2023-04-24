@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.elka.servicedesk.databinding.AnalystProfileFragmentBinding
-import com.elka.servicedesk.databinding.UserProfileFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.view.ui.UserBaseFragment
 

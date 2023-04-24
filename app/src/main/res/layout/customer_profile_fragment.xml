@@ -6,7 +6,7 @@
   <data>
     <variable
         name="master"
-        type="com.elka.servicedesk.view.ui.user.profile.UserProfileFragment" />
+        type="com.elka.servicedesk.view.ui.user.CustomerProfileFragment" />
 
     <variable
         name="viewModel"

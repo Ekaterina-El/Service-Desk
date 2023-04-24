@@ -1,16 +1,15 @@
-package com.elka.servicedesk.view.ui.user.profile
+package com.elka.servicedesk.view.ui.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.elka.servicedesk.databinding.UserProfileFragmentBinding
+import com.elka.servicedesk.databinding.CustomerProfileFragmentBinding
 import com.elka.servicedesk.other.Action
-import com.elka.servicedesk.view.ui.UserBaseFragment
 
-class UserProfileFragment : UserBaseFragment() {
-  private lateinit var binding: UserProfileFragmentBinding
+class CustomerProfileFragment : CustomerBaseFragment() {
+  private lateinit var binding: CustomerProfileFragmentBinding
 
   override val externalActionObserver = Observer<Action?> {
     if (it == null) return@Observer
@@ -20,11 +19,11 @@ class UserProfileFragment : UserBaseFragment() {
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View {
-    binding = UserProfileFragmentBinding.inflate(layoutInflater, container, false)
+    binding = CustomerProfileFragmentBinding.inflate(layoutInflater, container, false)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
-      master = this@UserProfileFragment
-      viewModel = this@UserProfileFragment.userViewModel
+      master = this@CustomerProfileFragment
+      viewModel = this@CustomerProfileFragment.userViewModel
     }
 
     return binding.root
