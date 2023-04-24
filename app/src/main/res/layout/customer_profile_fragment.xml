@@ -14,51 +14,57 @@
         type="com.elka.servicedesk.viewModel.UserViewModel" />
   </data>
 
-  <LinearLayout
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swiper"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:gravity="center"
-      android:orientation="vertical"
-      android:paddingHorizontal="@dimen/app_padding">
+      android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/companyName"
-        style="@style/text.h1"
-        android:layout_width="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="@{() -> master.logout()}"
-        android:text="Роль: Пользователь"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/slogan"
-        style="@style/text.h3"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@{viewModel.profile.fullName}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/companyName"
-        tools:text="Иванов Иван" />
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/app_padding">
 
-    <com.google.android.material.chip.ChipGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-      <com.google.android.material.chip.Chip
-          style="@style/Widget.MaterialComponents.Chip.Action"
+      <TextView
+          android:id="@+id/companyName"
+          style="@style/text.h1"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:backgroundTint="@color/accent"
-          android:fontFamily="@font/montserrat_regular"
-          android:onClick="@{() -> master.changeDivision()}"
-          android:text="@{viewModel.profile.divisionLocal == null ? @string/no_division : viewModel.profile.divisionLocal.name}"
-          android:textColor="@color/white"
-          android:textSize="12sp"
-          tools:text="Division 10" />
+          android:clickable="true"
+          android:focusable="true"
+          android:onClick="@{() -> master.logout()}"
+          android:text="Роль: Пользователь"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent" />
 
-    </com.google.android.material.chip.ChipGroup>
-  </LinearLayout>
+      <TextView
+          android:id="@+id/slogan"
+          style="@style/text.h3"
+          android:gravity="center"
+          android:text="@{viewModel.profile.fullName}"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/companyName"
+          tools:text="Иванов Иван" />
+
+      <com.google.android.material.chip.ChipGroup
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent"
+            android:fontFamily="@font/montserrat_regular"
+            android:onClick="@{() -> master.changeDivision()}"
+            android:text="@{viewModel.profile.divisionLocal == null ? @string/no_division : viewModel.profile.divisionLocal.name}"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="Division 10" />
+
+      </com.google.android.material.chip.ChipGroup>
+    </LinearLayout>
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

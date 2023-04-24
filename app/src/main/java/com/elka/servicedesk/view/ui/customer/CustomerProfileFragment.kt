@@ -7,15 +7,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.CustomerProfileFragmentBinding
 import com.elka.servicedesk.other.Action
+import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.view.dialog.ChangeUserDivisionDialog
 import com.elka.servicedesk.viewModel.DivisionsViewModel
 
 class CustomerProfileFragment : CustomerBaseFragment() {
-  private val divisionsViewModel by activityViewModels<DivisionsViewModel>()
   private lateinit var binding: CustomerProfileFragmentBinding
+
+  override val workObserver = Observer<List<Work>> {
+    binding.swiper.isRefreshing = hasLoads
+  }
 
   override val externalActionObserver = Observer<Action?> {
     if (it == null) return@Observer
@@ -35,11 +41,23 @@ class CustomerProfileFragment : CustomerBaseFragment() {
     return binding.root
   }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    val refresherColor = requireContext().getColor(R.color.accent)
+    val swipeRefreshListener =
+      SwipeRefreshLayout.OnRefreshListener { userViewModel.loadCurrentUserProfile() }
+
+    binding.swiper.setColorSchemeColors(refresherColor)
+    binding.swiper.setOnRefreshListener(swipeRefreshListener)
+  }
+
   override fun onResume() {
     super.onResume()
     divisionsViewModel.loadDivisions()
 
     userViewModel.work.observe(this, workObserver)
+    divisionsViewModel.work.observe(this, workObserver)
     userViewModel.error.observe(this, errorObserver)
     userViewModel.externalAction.observe(this, externalActionObserver)
   }
@@ -47,6 +65,7 @@ class CustomerProfileFragment : CustomerBaseFragment() {
   override fun onStop() {
     super.onStop()
     userViewModel.work.removeObserver(workObserver)
+    divisionsViewModel.work.removeObserver(workObserver)
     userViewModel.error.removeObserver(errorObserver)
     userViewModel.externalAction.removeObserver(externalActionObserver)
   }
