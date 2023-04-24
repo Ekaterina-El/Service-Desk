@@ -15,12 +15,9 @@
         app:destination="@id/welcomeFragment"
         app:popUpTo="@id/app_navigation.xml" />
     <action
-        android:id="@+id/action_splashFragment_to_analystProfileFragment"
-        app:destination="@id/analystProfileFragment"
-        app:popUpTo="@id/app_navigation.xml" />
-    <action
         android:id="@+id/action_splashFragment_to_managerFragment"
-        app:destination="@id/managerFragment" />
+        app:destination="@id/managerFragment"
+        app:popUpTo="@id/app_navigation.xml" />
     <action
         android:id="@+id/action_splashFragment_to_adminFragment"
         app:destination="@id/adminFragment"
@@ -28,6 +25,10 @@
     <action
         android:id="@+id/action_splashFragment_to_customerFragment"
         app:destination="@id/customerFragment"
+        app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_splashFragment_to_analystFragment"
+        app:destination="@id/analystFragment"
         app:popUpTo="@id/app_navigation.xml" />
   </fragment>
   <fragment
@@ -57,12 +58,9 @@
       android:name="com.elka.servicedesk.view.ui.authScreen.AuthFragment"
       android:label="AuthFragment" >
     <action
-        android:id="@+id/action_authFragment_to_analystProfileFragment"
-        app:destination="@id/analystProfileFragment"
-        app:popUpTo="@id/app_navigation.xml" />
-    <action
         android:id="@+id/action_authFragment_to_managerFragment"
-        app:destination="@id/managerFragment" />
+        app:destination="@id/managerFragment"
+        app:popUpTo="@id/app_navigation.xml" />
     <action
         android:id="@+id/action_authFragment_to_adminFragment"
         app:destination="@id/adminFragment"
@@ -71,12 +69,11 @@
         android:id="@+id/action_authFragment_to_customerFragment"
         app:destination="@id/customerFragment"
         app:popUpTo="@id/app_navigation.xml" />
+    <action
+        android:id="@+id/action_authFragment_to_analystFragment"
+        app:destination="@id/analystFragment"
+        app:popUpTo="@id/app_navigation.xml" />
   </fragment>
-  <fragment
-      android:id="@+id/analystProfileFragment"
-      tools:layout="@layout/analyst_profile_fragment"
-      android:name="com.elka.servicedesk.view.ui.analyst.AnalystProfileFragment"
-      android:label="AnalystProfileFragment" />
   <fragment
       android:id="@+id/managerFragment"
       tools:layout="@layout/manager_fragment"
@@ -89,7 +86,12 @@
       android:label="AdminFragment" />
   <fragment
       android:id="@+id/customerFragment"
-      tools:layout="@layout/analyst_profile_fragment"
+      tools:layout="@layout/customer_fragment"
       android:name="com.elka.servicedesk.view.ui.customer.CustomerFragment"
       android:label="CustomerFragment" />
+  <fragment
+      android:id="@+id/analystFragment"
+      tools:layout="@layout/analyst_fragment"
+      android:name="com.elka.servicedesk.view.ui.analyst.AnalystFragment"
+      android:label="AnalystFragment" />
 </navigation>

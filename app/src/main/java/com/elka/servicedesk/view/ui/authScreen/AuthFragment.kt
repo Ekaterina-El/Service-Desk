@@ -69,7 +69,7 @@ class AuthFragment : UserBaseFragment() {
     val dirs = AuthFragmentDirections
     val dir = when (user.role) {
       Role.USER -> dirs.actionAuthFragmentToCustomerFragment()
-      Role.ANALYST -> dirs.actionAuthFragmentToAnalystProfileFragment()
+      Role.ANALYST -> dirs.actionAuthFragmentToAnalystFragment() 
       Role.ADMIN -> dirs.actionAuthFragmentToAdminFragment()
       Role.MANAGER -> dirs.actionAuthFragmentToManagerFragment()
     }

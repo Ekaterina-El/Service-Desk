@@ -13,6 +13,11 @@
         type="com.elka.servicedesk.viewModel.UserViewModel" />
   </data>
 
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swiper"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
   <LinearLayout
       android:orientation="vertical"
       android:gravity="center"
@@ -41,5 +46,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/companyName" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/divisionChips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" />
   </LinearLayout>
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

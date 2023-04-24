@@ -57,12 +57,12 @@ class UsersViewHolder(
 
     binding.divisionChips.removeAllViews()
     divisions.forEach {
-      val chip = createChip(context, layoutInflater, it)
+      val chip = createChip(layoutInflater, it)
       binding.divisionChips.addView(chip)
     }
   }
 
-  private fun createChip(context: Context, layoutInflater: LayoutInflater, value: String): Chip {
+  private fun createChip(layoutInflater: LayoutInflater, value: String): Chip {
     val chip = ChipItemBinding.inflate(layoutInflater).root as Chip
     chip.text = value
     return chip
