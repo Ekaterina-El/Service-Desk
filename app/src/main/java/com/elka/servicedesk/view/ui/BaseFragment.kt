@@ -94,9 +94,9 @@ abstract class BaseFragment : Fragment() {
   }
 
 
-  fun selectItemOnSpinner(spinner: Spinner, items: List<SpinnerItem>, value: Any?) {
+  fun selectItemOnSpinner(spinner: Spinner, items: List<Any>, value: Any?) {
     val pos = if (value != null) {
-      items.indexOfFirst { it.value == value }
+      items.indexOfFirst { it == value }
     } else 0
     spinner.setSelection(pos)
   }

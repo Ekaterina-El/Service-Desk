@@ -16,4 +16,7 @@ enum class Event(val text: String) {
 
   ADDED_DIVISION("Добавлено подразделение"),
   REMOVED_DIVISION("Удалено подразделение"),
+  CHANGED_DIVISION("Изменено подразделение сотрудника"),
+  REMOVED_EMPLOYER("Удален сотрудник из подразделения"),
+  ADDED_EMPLOYER("Добавлен сотрудник в подразделение"),
 }

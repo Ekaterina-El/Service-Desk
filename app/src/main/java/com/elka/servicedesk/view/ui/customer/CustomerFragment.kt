@@ -1,4 +1,4 @@
-package com.elka.servicedesk.view.ui.user
+package com.elka.servicedesk.view.ui.customer
 
 import android.os.Bundle
 import android.view.LayoutInflater

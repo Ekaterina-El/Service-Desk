@@ -20,7 +20,6 @@ import com.elka.servicedesk.viewModel.DivisionsViewModel
 
 class AdminDivisionsFragment : AdminBaseFragment() {
   private lateinit var binding: AdminDivisionsFragmentBinding
-  private val divisionsViewModel by activityViewModels<DivisionsViewModel>()
 
   private val divisionsAdapter by lazy {
     DivisionsAdapter2(object : DivisionViewHolder2.Companion.Listener {

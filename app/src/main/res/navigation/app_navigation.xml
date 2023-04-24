@@ -90,6 +90,6 @@
   <fragment
       android:id="@+id/customerFragment"
       tools:layout="@layout/analyst_profile_fragment"
-      android:name="com.elka.servicedesk.view.ui.user.CustomerFragment"
+      android:name="com.elka.servicedesk.view.ui.customer.CustomerFragment"
       android:label="CustomerFragment" />
 </navigation>

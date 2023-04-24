@@ -72,5 +72,6 @@
   <string name="name">Название</string>
   <string name="divisions_title">Подразделения</string>
   <string name="delete">Удалить</string>
-
+  <string name="no_division">Подразделение не установлено</string>
+  <string name="change_division">Изменение подразделения</string>
 </resources>

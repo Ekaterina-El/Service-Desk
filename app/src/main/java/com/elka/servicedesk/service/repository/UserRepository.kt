@@ -113,7 +113,7 @@ object UserRepository {
 
     if (user.role == Role.USER && user.divisionId != "") {
       val division = DivisionsRepository.getDivisionById(user.divisionId)
-      if (division == null) UserRepository.setDivisionId(user.id, "")
+      if (division == null) setDivisionId(user.id, "")
       else user.divisionLocal = division
     }
     if (user.role == Role.ANALYST) user.divisionsLocal =
@@ -221,6 +221,38 @@ object UserRepository {
 
     FirebaseService.usersCollection.document(userId).update(field, fv).await()
   }
+
+  suspend fun changeDivision(user: User, newDivision: Division, onSuccess: () -> Unit): ErrorApp? =
+    try {
+      val uid = user.id
+      val oldDivision = user.divisionLocal
+
+      // user note: update divisionId
+      setDivisionId(uid, newDivision.id)
+
+      // oldDivision (if exists) note: delete userId list on employees
+      if (oldDivision != null) DivisionsRepository.removeEmployer(oldDivision.id, uid, user.fullName, oldDivision)
+
+      // newDivision note: add userId list on employees
+      DivisionsRepository.addEmployer(newDivision.id, uid, user.fullName, newDivision)
+
+      val params =
+        if (oldDivision == null) ": установлено подразделение \"${newDivision.name}\"" else
+          ": подразделение \"${oldDivision.name}\" заменено на подразделение \"${newDivision.name}\"; сотурдник - ${user.fullName}"
+      val log = Log(
+        date = Constants.getCurrentDate(),
+        event = Event.CHANGED_DIVISION,
+        param = params
+      )
+      LogsRepository.addLogSync(log)
+
+      onSuccess()
+      null
+    } catch (e: FirebaseNetworkException) {
+      Errors.network
+    } catch (e: Exception) {
+      Errors.unknown
+    }
 
   const val FIELD_ROLE = "role"
   const val FIELD_DIVISIONS_ID = "divisionsId"

@@ -1,11 +1,11 @@
 package com.elka.servicedesk.viewModel
 
 import android.app.Application
-import android.text.method.TextKeyListener.clear
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
+import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.service.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -41,5 +41,24 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
 
   private fun clear() {
     _profile.value = null
+  }
+
+  fun changeDivision(newDivision: Division) {
+    val work = Work.CHANGE_USER_DIVISION
+    addWork(work)
+
+    viewModelScope.launch {
+      val user = profile.value!!
+      _error.value = UserRepository.changeDivision(user, newDivision) {
+        user.divisionId = newDivision.id
+        user.divisionLocal = newDivision
+        changeCurrentUser(user)
+      }
+      removeWork(work)
+    }
+  }
+
+  private fun changeCurrentUser(user: User) {
+    _profile.value = user
   }
 }

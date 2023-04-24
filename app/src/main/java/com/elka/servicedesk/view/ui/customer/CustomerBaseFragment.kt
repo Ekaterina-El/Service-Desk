@@ -1,4 +1,4 @@
-package com.elka.servicedesk.view.ui.user
+package com.elka.servicedesk.view.ui.customer
 
 import com.elka.servicedesk.view.ui.UserBaseFragment
 
