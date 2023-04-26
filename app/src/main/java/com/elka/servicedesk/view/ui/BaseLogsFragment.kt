@@ -15,8 +15,8 @@ import com.elka.servicedesk.service.model.Log
 import com.elka.servicedesk.view.list.logs.LogsAdapter
 import com.elka.servicedesk.viewModel.LogsViewModel
 
-open class LogsFragment : UserBaseFragment() {
-  private val logsViewModel by activityViewModels<LogsViewModel>()
+abstract class BaseLogsFragment : UserBaseFragment() {
+  protected val logsViewModel by activityViewModels<LogsViewModel>()
   private lateinit var binding: LogsFragmentBinding
 
   private val logsAdapter by lazy { LogsAdapter() }
@@ -41,8 +41,8 @@ open class LogsFragment : UserBaseFragment() {
     binding = LogsFragmentBinding.inflate(layoutInflater, container, false)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
-      viewModel = this@LogsFragment.logsViewModel
-      logsAdapter = this@LogsFragment.logsAdapter
+      viewModel = this@BaseLogsFragment.logsViewModel
+      logsAdapter = this@BaseLogsFragment.logsAdapter
     }
 
     return binding.root
@@ -55,7 +55,7 @@ open class LogsFragment : UserBaseFragment() {
     binding.logsList.addItemDecoration(decorator)
 
     val refresherColor = requireContext().getColor(R.color.accent)
-    val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { logsViewModel.loadLogs() }
+    val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { reloadLogs() }
 
     binding.swiper.setColorSchemeColors(refresherColor)
     binding.swiper.setOnRefreshListener(swipeRefreshListener)
@@ -63,10 +63,12 @@ open class LogsFragment : UserBaseFragment() {
     binding.layoutNoFound.message.text = getString(R.string.list_empty)
   }
 
+  abstract fun reloadLogs()
+
   override fun onResume() {
     super.onResume()
 
-    if (logsViewModel.logs.value!!.isEmpty()) logsViewModel.loadLogs()
+    if (logsViewModel.logs.value!!.isEmpty()) reloadLogs()
 
     logsViewModel.work.observe(this, workObserver)
     logsViewModel.error.observe(this, errorObserver)

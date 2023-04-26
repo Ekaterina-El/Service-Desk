@@ -10,4 +10,10 @@
       tools:layout="@layout/analyst_profile_fragment"
       android:name="com.elka.servicedesk.view.ui.analyst.AnalystProfileFragment"
       android:label="AnalystProfileFragment" />
+
+  <fragment
+      android:id="@+id/analystLogsFragment"
+      tools:layout="@layout/logs_fragment"
+      android:name="com.elka.servicedesk.view.ui.analyst.AnalystLogsFragment"
+      android:label="AnalystLogsFragment" />
 </navigation>

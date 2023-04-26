@@ -19,7 +19,7 @@
   <fragment
       android:id="@+id/adminLogsFragment"
       tools:layout="@layout/logs_fragment"
-      android:name="com.elka.servicedesk.view.ui.LogsFragment"
+      android:name="com.elka.servicedesk.view.ui.admin.AdminLogsFragment"
       android:label="AdminLogsFragment" />
   <fragment
       android:id="@+id/adminProfileFragment"

@@ -4,4 +4,9 @@
   <item android:id="@id/analystProfileFragment"
       android:icon="@drawable/ic_profile"
       android:title="@string/profile" />
+
+
+  <item android:id="@id/analystLogsFragment"
+      android:icon="@drawable/ic_logs"
+      android:title="@string/logs_title" />
 </menu>

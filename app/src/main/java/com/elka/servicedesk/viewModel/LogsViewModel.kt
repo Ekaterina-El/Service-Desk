@@ -17,13 +17,13 @@ class LogsViewModel(application: Application) : BaseViewModel(application) {
   private val _filteredLogs = MutableLiveData<List<Log>>(listOf())
   val filteredLogs get() = _filteredLogs
 
-  fun loadLogs() {
+  fun loadLogs(divisionsIds: List<String>? = null) {
     val work = Work.LOAD_LOGS
     addWork(work)
 
     viewModelScope.launch {
-      _error.value = LogsRepository.loadAllLogs {
-        _logs.value = it.sortedByDescending { it.date }
+      _error.value = LogsRepository.loadLogs(divisionsIds) { logs ->
+        _logs.value = logs.sortedByDescending { it.date }
         filterLogs()
       }
       removeWork(work)

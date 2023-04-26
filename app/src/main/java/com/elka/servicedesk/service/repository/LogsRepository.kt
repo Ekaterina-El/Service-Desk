@@ -25,7 +25,7 @@ object LogsRepository {
     return log
   }
 
-  suspend fun loadAllLogs(onSuccess: (List<Log>) -> Unit): ErrorApp? = try {
+  suspend fun loadLogs(divisionIds: List<String>?, onSuccess: (List<Log>) -> Unit): ErrorApp? = try {
     val logs = FirebaseService.logsCollection.get().await().mapNotNull { doc ->
       return@mapNotNull try {
         val log = doc.toObject(Log::class.java)
@@ -35,7 +35,9 @@ object LogsRepository {
         null
       }
     }
-    onSuccess(logs)
+
+    val logsRes = if (divisionIds == null) logs else logs.filter { divisionIds.contains(it.division?.id) }
+    onSuccess(logsRes)
     null
   } catch (e: FirebaseNetworkException) {
     Errors.network

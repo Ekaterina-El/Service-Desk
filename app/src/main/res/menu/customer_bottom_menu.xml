@@ -8,4 +8,8 @@
   <item android:id="@id/customerIncidentsRequests"
       android:icon="@drawable/ic_repair"
       android:title="@string/accidents" />
+
+  <item android:id="@id/customerLogsFragment"
+      android:icon="@drawable/ic_logs"
+      android:title="@string/logs_title" />
 </menu>
