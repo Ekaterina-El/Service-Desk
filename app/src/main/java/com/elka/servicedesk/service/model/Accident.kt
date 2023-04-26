@@ -6,11 +6,13 @@ import java.util.*
 data class Accident(
   var type: AccidentType = AccidentType.INCIDENT,
   var id: String = "",
+
   var subject: String = "",
   var message: String = "",
 
   var urgency: UrgencyCategory = UrgencyCategory.LOW,
   var category: AccidentCategory = AccidentCategory.NETWORKING_TECHNOLOGIES,
+
   var photosURL: List<String> = listOf(),
 
   var divisionId: String = "",

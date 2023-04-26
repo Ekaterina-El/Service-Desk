@@ -147,5 +147,10 @@ object DivisionsRepository {
     }
   }
 
+  suspend fun addAccidentId(userId: String, accidentId: String) {
+    changeList(FIELD_ACCIDENTS_IDS, userId, accidentId, Action.ADD)
+  }
+
   private const val FIELD_EMPLOYERS = "employers"
+  private const val FIELD_ACCIDENTS_IDS = "accidentsIds"
 }

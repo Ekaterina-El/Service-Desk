@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+        name="master"
+        type="com.elka.servicedesk.view.dialog.AddAccidentDialog" />
+
+    <variable
+        name="viewModel"
+        type="com.elka.servicedesk.viewModel.AccidentsViewModel" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="25dp">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+      <TextView
+          android:id="@+id/title"
+          style="@style/text.h3"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="25dp"
+          android:gravity="start"
+          android:text="@string/say_about_incident"
+          android:textStyle="bold" />
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutSubject"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/subject"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@={viewModel.subject}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutMessage"
+          style="@style/FieldWrapper"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/massage"
+          app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/FieldContent"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:text="@={viewModel.message}"
+            android:lines="3"
+            android:gravity="top"
+            android:maxLines="10"
+            />
+      </com.google.android.material.textfield.TextInputLayout>
+
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="bottom"
+          android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+          <RelativeLayout
+              android:id="@+id/urgencyW"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="15dp"
+              android:background="@drawable/field_wrapper"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/urgency_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                tools:listitem="@layout/spinner_item" />
+          </RelativeLayout>
+
+          <TextView
+              style="@style/text.hint.field"
+              android:text="@string/urgency"
+              app:layout_constraintBottom_toTopOf="@id/urgencyW"
+              app:layout_constraintStart_toStartOf="@id/urgencyW"
+              app:layout_constraintTop_toTopOf="@id/urgencyW" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="bottom"
+          android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+          <RelativeLayout
+              android:id="@+id/categoryW"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="15dp"
+              android:background="@drawable/field_wrapper"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                tools:listitem="@layout/spinner_item" />
+          </RelativeLayout>
+
+          <TextView
+              style="@style/text.hint.field"
+              android:text="@string/category"
+              app:layout_constraintBottom_toTopOf="@id/categoryW"
+              app:layout_constraintStart_toStartOf="@id/categoryW"
+              app:layout_constraintTop_toTopOf="@id/categoryW" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="25dp"
+          android:gravity="end"
+          android:orientation="horizontal">
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.disagree()}"
+            android:text="@string/cancel" />
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.agree()}"
+            android:text="@string/continue_text" />
+
+      </LinearLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:visibility="gone"
+        android:background="@color/shadow2"
+        android:visibility="@{viewModel.work.size() == 0 ? View.GONE : View.VISIBLE}"
+        app:layout_constraintBottom_toBottomOf="@id/content"
+        app:layout_constraintEnd_toEndOf="@id/content"
+        app:layout_constraintStart_toStartOf="@id/content"
+        app:layout_constraintTop_toTopOf="@id/content">
+
+      <ProgressBar
+          android:layout_width="70dp"
+          android:layout_height="70dp"
+          android:layout_centerInParent="true"
+          android:indeterminateTint="@color/accent" />
+
+    </RelativeLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

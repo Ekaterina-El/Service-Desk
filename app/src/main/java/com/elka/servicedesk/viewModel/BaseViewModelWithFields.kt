@@ -16,6 +16,8 @@ abstract class BaseViewModelWithFields(application: Application) : BaseViewModel
       Field.EMAIL,
       Field.PASSWORD,
       Field.DIVISION,
+      Field.MESSAGE,
+      Field.SUBJECT,
     )
   }
 

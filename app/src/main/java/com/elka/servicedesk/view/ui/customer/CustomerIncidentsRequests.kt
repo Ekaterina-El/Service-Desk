@@ -15,6 +15,7 @@ import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.view.dialog.AccidentBottomSheetDialog
+import com.elka.servicedesk.view.dialog.AddAccidentDialog
 import com.elka.servicedesk.view.list.accidents.AccidentViewHolder
 import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 
@@ -79,9 +80,9 @@ class CustomerIncidentsRequests : CustomerBaseFragment() {
     get() {
       val profile = userViewModel.profile.value!!
       val userAccidents = profile.accidentsIds.toMutableList()
-      val divisionAccidents = profile.divisionLocal?.accidentIds ?: listOf()
+      val divisionAccidents = profile.divisionLocal?.accidentsIds ?: listOf()
       userAccidents.addAll(divisionAccidents)
-      return userAccidents
+      return userAccidents.toSet().toMutableList()
     }
 
   private fun reloadAccidents() {
@@ -140,12 +141,25 @@ class CustomerIncidentsRequests : CustomerBaseFragment() {
     }
   }
 
+  private val addAccidentDialogListener by lazy {
+    object: AddAccidentDialog.Companion.Listener {
+      override fun afterAdded(accident: Accident) {
+        accidentViewModel.addAccident(accident)
+        userViewModel.afterAccident(accident)
+        addAccidentDialog.dismiss()
+      }
+    }
+  }
+
+  private val addAccidentDialog: AddAccidentDialog by lazy {
+    AddAccidentDialog(requireContext(), this, accidentViewModel, addAccidentDialogListener)
+  }
+
   fun showDialogAddIncident() {
-    Toast.makeText(requireContext(), "Создание инцидента (в разработке)", Toast.LENGTH_SHORT).show()
+    addAccidentDialog.open(userViewModel.profile.value!!, AccidentType.INCIDENT)
   }
 
   fun showDialogAddRequest() {
-    Toast.makeText(requireContext(), "Создание запроса (в разработке)", Toast.LENGTH_SHORT).show()
-
+    addAccidentDialog.open(userViewModel.profile.value!!, AccidentType.REQUEST)
   }
 }

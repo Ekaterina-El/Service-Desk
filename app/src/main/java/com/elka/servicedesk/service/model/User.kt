@@ -12,7 +12,7 @@ data class User(
   // for user
   var divisionId: String = "",
   var divisionLocal: Division? = null,
-  val accidentsIds: List<String> = listOf(),
+  var accidentsIds: List<String> = listOf(),
 
   // for analyst
   var divisionsLocal: List<Division> = listOf(),

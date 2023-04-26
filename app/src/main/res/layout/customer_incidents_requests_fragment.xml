@@ -17,7 +17,7 @@
 
     <variable
         name="viewModel"
-        type="com.elka.servicedesk.viewModel.IncidentsRequestsViewModel" />
+        type="com.elka.servicedesk.viewModel.AccidentsViewModel" />
   </data>
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

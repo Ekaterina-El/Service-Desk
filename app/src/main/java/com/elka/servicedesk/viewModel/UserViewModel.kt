@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
+import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.service.repository.UserRepository
@@ -60,5 +61,22 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
 
   private fun changeCurrentUser(user: User) {
     _profile.value = user
+  }
+
+  fun afterAccident(accident: Accident) {
+    val profile = _profile.value!!
+    val accidentId = accident.id
+
+    // add id to profile
+    val accidentsIds = profile.accidentsIds.toMutableList()
+    accidentsIds.add(accidentId)
+    profile.accidentsIds = accidentsIds
+
+    // add id to division
+    val division = profile.divisionLocal!!
+    val divisionAccidentsIds = division.accidentsIds.toMutableList()
+    divisionAccidentsIds.add(accidentId)
+    division.accidentsIds = divisionAccidentsIds
+    profile.divisionLocal = division
   }
 }

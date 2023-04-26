@@ -267,7 +267,12 @@ object UserRepository {
     }
   }
 
+  suspend fun addAccidentId(userId: String, accidentId: String) {
+    changeList(FIELD_ACCIDENTS_IDS, userId, accidentId, Action.ADD)
+  }
+
   const val FIELD_ROLE = "role"
   const val FIELD_DIVISIONS_ID = "divisionsId"
+  const val FIELD_ACCIDENTS_IDS = "accidentsIds"
   const val FIELD_DIVISION_ID = "divisionId"
 }

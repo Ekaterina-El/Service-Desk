@@ -51,7 +51,7 @@
 
       <TextView
           style="@style/text.bottom_sheet_item"
-          android:text="@string/create_incident" />
+          android:text="@string/say_about_incident" />
     </LinearLayout>
 
 
