@@ -74,7 +74,7 @@
   <string name="delete">Удалить</string>
   <string name="no_division">Подразделение не установлено</string>
   <string name="change_division">Изменение подразделения</string>
-  <string name="accidents">Инциденты и запросы</string>
+  <string name="accidents">Происшествия</string>
   <string name="say_about_incident">Сообщить об инциденте</string>
   <string name="about_incident">Сообщение об инциденте</string>
   <string name="add_request">Добавить запрос</string>
@@ -83,4 +83,5 @@
   <string name="massage">Сообщение</string>
   <string name="urgency">Срочность</string>
   <string name="category">Категория</string>
+  <string name="accidents_in_work">Назначенные</string>
 </resources>

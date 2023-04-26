@@ -11,6 +11,7 @@ import com.elka.servicedesk.service.repository.AccidentsRepository
 import kotlinx.coroutines.launch
 
 class AccidentsViewModel(application: Application) : BaseViewModelWithFields(application) {
+  // region All accidents
   private val _accidents = MutableLiveData<List<Accident>>(listOf())
   val accidents get() = _accidents
 
@@ -58,8 +59,46 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     filter.value = ""
     filterAccidents()
   }
+  // endregion
 
+  // region Analyst accidents
+  private val _analystAccidents = MutableLiveData<List<Accident>>(listOf())
+  val analystAccidents get() = _analystAccidents
 
+  val analystsFilter = MutableLiveData("")
+  private val _analystsFilteredAccidents = MutableLiveData<List<Accident>>(listOf())
+  val analystsFilteredAccidents get() = _analystsFilteredAccidents
+
+  fun loadAnalystAccidents(analystId: String) {
+    val work = Work.LOAD_ACCIDENTS
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = AccidentsRepository.loadAccidentsOfAnalyst(analystId) {
+        _analystAccidents.value = it
+        filterAnalystAccidents()
+      }
+      removeWork(work)
+    }
+  }
+
+  fun filterAnalystAccidents() {
+    val items = _analystAccidents.value!!
+    val filter = analystsFilter.value!!
+
+    _analystsFilteredAccidents.value = when (filter) {
+      "" -> items
+      else -> items.filterBy(filter)
+    }
+  }
+
+  fun clearFilterAnalystAccidents() {
+    analystsFilter.value = ""
+    filterAnalystAccidents()
+  }
+  // endregion
+
+  // region Add Accident
   val subject = MutableLiveData("")
   val message = MutableLiveData("")
 
@@ -132,4 +171,5 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     _accidents.value = items
     filterAccidents()
   }
+  // endregion
 }

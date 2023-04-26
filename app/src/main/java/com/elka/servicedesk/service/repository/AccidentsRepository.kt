@@ -28,6 +28,7 @@ object AccidentsRepository {
 
       accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
       accident.userLocal = UserRepository.loadUser(accident.userId)
+      accident.analystId?.let { accident.analystLocal = UserRepository.loadUser(it) }
 
       return accident
     } catch (e: java.lang.Exception) {
@@ -110,5 +111,32 @@ object AccidentsRepository {
     Errors.unknown
   }
 
+  suspend fun loadAccidentsOfAnalyst(
+    analystId: String,
+    onSuccess: (List<Accident>) -> Unit
+  ): ErrorApp? = try {
+    val accidents = FirebaseService.accidentsCollection.whereEqualTo(FIELD_ANALTYST_ID, analystId).get().await()
+      .mapNotNull { doc ->
+        return@mapNotNull try {
+          val accident = doc.toObject(Accident::class.java)
+          accident.id = doc.id
+
+          accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
+          accident.userLocal = UserRepository.loadUser(accident.userId)
+
+          accident
+        } catch (e: Exception) {
+          null
+        }
+      }
+    onSuccess(accidents)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
   private const val FIELD_DIVISION_ID = "divisionId"
+  private const val FIELD_ANALTYST_ID = "analystId"
 }

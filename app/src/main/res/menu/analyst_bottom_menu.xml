@@ -10,6 +10,10 @@
       android:icon="@drawable/ic_repair"
       android:title="@string/accidents" />
 
+  <item android:id="@id/analystAccidentsInWorkFragment"
+      android:icon="@drawable/ic_work"
+      android:title="@string/accidents_in_work" />
+
   <item android:id="@id/analystLogsFragment"
       android:icon="@drawable/ic_logs"
       android:title="@string/logs_title" />
