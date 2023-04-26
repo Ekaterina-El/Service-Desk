@@ -8,10 +8,12 @@ object FirebaseService {
   private const val USERS_COLLECTION = "users"
   private const val DIVISIONS_COLLECTION = "divisions"
   private const val LOGS_COLLECTION = "logs"
+  private const val ACCIDENTS_COLLECTION = "accidents"
 
   val usersCollection by lazy { Firebase.firestore.collection(USERS_COLLECTION) }
   val divisionsCollection by lazy { Firebase.firestore.collection(DIVISIONS_COLLECTION) }
   val logsCollection by lazy { Firebase.firestore.collection(LOGS_COLLECTION) }
+  val accidentsCollection by lazy { Firebase.firestore.collection(ACCIDENTS_COLLECTION) }
 
 //  val storage = FirebaseStorage.getInstance()
 }

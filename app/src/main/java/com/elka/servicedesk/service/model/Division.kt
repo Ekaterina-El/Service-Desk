@@ -4,6 +4,7 @@ data class Division(
   var id: String = "",
   var name: String = "",
   var employers: List<String> = listOf(),
+  val accidentIds: List<String> = listOf()
 ) : java.io.Serializable
 
 fun List<Division>.filterBy(search: String) = this.filter {

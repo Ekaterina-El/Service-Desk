@@ -231,18 +231,20 @@ object UserRepository {
       setDivisionId(uid, newDivision.id)
 
       // oldDivision (if exists) note: delete userId list on employees
-      if (oldDivision != null) DivisionsRepository.removeEmployer(oldDivision.id, uid, user.fullName, oldDivision)
+      if (oldDivision != null) DivisionsRepository.removeEmployer(
+        oldDivision.id,
+        uid,
+        user.fullName,
+        oldDivision
+      )
 
       // newDivision note: add userId list on employees
       DivisionsRepository.addEmployer(newDivision.id, uid, user.fullName, newDivision)
 
       val params =
-        if (oldDivision == null) ": установлено подразделение \"${newDivision.name}\"" else
-          ": подразделение \"${oldDivision.name}\" заменено на подразделение \"${newDivision.name}\"; сотурдник - ${user.fullName}"
+        if (oldDivision == null) ": установлено подразделение \"${newDivision.name}\"" else ": подразделение \"${oldDivision.name}\" заменено на подразделение \"${newDivision.name}\"; сотурдник - ${user.fullName}"
       val log = Log(
-        date = Constants.getCurrentDate(),
-        event = Event.CHANGED_DIVISION,
-        param = params
+        date = Constants.getCurrentDate(), event = Event.CHANGED_DIVISION, param = params
       )
       LogsRepository.addLogSync(log)
 
@@ -253,6 +255,17 @@ object UserRepository {
     } catch (e: Exception) {
       Errors.unknown
     }
+
+  suspend fun loadUser(userId: String): User? {
+    return try {
+      val doc = FirebaseService.usersCollection.document(userId).get().await()
+      val user = doc.toObject(User::class.java)!!
+      user.id = doc.id
+      user
+    } catch (e: java.lang.Exception) {
+      null
+    }
+  }
 
   const val FIELD_ROLE = "role"
   const val FIELD_DIVISIONS_ID = "divisionsId"

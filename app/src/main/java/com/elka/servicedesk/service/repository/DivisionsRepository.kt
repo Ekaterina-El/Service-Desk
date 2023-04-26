@@ -136,5 +136,16 @@ object DivisionsRepository {
     return divisions
   }
 
+  suspend fun loadDivision(divisionId: String): Division? {
+    return try {
+      val doc = FirebaseService.divisionsCollection.document(divisionId).get().await()
+      val division = doc.toObject(Division::class.java)!!
+      division.id = doc.id
+      division
+    } catch (e: java.lang.Exception) {
+      null
+    }
+  }
+
   private const val FIELD_EMPLOYERS = "employers"
 }

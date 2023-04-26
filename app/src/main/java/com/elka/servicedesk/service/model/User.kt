@@ -12,6 +12,7 @@ data class User(
   // for user
   var divisionId: String = "",
   var divisionLocal: Division? = null,
+  val accidentsIds: List<String> = listOf(),
 
   // for analyst
   var divisionsLocal: List<Division> = listOf(),
@@ -19,6 +20,7 @@ data class User(
 
   var role: Role = Role.USER
 ) : java.io.Serializable {
+
 
   var fullName
     get() = listOf(lastName, firstName).joinToString(" ")
