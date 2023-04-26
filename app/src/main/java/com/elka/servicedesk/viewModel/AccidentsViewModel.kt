@@ -25,7 +25,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
     viewModelScope.launch {
       _error.value = AccidentsRepository.loadAccidents(accidentIds) {
-        _accidents.value = it
+        _accidents.value = it.sortedByDescending { it.createdDate }
         filterAccidents()
       }
       removeWork(work)
@@ -38,7 +38,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
     viewModelScope.launch {
       _error.value = AccidentsRepository.loadAccidentsOfDivisions(divisionsIds) {
-        _accidents.value = it
+        _accidents.value = it.sortedByDescending { it.createdDate }
         filterAccidents()
       }
       removeWork(work)
@@ -49,10 +49,12 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     val items = _accidents.value!!
     val filter = filter.value!!
 
-    _filteredAccidents.value = when (filter) {
+    val filtered = when (filter) {
       "" -> items
       else -> items.filterBy(filter)
     }
+
+    _filteredAccidents.value = filtered.sortedByDescending { it.createdDate }
   }
 
   fun clearFilterAccidents() {
@@ -75,7 +77,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
     viewModelScope.launch {
       _error.value = AccidentsRepository.loadAccidentsOfAnalyst(analystId) {
-        _analystAccidents.value = it
+        _analystAccidents.value = it.sortedByDescending { it.createdDate }
         filterAnalystAccidents()
       }
       removeWork(work)
@@ -86,10 +88,13 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     val items = _analystAccidents.value!!
     val filter = analystsFilter.value!!
 
-    _analystsFilteredAccidents.value = when (filter) {
+    val itemsFiltered = when (filter) {
       "" -> items
       else -> items.filterBy(filter)
     }
+
+    _analystsFilteredAccidents.value = itemsFiltered.sortedByDescending { it.createdDate }
+
   }
 
   fun clearFilterAnalystAccidents() {
