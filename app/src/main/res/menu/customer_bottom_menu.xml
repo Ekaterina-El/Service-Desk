@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <item android:id="@id/adminProfileFragment"
+  <item android:id="@id/customerProfileFragment"
       android:icon="@drawable/ic_profile"
       android:title="@string/profile" />
+
+  <item android:id="@id/customerIncidentsRequests"
+      android:icon="@drawable/ic_repair"
+      android:title="@string/accidents" />
 </menu>

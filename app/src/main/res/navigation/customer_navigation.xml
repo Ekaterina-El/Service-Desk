@@ -10,4 +10,9 @@
       tools:layout="@layout/customer_profile_fragment"
       android:name="com.elka.servicedesk.view.ui.customer.CustomerProfileFragment"
       android:label="CustomerProfileFragment" />
+  <fragment
+      android:id="@+id/customerIncidentsRequests"
+      tools:layout="@layout/customer_incidents_requests_fragment"
+      android:name="com.elka.servicedesk.view.ui.customer.CustomerIncidentsRequests"
+      android:label="CustomerIncidentsRequests" />
 </navigation>
