@@ -6,6 +6,10 @@
       android:title="@string/profile" />
 
 
+  <item android:id="@id/analystAccidentsFragment"
+      android:icon="@drawable/ic_repair"
+      android:title="@string/accidents" />
+
   <item android:id="@id/analystLogsFragment"
       android:icon="@drawable/ic_logs"
       android:title="@string/logs_title" />

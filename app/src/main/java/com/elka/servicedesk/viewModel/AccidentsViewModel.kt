@@ -31,6 +31,19 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     }
   }
 
+  fun loadAccidentsOfDivisions(divisionsIds: List<String>) {
+    val work = Work.LOAD_ACCIDENTS
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = AccidentsRepository.loadAccidentsOfDivisions(divisionsIds) {
+        _accidents.value = it
+        filterAccidents()
+      }
+      removeWork(work)
+    }
+  }
+
   fun filterAccidents() {
     val items = _accidents.value!!
     val filter = filter.value!!

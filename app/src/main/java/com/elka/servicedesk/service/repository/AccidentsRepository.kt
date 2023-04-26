@@ -8,8 +8,10 @@ import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
 
 object AccidentsRepository {
-  suspend fun loadAccidents(accidentIds: List<String>, onSuccess: (List<Accident>) -> Unit): ErrorApp? = try {
-    val accidents = accidentIds.mapNotNull { loadAccident(it)}
+  suspend fun loadAccidents(
+    accidentIds: List<String>, onSuccess: (List<Accident>) -> Unit
+  ): ErrorApp? = try {
+    val accidents = accidentIds.mapNotNull { loadAccident(it) }
     onSuccess(accidents)
     null
   } catch (e: FirebaseNetworkException) {
@@ -28,11 +30,14 @@ object AccidentsRepository {
       accident.userLocal = UserRepository.loadUser(accident.userId)
 
       return accident
-    } catch (e: java.lang.Exception) { null
+    } catch (e: java.lang.Exception) {
+      null
     }
   }
 
-  suspend fun addAccident(profile: User, accident: Accident, onSuccess: (Accident) -> Unit): ErrorApp? = try {
+  suspend fun addAccident(
+    profile: User, accident: Accident, onSuccess: (Accident) -> Unit
+  ): ErrorApp? = try {
     // TODO: load images
     // accident.photoURL = ...
 
@@ -52,8 +57,9 @@ object AccidentsRepository {
     DivisionsRepository.addAccidentId(division!!.id, accident.id)
 
 
-    val event = if (accident.type == AccidentType.INCIDENT) Event.ADDED_INCIDENT else Event.ADDED_REQUEST
-    val params = ": ${accident.category} / ${accident.subject}"
+    val event =
+      if (accident.type == AccidentType.INCIDENT) Event.ADDED_INCIDENT else Event.ADDED_REQUEST
+    val params = ": ${accident.category.text} / ${accident.subject}"
 
     // add log
     val log = Log(
@@ -69,8 +75,40 @@ object AccidentsRepository {
     null
   } catch (e: FirebaseNetworkException) {
     Errors.network
-  }
-  /*catch (e: Exception) {
+  } catch (e: Exception) {
     Errors.unknown
-  }*/
+  }
+
+  suspend fun loadAccidentsOfDivisions(
+    divisionsIds: List<String>, onSuccess: (List<Accident>) -> Unit
+  ): ErrorApp? = try {
+    val accidents = mutableListOf<Accident>()
+    divisionsIds.forEach { divisionId ->
+      val divisionAccidents =
+        FirebaseService.accidentsCollection.whereEqualTo(FIELD_DIVISION_ID, divisionId).get()
+          .await().mapNotNull { doc ->
+            return@mapNotNull try {
+              val accident = doc.toObject(Accident::class.java)
+              accident.id = doc.id
+
+              accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
+              accident.userLocal = UserRepository.loadUser(accident.userId)
+
+              accident
+            } catch (e: Exception) {
+              null
+            }
+          }
+      accidents.addAll(divisionAccidents)
+    }
+
+    onSuccess(accidents)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  private const val FIELD_DIVISION_ID = "divisionId"
 }

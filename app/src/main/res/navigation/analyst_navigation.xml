@@ -16,4 +16,9 @@
       tools:layout="@layout/logs_fragment"
       android:name="com.elka.servicedesk.view.ui.analyst.AnalystLogsFragment"
       android:label="AnalystLogsFragment" />
+  <fragment
+      android:id="@+id/analystAccidentsFragment"
+      tools:layout="@layout/analyst_accidents_fragment"
+      android:name="com.elka.servicedesk.view.ui.analyst.AnalystAccidentsFragment"
+      android:label="AnalystAccidentsFragment" />
 </navigation>
