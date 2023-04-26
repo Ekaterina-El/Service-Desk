@@ -7,6 +7,7 @@ import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.service.model.filterBy
+import com.elka.servicedesk.service.model.splitAndSort
 import com.elka.servicedesk.service.repository.AccidentsRepository
 import kotlinx.coroutines.launch
 
@@ -24,8 +25,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     addWork(work)
 
     viewModelScope.launch {
-      _error.value = AccidentsRepository.loadAccidents(accidentIds) {
-        _accidents.value = it.sortedByDescending { it.createdDate }
+      _error.value = AccidentsRepository.loadAccidents(accidentIds) { list ->
+        _accidents.value = list.splitAndSort()
         filterAccidents()
       }
       removeWork(work)
@@ -37,8 +38,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     addWork(work)
 
     viewModelScope.launch {
-      _error.value = AccidentsRepository.loadAccidentsOfDivisions(divisionsIds) {
-        _accidents.value = it.sortedByDescending { it.createdDate }
+      _error.value = AccidentsRepository.loadAccidentsOfDivisions(divisionsIds) { list ->
+        _accidents.value = list.splitAndSort()
         filterAccidents()
       }
       removeWork(work)
@@ -49,12 +50,10 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     val items = _accidents.value!!
     val filter = filter.value!!
 
-    val filtered = when (filter) {
+    _filteredAccidents.value = when (filter) {
       "" -> items
       else -> items.filterBy(filter)
     }
-
-    _filteredAccidents.value = filtered.sortedByDescending { it.createdDate }
   }
 
   fun clearFilterAccidents() {
@@ -77,7 +76,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
     viewModelScope.launch {
       _error.value = AccidentsRepository.loadAccidentsOfAnalyst(analystId) {
-        _analystAccidents.value = it.sortedByDescending { it.createdDate }
+        _analystAccidents.value = it.splitAndSort()
         filterAnalystAccidents()
       }
       removeWork(work)
@@ -88,13 +87,10 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     val items = _analystAccidents.value!!
     val filter = analystsFilter.value!!
 
-    val itemsFiltered = when (filter) {
+    _analystsFilteredAccidents.value = when (filter) {
       "" -> items
       else -> items.filterBy(filter)
     }
-
-    _analystsFilteredAccidents.value = itemsFiltered.sortedByDescending { it.createdDate }
-
   }
 
   fun clearFilterAnalystAccidents() {

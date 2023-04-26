@@ -9,19 +9,23 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
-import com.elka.servicedesk.databinding.AnalystAccidentsFragmentBinding
 import com.elka.servicedesk.databinding.AnalystAccidentsInWorkFragmentBinding
+import com.elka.servicedesk.other.AccidentCategory
+import com.elka.servicedesk.other.AccidentType
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
-import com.elka.servicedesk.view.list.accidents.AccidentViewHolder
+import com.elka.servicedesk.service.model.splitAndSort
+import com.elka.servicedesk.service.model.toAccidentItems
+import com.elka.servicedesk.view.list.accidents.AccidentItem
+import com.elka.servicedesk.view.list.accidents.AccidentItemViewHolder
 import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 
 class AnalystAccidentsInWorkFragment : AnalystBaseFragment() {
   private lateinit var binding: AnalystAccidentsInWorkFragmentBinding
 
   private val accidentsAdapterListener by lazy {
-    object : AccidentViewHolder.Companion.Listener {
+    object : AccidentItemViewHolder.Companion.Listener {
       override fun onSelect(accident: Accident) {
         Toast.makeText(requireContext(), accident.message, Toast.LENGTH_SHORT).show()
       }
@@ -32,8 +36,32 @@ class AnalystAccidentsInWorkFragment : AnalystBaseFragment() {
     AccidentsAdapter(accidentsAdapterListener)
   }
 
-  private val accidentsObserver = Observer<List<Accident>> {
-    accidentsAdapter.setItems(it)
+  private val accidentsObserver = Observer<List<Accident>> { list ->
+    val items = mutableListOf<AccidentItem>()
+    val incidents =
+      list.filter { it.type == AccidentType.INCIDENT }.sortedByDescending { it.createdDate }
+    val requests =
+      list.filter { it.type == AccidentType.REQUEST }.sortedByDescending { it.createdDate }
+
+    if (incidents.isNotEmpty()) {
+      items.add(AccidentItem(
+        type = AccidentsAdapter.TYPE_HEADER,
+        value = AccidentType.INCIDENT.text
+      ))
+
+      items.addAll(incidents.toAccidentItems())
+    }
+
+    if (requests.isNotEmpty()) {
+      items.add(AccidentItem(
+        type = AccidentsAdapter.TYPE_HEADER,
+        value = AccidentType.REQUEST.text
+      ))
+
+      items.addAll(requests.toAccidentItems())
+    }
+
+    accidentsAdapter.setItems(items)
   }
 
   override val workObserver = Observer<List<Work>> {

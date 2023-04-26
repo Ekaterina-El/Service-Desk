@@ -1,6 +1,8 @@
 package com.elka.servicedesk.service.model
 
 import com.elka.servicedesk.other.*
+import com.elka.servicedesk.view.list.accidents.AccidentItem
+import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 import java.util.*
 
 data class Accident(
@@ -46,3 +48,19 @@ fun List<Accident>.filterBy(s: String) = this.filter {
       || it.createdDateS.contains(s, true)
       || it.status.text.contains(s, true)
 }
+
+fun List<Accident>.splitAndSort(): MutableList<Accident> {
+  val items = mutableListOf<Accident>()
+  val incidents =
+    this.filter { it.type == AccidentType.INCIDENT }.sortedByDescending { it.createdDate }
+  val requests =
+    this.filter { it.type == AccidentType.REQUEST }.sortedByDescending { it.createdDate }
+
+  items.addAll(incidents)
+  items.addAll(requests)
+
+  return items
+}
+
+
+fun List<Accident>.toAccidentItems() = this.map { AccidentItem(AccidentsAdapter.TYPE_ITEM, it) }

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.elka.servicedesk.databinding.AccidentItemBinding
 import com.elka.servicedesk.service.model.Accident
 
-class AccidentViewHolder(
+class AccidentItemViewHolder(
   val context: Context,
   val binding: AccidentItemBinding,
   val listener: Listener

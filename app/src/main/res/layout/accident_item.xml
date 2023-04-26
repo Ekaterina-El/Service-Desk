@@ -29,7 +29,8 @@
         android:paddingVertical="15dp">
 
       <TextView
-          style="@style/text.h3"
+          style="@style/text"
+          android:textStyle="bold"
           android:textColor="@color/accent"
           android:text="@{accident.category.text}"
           tools:text="Запрос на выделение серверной мощности" />

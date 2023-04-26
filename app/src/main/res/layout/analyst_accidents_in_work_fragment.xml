@@ -86,7 +86,6 @@
           android:id="@+id/accidentsList"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:layout_marginTop="20dp"
           android:layout_weight="1"
           android:adapter="@{accidentsAdapter}"
           android:visibility="@{viewModel.analystsFilteredAccidents.size() == 0 ? View.GONE : View.VISIBLE}"
