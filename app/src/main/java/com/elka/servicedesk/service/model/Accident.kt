@@ -4,6 +4,7 @@ import com.elka.servicedesk.other.*
 import java.util.*
 
 data class Accident(
+  var type: AccidentType = AccidentType.INCIDENT,
   var id: String = "",
   var subject: String = "",
   var message: String = "",

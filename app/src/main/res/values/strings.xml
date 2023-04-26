@@ -75,4 +75,6 @@
   <string name="no_division">Подразделение не установлено</string>
   <string name="change_division">Изменение подразделения</string>
   <string name="accidents">Инциденты и запросы</string>
+  <string name="create_incident">Создать инцидент</string>
+  <string name="add_request">Создать запрос</string>
 </resources>

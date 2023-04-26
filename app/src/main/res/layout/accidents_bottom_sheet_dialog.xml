@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+  </data>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/add_request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+      <ImageView
+          android:layout_width="26dp"
+          android:layout_height="26dp"
+          android:src="@drawable/ic_request"
+          app:tint="@color/accent" />
+
+      <TextView
+          style="@style/text.bottom_sheet_item"
+          android:text="@string/add_request" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/add_incident"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+      <ImageView
+          android:layout_width="26dp"
+          android:layout_height="26dp"
+          app:tint="@color/accent"
+          android:src="@drawable/ic_incident" />
+
+      <TextView
+          style="@style/text.bottom_sheet_item"
+          android:text="@string/create_incident" />
+    </LinearLayout>
+
+
+  </LinearLayout>
+</layout>

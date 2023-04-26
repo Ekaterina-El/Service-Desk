@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.CustomerIncidentsRequestsFragmentBinding
+import com.elka.servicedesk.other.AccidentType
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
+import com.elka.servicedesk.view.dialog.AccidentBottomSheetDialog
 import com.elka.servicedesk.view.list.accidents.AccidentViewHolder
 import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 
@@ -112,5 +114,38 @@ class CustomerIncidentsRequests : CustomerBaseFragment() {
     accidentViewModel.work.removeObserver(workObserver)
     accidentViewModel.error.removeObserver(errorObserver)
     accidentViewModel.filteredAccidents.removeObserver(accidentsObserver)
+  }
+
+  fun openBottomSheetMenu() {
+    if (hasLoads) {
+      showLoadingErrorMessage()
+      return
+    }
+
+    bottomSheetMenu.show(activity.supportFragmentManager, "ACCIDENTS_BOTTOM_MENU")
+  }
+
+  private val bottomSheetMenu: AccidentBottomSheetDialog by lazy {
+    AccidentBottomSheetDialog(bottomSheetMenuListener)
+  }
+  private val bottomSheetMenuListener: AccidentBottomSheetDialog.Companion.ItemClickListener by lazy {
+    object: AccidentBottomSheetDialog.Companion.ItemClickListener {
+      override fun onItemClick(accidentType: AccidentType) {
+        when(accidentType) {
+          AccidentType.REQUEST -> showDialogAddRequest()
+          AccidentType.INCIDENT -> showDialogAddIncident()
+        }
+        bottomSheetMenu.dismiss()
+      }
+    }
+  }
+
+  fun showDialogAddIncident() {
+    Toast.makeText(requireContext(), "Создание инцидента (в разработке)", Toast.LENGTH_SHORT).show()
+  }
+
+  fun showDialogAddRequest() {
+    Toast.makeText(requireContext(), "Создание запроса (в разработке)", Toast.LENGTH_SHORT).show()
+
   }
 }
