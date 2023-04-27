@@ -11,7 +11,7 @@ object AccidentsRepository {
   suspend fun loadAccidents(
     accidentIds: List<String>, onSuccess: (List<Accident>) -> Unit
   ): ErrorApp? = try {
-    val accidents = accidentIds.mapNotNull { loadAccident(it) }
+    val accidents = accidentIds.mapNotNull { loadAccidentSync(it) }
     onSuccess(accidents)
     null
   } catch (e: FirebaseNetworkException) {
@@ -20,20 +20,30 @@ object AccidentsRepository {
     Errors.unknown
   }
 
-  private suspend fun loadAccident(id: String): Accident? {
-    return try {
-      val doc = FirebaseService.accidentsCollection.document(id).get().await()
-      val accident = doc.toObject(Accident::class.java)!!
-      accident.id = doc.id
+  suspend fun loadAccident(id: String, onSuccess: (Accident) -> Unit): ErrorApp? = try {
+    val doc = FirebaseService.accidentsCollection.document(id).get().await()
+    val accident = doc.toObject(Accident::class.java)!!
+    accident.id = doc.id
 
-      accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
-      accident.userLocal = UserRepository.loadUser(accident.userId)
-      accident.analystId?.let { accident.analystLocal = UserRepository.loadUser(it) }
+    accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
+    accident.userLocal = UserRepository.loadUser(accident.userId)
+    accident.analystId?.let { accident.analystLocal = UserRepository.loadUser(it) }
 
-      return accident
-    } catch (e: java.lang.Exception) {
-      null
+    onSuccess(accident)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  private suspend fun loadAccidentSync(id: String): Accident? {
+    var accident: Accident? = null
+    loadAccident(id) { loadedAccident ->
+      accident = loadedAccident
     }
+
+    return accident
   }
 
   suspend fun addAccident(

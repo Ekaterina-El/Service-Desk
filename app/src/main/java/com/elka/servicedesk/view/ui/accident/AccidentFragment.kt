@@ -61,6 +61,9 @@ class AccidentFragment : UserBaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    val args = AccidentFragmentArgs.fromBundle(requireArguments())
+    accidentsViewModel.loadCurrentOpenAccident(args.accidentId)
+
     activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
     val refresherColor = requireContext().getColor(R.color.accent)

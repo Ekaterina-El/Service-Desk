@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
   <data>
     <variable
@@ -18,14 +19,42 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/app_padding"
+        android:paddingVertical="15dp">
 
       <TextView
-          style="@style/text.h1"
-          android:layout_width="wrap_content"
-          android:text="Accident" />
-    </LinearLayout>
+          style="@style/text"
+          android:textStyle="bold"
+          android:textColor="@color/accent"
+          android:text="@{viewModel.currentAccident.category.text}"
+          tools:text="Запрос на выделение серверной мощности" />
 
+      <TextView
+          style="@style/text"
+          android:text="@{viewModel.currentAccident.status.text}"
+          android:textColor="@color/accent2"
+          tools:text="Активен" />
+
+      <TextView
+          android:layout_marginTop="5dp"
+          style="@style/text"
+          android:text="@{viewModel.currentAccident.subject}"
+          tools:text="Тема" />
+
+      <TextView
+          style="@style/text.hint"
+          android:text="@{viewModel.currentAccident.message}"
+          tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries" />
+
+      <TextView
+          android:layout_marginTop="10dp"
+          style="@style/text.hint.small"
+          android:maxLines="3"
+          android:ellipsize="end"
+          android:text="@{viewModel.currentAccident.info}"
+          tools:text="Активен / Отдел 10 / Иванов Иван Иванович / 01/12/2022 09:43:18" />
+    </LinearLayout>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

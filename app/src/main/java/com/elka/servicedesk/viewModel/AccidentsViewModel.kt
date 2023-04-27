@@ -177,16 +177,31 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   // region Single Accident
 
   fun reloadCurrentAccident() {
+    if (_currentLoadedAccidentId == null) return
+
     val work = Work.LOAD_ACCIDENT
     addWork(work)
 
     viewModelScope.launch {
+      _error.value = AccidentsRepository.loadAccident(_currentLoadedAccidentId!!) { accident ->
+        _currentAccident.value = accident
+      }
       removeWork(work)
     }
   }
 
   fun clearCurrentAccident() {
+    _currentAccident.value = null
+    _currentLoadedAccidentId = null
+  }
 
+  private var _currentLoadedAccidentId: String? = null
+  private val _currentAccident = MutableLiveData<Accident?>(null)
+  val currentAccident get() = _currentAccident
+
+  fun loadCurrentOpenAccident(accidentId: String) {
+    _currentLoadedAccidentId = accidentId
+    reloadCurrentAccident()
   }
 
   // endregion
