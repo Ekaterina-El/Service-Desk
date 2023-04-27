@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
+    <import type="com.elka.servicedesk.other.AccidentType" />
+    <import type="android.view.View" />
+
     <variable
         name="master"
         type="com.elka.servicedesk.view.ui.accident.AccidentFragment" />
@@ -19,42 +24,115 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/app_padding"
         android:paddingVertical="15dp">
 
-      <TextView
-          style="@style/text"
-          android:textStyle="bold"
-          android:textColor="@color/accent"
-          android:text="@{viewModel.currentAccident.category.text}"
-          tools:text="Запрос на выделение серверной мощности" />
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:orientation="horizontal">
 
-      <TextView
-          style="@style/text"
-          android:text="@{viewModel.currentAccident.status.text}"
-          android:textColor="@color/accent2"
-          tools:text="Активен" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.goBack()}"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp">
 
-      <TextView
-          android:layout_marginTop="5dp"
-          style="@style/text"
-          android:text="@{viewModel.currentAccident.subject}"
-          tools:text="Тема" />
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:padding="7dp">
 
-      <TextView
-          style="@style/text.hint"
-          android:text="@{viewModel.currentAccident.message}"
-          tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/accent" />
+          </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
-      <TextView
-          android:layout_marginTop="10dp"
-          style="@style/text.hint.small"
-          android:maxLines="3"
-          android:ellipsize="end"
-          android:text="@{viewModel.currentAccident.info}"
-          tools:text="Активен / Отдел 10 / Иванов Иван Иванович / 01/12/2022 09:43:18" />
+        <TextView
+            style="@style/text.h2"
+            android:layout_marginEnd="40dp"
+            tools:text="@string/incident"
+            android:gravity="center"
+            android:text="@{viewModel.currentAccident.type == AccidentType.INCIDENT ? @string/incident : viewModel.currentAccident.type == AccidentType.REQUEST ? @string/request : @string/loading}" />
+
+      </LinearLayout>
+
+      <androidx.core.widget.NestedScrollView
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1">
+
+        <LinearLayout
+            android:visibility="@{viewModel.currentAccident == null ? View.GONE : View.VISIBLE}"
+            tools:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+          <TextView
+              style="@style/text"
+              android:layout_marginTop="15dp"
+              android:text="@{viewModel.currentAccident.category.text}"
+              android:textColor="@color/accent"
+              android:textStyle="bold"
+              tools:text="Запрос на выделение серверной мощности" />
+
+          <TextView
+              style="@style/text"
+              android:text="@{viewModel.currentAccident.status.text}"
+              android:textColor="@color/accent2"
+              tools:text="Активен" />
+
+          <TextView
+              style="@style/text"
+              android:layout_marginTop="5dp"
+              android:text="@{viewModel.currentAccident.subject}"
+              tools:text="Тема" />
+
+          <TextView
+              style="@style/text.hint"
+              android:text="@{viewModel.currentAccident.message}"
+              tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries" />
+
+          <TextView
+              style="@style/text.hint.small"
+              android:layout_marginTop="10dp"
+              android:ellipsize="end"
+              android:maxLines="3"
+              android:text="@{viewModel.currentAccident.info}"
+              tools:text="Низкая срочность / Отдел 10 / Иванов Иван Иванович / 01/12/2022 09:43:18" />
+
+
+          <TextView
+            android:layout_marginTop="20dp"
+            style="@style/text.h3"
+            android:text="@string/attached_images_title" />
+
+          <TextView
+              style="@style/text.hint"
+              android:text="Работаем-работаем..." />
+
+          <TextView
+            android:layout_marginTop="20dp"
+            style="@style/text.h3"
+            android:text="@string/logs" />
+
+          <TextView
+              style="@style/text.hint"
+              android:text="Работаем-работаем..." />
+        </LinearLayout>
+      </androidx.core.widget.NestedScrollView>
+
     </LinearLayout>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

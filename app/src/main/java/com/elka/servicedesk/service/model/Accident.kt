@@ -34,7 +34,7 @@ data class Accident(
     set(v) {}
 
   var info: String
-    get() = "${divisionLocal?.name} / ${userLocal?.fullName} / $createdDateS"
+    get() = "${urgency.text} срочность / ${divisionLocal?.name} / ${userLocal?.fullName} / $createdDateS"
     set(v) {}
 }
 

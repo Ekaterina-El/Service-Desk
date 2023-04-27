@@ -84,4 +84,9 @@
   <string name="urgency">Срочность</string>
   <string name="category">Категория</string>
   <string name="accidents_in_work">Назначенные</string>
+  <string name="request">Запрос</string>
+  <string name="loading">Загрузка…</string>
+  <string name="incident">Инцидент</string>
+  <string name="attached_images_title">Прикрепленные изображения</string>
+  <string name="logs">Журнал событий</string>
 </resources>
