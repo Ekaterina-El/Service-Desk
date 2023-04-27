@@ -9,8 +9,8 @@ import com.elka.servicedesk.view.list.BaseAdapter
 
 
 class ImagesAdapter(
-  private val listenerItem: ImageItemViewHolder.Companion.Listener,
-  private val listenerAdd: ImageAddItemViewHolder.Companion.Listener
+  private val listenerItem: ImageItemViewHolder.Companion.Listener? = null,
+  private val listenerAdd: ImageAddItemViewHolder.Companion.Listener? = null
 ) : BaseAdapter<ImageItem>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 

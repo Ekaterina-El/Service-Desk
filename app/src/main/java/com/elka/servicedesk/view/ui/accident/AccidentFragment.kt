@@ -11,6 +11,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AccidentFragmentBinding
 import com.elka.servicedesk.other.Work
+import com.elka.servicedesk.service.model.Accident
+import com.elka.servicedesk.view.list.images.ImageItem
+import com.elka.servicedesk.view.list.images.ImagesAdapter
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AccidentsViewModel
 
@@ -18,6 +21,17 @@ class AccidentFragment : UserBaseFragment() {
   private lateinit var binding: AccidentFragmentBinding
   private val accidentsViewModel by activityViewModels<AccidentsViewModel>()
 
+
+  private val imagesAdapter: ImagesAdapter by lazy {
+    ImagesAdapter(null, null)
+  }
+
+  private val accidentObserver = Observer<Accident?>{accident ->
+    if (accident == null) return@Observer
+
+    val items = accident.photosURL.map { ImageItem(type = ImagesAdapter.TYPE_ITEM, it) }.toMutableList()
+    imagesAdapter.setItems(items)
+  }
 
   private val works = listOf(
     Work.LOAD_ACCIDENT
@@ -40,6 +54,7 @@ class AccidentFragment : UserBaseFragment() {
       lifecycleOwner = viewLifecycleOwner
       master = this@AccidentFragment
       viewModel = this@AccidentFragment.accidentsViewModel
+      imagesAdapter = this@AccidentFragment.imagesAdapter
     }
 
     return binding.root
@@ -84,6 +99,7 @@ class AccidentFragment : UserBaseFragment() {
     userViewModel.work.observe(this, workObserver)
     accidentsViewModel.error.observe(this, errorObserver)
     accidentsViewModel.work.observe(this, workObserver)
+    accidentsViewModel.currentAccident.observe(this, accidentObserver)
   }
 
   override fun onStop() {
@@ -93,5 +109,7 @@ class AccidentFragment : UserBaseFragment() {
     userViewModel.work.removeObserver(workObserver)
     accidentsViewModel.error.removeObserver(errorObserver)
     accidentsViewModel.work.removeObserver(workObserver)
+    accidentsViewModel.currentAccident.removeObserver(accidentObserver)
+
   }
 }

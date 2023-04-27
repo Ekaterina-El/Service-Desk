@@ -5,7 +5,13 @@
 
   <data>
 
+    <variable
+        name="imagesAdapter"
+        type="com.elka.servicedesk.view.list.images.ImagesAdapter" />
+
+
     <import type="com.elka.servicedesk.other.AccidentType" />
+
     <import type="android.view.View" />
 
     <variable
@@ -61,9 +67,9 @@
         <TextView
             style="@style/text.h2"
             android:layout_marginEnd="40dp"
-            tools:text="@string/incident"
             android:gravity="center"
-            android:text="@{viewModel.currentAccident.type == AccidentType.INCIDENT ? @string/incident : viewModel.currentAccident.type == AccidentType.REQUEST ? @string/request : @string/loading}" />
+            android:text="@{viewModel.currentAccident.type == AccidentType.INCIDENT ? @string/incident : viewModel.currentAccident.type == AccidentType.REQUEST ? @string/request : @string/loading}"
+            tools:text="@string/incident" />
 
       </LinearLayout>
 
@@ -73,11 +79,11 @@
           android:layout_weight="1">
 
         <LinearLayout
-            android:visibility="@{viewModel.currentAccident == null ? View.GONE : View.VISIBLE}"
-            tools:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{viewModel.currentAccident == null ? View.GONE : View.VISIBLE}"
+            tools:visibility="visible">
 
           <TextView
               style="@style/text"
@@ -112,20 +118,20 @@
               android:text="@{viewModel.currentAccident.info}"
               tools:text="Низкая срочность / Отдел 10 / Иванов Иван Иванович / 01/12/2022 09:43:18" />
 
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/images"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:orientation="vertical"
+              app:adapter="@{imagesAdapter}"
+              app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+              tools:listitem="@layout/image_item" />
 
           <TextView
-            android:layout_marginTop="20dp"
-            style="@style/text.h3"
-            android:text="@string/attached_images_title" />
-
-          <TextView
-              style="@style/text.hint"
-              android:text="Работаем-работаем..." />
-
-          <TextView
-            android:layout_marginTop="20dp"
-            style="@style/text.h3"
-            android:text="@string/logs" />
+              style="@style/text.h3"
+              android:layout_marginTop="20dp"
+              android:text="@string/logs" />
 
           <TextView
               style="@style/text.hint"

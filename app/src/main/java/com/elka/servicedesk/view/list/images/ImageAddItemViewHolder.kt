@@ -7,12 +7,12 @@ import com.elka.servicedesk.databinding.AddImageItemBinding
 class ImageAddItemViewHolder(
   val context: Context,
   val binding: AddImageItemBinding,
-  val listener: Listener
+  val listener: Listener?
 ) : RecyclerView.ViewHolder(binding.root) {
 
   fun bind() {
     binding.wrapper.setOnClickListener {
-      listener.onSelect()
+      listener?.onSelect()
     }
   }
 
