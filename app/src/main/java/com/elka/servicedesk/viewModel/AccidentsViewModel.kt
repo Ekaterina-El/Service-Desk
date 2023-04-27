@@ -129,7 +129,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     userId = profile.id,
     divisionLocal = profile.divisionLocal!!.copy(),
     userLocal = profile.copy(),
-    status = AccidentStatus.ACTIVE
+    status = AccidentStatus.ACTIVE,
+    photosURL = _newAccidentImages.value!!
   )
 
   private val _addedAccident = MutableLiveData<Accident?>(null)

@@ -49,8 +49,12 @@ object AccidentsRepository {
   suspend fun addAccident(
     profile: User, accident: Accident, onSuccess: (Accident) -> Unit
   ): ErrorApp? = try {
-    // TODO: load images
-    // accident.photoURL = ...
+
+
+    val photosUrl = accident.photosURL.map {
+      return@map FirebaseService.loadPhoto(it)
+    }
+    accident.photosURL = photosUrl
 
     val user = accident.userLocal
     val division = accident.divisionLocal
