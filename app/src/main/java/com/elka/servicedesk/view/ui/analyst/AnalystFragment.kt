@@ -11,7 +11,7 @@ import com.elka.servicedesk.databinding.AnalystFragmentBinding
 import com.elka.servicedesk.databinding.CustomerFragmentBinding
 import com.elka.servicedesk.view.ui.BaseFragment
 
-class AnalystFragment: BaseFragment() {
+class AnalystFragment: AnalystBaseFragment() {
   private lateinit var binding: AnalystFragmentBinding
 
   override fun onCreateView(
@@ -20,6 +20,7 @@ class AnalystFragment: BaseFragment() {
     binding = AnalystFragmentBinding.inflate(layoutInflater, container, false)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
+      viewModel = this@AnalystFragment.analystViewModel
     }
     return binding.root
   }

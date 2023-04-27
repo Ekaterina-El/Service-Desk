@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
+
+    <variable
+        name="viewModel"
+        type="com.elka.servicedesk.viewModel.AnalystViewModel" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:theme="@style/BottomNavigationTheme"
+        android:visibility="@{viewModel.menuStatus == true ? View.VISIBLE : View.GONE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:labelVisibilityMode="selected"
         app:menu="@menu/analyst_bottom_menu"

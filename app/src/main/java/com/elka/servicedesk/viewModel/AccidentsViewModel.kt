@@ -185,5 +185,9 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     }
   }
 
+  fun clearCurrentAccident() {
+
+  }
+
   // endregion
 }

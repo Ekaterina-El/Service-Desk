@@ -18,6 +18,7 @@ class CustomerFragment: CustomerBaseFragment() {
     binding = CustomerFragmentBinding.inflate(layoutInflater, container, false)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
+      viewModel = this@CustomerFragment.customerViewModel
     }
     return binding.root
   }

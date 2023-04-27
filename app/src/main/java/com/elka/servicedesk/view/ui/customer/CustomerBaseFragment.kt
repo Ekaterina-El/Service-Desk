@@ -4,11 +4,13 @@ import androidx.fragment.app.activityViewModels
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AccidentsViewModel
+import com.elka.servicedesk.viewModel.CustomerViewModel
 import com.elka.servicedesk.viewModel.DivisionsViewModel
 
 abstract class CustomerBaseFragment : UserBaseFragment() {
   protected val divisionsViewModel by activityViewModels<DivisionsViewModel>()
   protected val accidentViewModel by activityViewModels<AccidentsViewModel>()
+  protected val customerViewModel by activityViewModels<CustomerViewModel>()
 
   protected open val works = listOf(
     Work.LOAD_PROFILE,
@@ -29,4 +31,12 @@ abstract class CustomerBaseFragment : UserBaseFragment() {
 
       return getHasLoads(w1, works)
     }
+
+  fun hideMenu() {
+    customerViewModel.setMenuStatus(false)
+  }
+
+  fun showMenu() {
+    customerViewModel.setMenuStatus(true)
+  }
 }

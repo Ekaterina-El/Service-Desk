@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -44,12 +45,26 @@ class AccidentFragment : UserBaseFragment() {
     return binding.root
   }
 
+  fun goBack() {
+    accidentsViewModel.clearCurrentAccident()
+    navController.popBackStack()
+  }
+
+  private val onBackPressedCallback by lazy {
+    object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        goBack()
+      }
+    }
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
+
     val refresherColor = requireContext().getColor(R.color.accent)
-    val swipeRefreshListener =
-      SwipeRefreshLayout.OnRefreshListener { reloadAccident() }
+    val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { reloadAccident() }
 
     binding.swiper.setColorSchemeColors(refresherColor)
     binding.swiper.setOnRefreshListener(swipeRefreshListener)

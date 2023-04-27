@@ -24,6 +24,7 @@ class AnalystAccidentsInWorkFragment : AnalystBaseFragment() {
   private val accidentsAdapterListener by lazy {
     object : AccidentItemViewHolder.Companion.Listener {
       override fun onSelect(accident: Accident) {
+        hideMenu()
         goAccident(accident.id, FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT)
       }
     }
@@ -108,6 +109,7 @@ class AnalystAccidentsInWorkFragment : AnalystBaseFragment() {
   override fun onResume() {
     super.onResume()
 
+    showMenu()
     if (accidentViewModel.analystAccidents.value!!.isEmpty()) reloadAccidents()
 
     userViewModel.work.observe(this, workObserver)

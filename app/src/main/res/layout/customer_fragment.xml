@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
+    <variable
+        name="viewModel"
+        type="com.elka.servicedesk.viewModel.CustomerViewModel" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +22,7 @@
         android:theme="@style/BottomNavigationTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:labelVisibilityMode="selected"
+        android:visibility="@{viewModel.menuStatus == true ? View.VISIBLE : View.GONE}"
         app:menu="@menu/customer_bottom_menu"
         android:layout_height="wrap_content" />
 
