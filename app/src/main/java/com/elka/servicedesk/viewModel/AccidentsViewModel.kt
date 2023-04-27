@@ -135,6 +135,9 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   private val _addedAccident = MutableLiveData<Accident?>(null)
   val addedAccident get() = _addedAccident
 
+  private val _newAccidentImages = MutableLiveData<List<String>>(listOf())
+  val newAccidentImages get() = _newAccidentImages
+
   fun clear() {
     _externalAction.value = null
     _error.value = null

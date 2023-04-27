@@ -5,6 +5,10 @@
 
   <data>
 
+    <variable
+        name="imagesAdapter"
+        type="com.elka.servicedesk.view.list.images.ImagesAdapter" />
+
     <import type="android.view.View" />
 
     <variable
@@ -159,6 +163,16 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
       </LinearLayout>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/images"
+          app:adapter="@{imagesAdapter}"
+          android:layout_width="match_parent"
+          android:layout_marginTop="20dp"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          android:orientation="horizontal"
+          tools:listitem="@layout/image_item"
+          android:layout_height="100dp" />
 
       <LinearLayout
           android:layout_width="match_parent"

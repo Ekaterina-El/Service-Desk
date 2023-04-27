@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+        name="url"
+        type="String" />
+  </data>
+
+  <androidx.cardview.widget.CardView
+      android:id="@+id/wrapper"
+      android:clickable="true"
+      android:focusable="true"
+      android:foreground="?android:attr/selectableItemBackground"
+      app:cardElevation="0dp"
+      app:cardCornerRadius="@dimen/images_corner_radius"
+      android:layout_width="100dp"
+      android:layout_height="match_parent">
+
+    <ImageView
+        android:paddingHorizontal="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:imageUrl="@{url}"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/placeholder_image" />
+
+  </androidx.cardview.widget.CardView>
+</layout>

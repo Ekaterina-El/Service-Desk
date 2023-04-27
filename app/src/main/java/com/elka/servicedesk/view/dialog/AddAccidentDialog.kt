@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.elka.servicedesk.R
@@ -11,6 +12,10 @@ import com.elka.servicedesk.databinding.AddAccidentDialogBinding
 import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.view.list.images.ImageAddItemViewHolder
+import com.elka.servicedesk.view.list.images.ImageItem
+import com.elka.servicedesk.view.list.images.ImageItemViewHolder
+import com.elka.servicedesk.view.list.images.ImagesAdapter
 import com.elka.servicedesk.viewModel.AccidentsViewModel
 
 class AddAccidentDialog(
@@ -25,6 +30,32 @@ class AddAccidentDialog(
 
   val workObserver = Observer<List<Work>> {
     setCancelable(it.isEmpty())
+  }
+
+  private val imageItemListener by lazy {
+    object: ImageItemViewHolder.Companion.Listener {
+      override fun onRemove(url: String) {
+        Toast.makeText(context, "Remove $url", Toast.LENGTH_SHORT).show()
+      }
+    }
+  }
+
+  private val addImageItemListener by lazy {
+    object: ImageAddItemViewHolder.Companion.Listener {
+      override fun onSelect() {
+        Toast.makeText(context, "Add new image", Toast.LENGTH_SHORT).show()
+      }
+    }
+  }
+
+  private val imagesAdapter: ImagesAdapter by lazy {
+    ImagesAdapter(imageItemListener, addImageItemListener)
+  }
+
+  private val imagesObserver = Observer<List<String>> { imagesUrls ->
+    val items = imagesUrls.map { ImageItem(type = ImagesAdapter.TYPE_ITEM, it) }.toMutableList()
+    items.add(ImageItem(type = ImagesAdapter.TYPE_ADD_ITEM, ""))
+    imagesAdapter.setItems(items)
   }
 
 
@@ -60,6 +91,7 @@ class AddAccidentDialog(
       master = this@AddAccidentDialog
       lifecycleOwner = this@AddAccidentDialog.owner
       viewModel = this@AddAccidentDialog.viewModel
+      imagesAdapter = this@AddAccidentDialog.imagesAdapter
     }
     setContentView(binding.root)
 
@@ -88,6 +120,8 @@ class AddAccidentDialog(
     viewModel.addedAccident.observe(owner, addedAccidentObserver)
     viewModel.work.observe(owner, workObserver)
 
+    viewModel.newAccidentImages.observe(owner, imagesObserver)
+
     binding.categorySpinner.onItemSelectedListener = categoriesListener
     binding.urgencySpinner.onItemSelectedListener = urgencyListener
 
@@ -100,6 +134,7 @@ class AddAccidentDialog(
   }
 
   fun disagree() {
+    viewModel.newAccidentImages.removeObserver(imagesObserver)
     viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
     viewModel.addedAccident.removeObserver(addedAccidentObserver)
     viewModel.work.removeObserver(workObserver)
