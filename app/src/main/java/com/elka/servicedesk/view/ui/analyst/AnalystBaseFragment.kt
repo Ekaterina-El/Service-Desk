@@ -3,6 +3,7 @@ package com.elka.servicedesk.view.ui.analyst
 import androidx.fragment.app.activityViewModels
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.view.ui.UserBaseFragment
+import com.elka.servicedesk.view.ui.customer.CustomerIncidentsRequestsDirections
 import com.elka.servicedesk.viewModel.AccidentsViewModel
 import com.elka.servicedesk.viewModel.DivisionsViewModel
 

@@ -14,11 +14,24 @@
       android:id="@+id/customerIncidentsRequests"
       tools:layout="@layout/customer_incidents_requests_fragment"
       android:name="com.elka.servicedesk.view.ui.customer.CustomerIncidentsRequests"
-      android:label="CustomerIncidentsRequests" />
+      android:label="CustomerIncidentsRequests" >
+    <action
+        android:id="@+id/action_customerIncidentsRequests_to_accidentFragment2"
+        app:destination="@id/accidentFragment" />
+  </fragment>
 
   <fragment
       android:id="@+id/customerLogsFragment"
       tools:layout="@layout/logs_fragment"
       android:name="com.elka.servicedesk.view.ui.customer.CustomerLogsFragment"
       android:label="CustomerLogsFragment" />
+  <fragment
+      android:id="@+id/accidentFragment"
+      tools:layout="@layout/accident_fragment"
+      android:name="com.elka.servicedesk.view.ui.accident.AccidentFragment"
+      android:label="AccidentFragment" >
+    <argument
+        android:name="accidentId"
+        app:argType="string" />
+  </fragment>
 </navigation>

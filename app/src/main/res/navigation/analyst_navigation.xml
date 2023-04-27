@@ -20,10 +20,27 @@
       android:id="@+id/analystAccidentsFragment"
       tools:layout="@layout/analyst_accidents_fragment"
       android:name="com.elka.servicedesk.view.ui.analyst.AnalystAccidentsFragment"
-      android:label="AnalystAccidentsFragment" />
+      android:label="AnalystAccidentsFragment" >
+    <action
+        android:id="@+id/action_analystAccidentsFragment_to_accidentFragment"
+        app:destination="@id/accidentFragment" />
+  </fragment>
   <fragment
       android:id="@+id/analystAccidentsInWorkFragment"
       tools:layout="@layout/analyst_accidents_in_work_fragment"
       android:name="com.elka.servicedesk.view.ui.analyst.AnalystAccidentsInWorkFragment"
-      android:label="AnalystAccidentsInWorkFragment" />
+      android:label="AnalystAccidentsInWorkFragment" >
+    <action
+        android:id="@+id/action_analystAccidentsInWorkFragment_to_accidentFragment"
+        app:destination="@id/accidentFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/accidentFragment"
+      tools:layout="@layout/accident_fragment"
+      android:name="com.elka.servicedesk.view.ui.accident.AccidentFragment"
+      android:label="AccidentFragment" >
+    <argument
+        android:name="accidentId"
+        app:argType="string" />
+  </fragment>
 </navigation>

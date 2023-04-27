@@ -173,4 +173,17 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     filterAccidents()
   }
   // endregion
+
+  // region Single Accident
+
+  fun reloadCurrentAccident() {
+    val work = Work.LOAD_ACCIDENT
+    addWork(work)
+
+    viewModelScope.launch {
+      removeWork(work)
+    }
+  }
+
+  // endregion
 }

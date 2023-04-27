@@ -28,7 +28,7 @@ data class Accident(
 
   var createdDate: Date = Constants.getCurrentDate(),
   val status: AccidentStatus = AccidentStatus.ACTIVE,
-) {
+): java.io.Serializable {
   var createdDateS: String
     get() = createdDate.toLogFormat()
     set(v) {}

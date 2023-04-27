@@ -4,18 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AnalystAccidentsInWorkFragmentBinding
-import com.elka.servicedesk.other.AccidentCategory
 import com.elka.servicedesk.other.AccidentType
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
-import com.elka.servicedesk.service.model.splitAndSort
 import com.elka.servicedesk.service.model.toAccidentItems
 import com.elka.servicedesk.view.list.accidents.AccidentItem
 import com.elka.servicedesk.view.list.accidents.AccidentItemViewHolder
@@ -27,7 +24,7 @@ class AnalystAccidentsInWorkFragment : AnalystBaseFragment() {
   private val accidentsAdapterListener by lazy {
     object : AccidentItemViewHolder.Companion.Listener {
       override fun onSelect(accident: Accident) {
-        Toast.makeText(requireContext(), accident.message, Toast.LENGTH_SHORT).show()
+        goAccident(accident.id, FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT)
       }
     }
   }

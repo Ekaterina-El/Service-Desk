@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,6 +17,7 @@ import com.elka.servicedesk.service.model.toAccidentItems
 import com.elka.servicedesk.view.list.accidents.AccidentItem
 import com.elka.servicedesk.view.list.accidents.AccidentItemViewHolder
 import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
+import com.elka.servicedesk.view.ui.UserBaseFragment
 
 class AnalystAccidentsFragment : AnalystBaseFragment() {
   private lateinit var binding: AnalystAccidentsFragmentBinding
@@ -25,7 +25,7 @@ class AnalystAccidentsFragment : AnalystBaseFragment() {
   private val accidentsAdapterListener by lazy {
     object : AccidentItemViewHolder.Companion.Listener {
       override fun onSelect(accident: Accident) {
-        Toast.makeText(requireContext(), accident.message, Toast.LENGTH_SHORT).show()
+        goAccident(accident.id, FROM_ACTIVE_ACCIDENTS_TO_ACCIDENT)
       }
     }
   }
@@ -35,6 +35,7 @@ class AnalystAccidentsFragment : AnalystBaseFragment() {
   }
 
   private val accidentsObserver = Observer<List<Accident>> { list ->
+    // TODO: refactoring
     val items = mutableListOf<AccidentItem>()
     val incidents =
       list.filter { it.type == AccidentType.INCIDENT }.sortedByDescending { it.createdDate }
