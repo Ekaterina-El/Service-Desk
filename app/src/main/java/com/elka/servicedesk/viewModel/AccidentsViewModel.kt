@@ -138,6 +138,18 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   private val _newAccidentImages = MutableLiveData<List<String>>(listOf())
   val newAccidentImages get() = _newAccidentImages
 
+  fun addPhoto(uri: String) {
+    val items = _newAccidentImages.value!!.toMutableList()
+    items.add(uri)
+    _newAccidentImages.value = items
+  }
+
+  fun removePhoto(uri: String) {
+    val items = _newAccidentImages.value!!.toMutableList()
+    items.remove(uri)
+    _newAccidentImages.value = items
+  }
+
   fun clear() {
     _externalAction.value = null
     _error.value = null
@@ -162,6 +174,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   }
 
   fun clearDialog() {
+    _newAccidentImages.value = listOf()
     _addedAccident.value = null
     message.value = ""
     subject.value = ""
@@ -206,6 +219,5 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     _currentLoadedAccidentId = accidentId
     reloadCurrentAccident()
   }
-
   // endregion
 }

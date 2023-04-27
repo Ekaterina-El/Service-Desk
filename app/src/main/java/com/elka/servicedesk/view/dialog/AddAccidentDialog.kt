@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.elka.servicedesk.R
@@ -22,7 +21,8 @@ class AddAccidentDialog(
   context: Context,
   private val owner: LifecycleOwner,
   val viewModel: AccidentsViewModel,
-  private val listener: Listener
+  private val listener: Listener,
+  private val imageChanger: ImageChanger
 ) : Dialog(context) {
   private lateinit var binding: AddAccidentDialogBinding
   private lateinit var profile: User
@@ -33,18 +33,24 @@ class AddAccidentDialog(
   }
 
   private val imageItemListener by lazy {
-    object: ImageItemViewHolder.Companion.Listener {
+    object : ImageItemViewHolder.Companion.Listener {
       override fun onRemove(url: String) {
-        Toast.makeText(context, "Remove $url", Toast.LENGTH_SHORT).show()
+        viewModel.removePhoto(url)
       }
     }
   }
 
   private val addImageItemListener by lazy {
-    object: ImageAddItemViewHolder.Companion.Listener {
+    object : ImageAddItemViewHolder.Companion.Listener {
       override fun onSelect() {
-        Toast.makeText(context, "Add new image", Toast.LENGTH_SHORT).show()
+        pickUpPhoto()
       }
+    }
+  }
+
+  private fun pickUpPhoto() {
+    imageChanger.change(CropOptions.freeCropImageOptions) { uri ->
+      viewModel.addPhoto(uri.toString())
     }
   }
 

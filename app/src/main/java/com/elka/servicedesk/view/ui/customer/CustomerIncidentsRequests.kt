@@ -12,6 +12,7 @@ import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.CustomerIncidentsRequestsFragmentBinding
 import com.elka.servicedesk.other.AccidentType
 import com.elka.servicedesk.other.Action
+import com.elka.servicedesk.other.ImageChanger
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.toAccidentItems
@@ -23,6 +24,7 @@ import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 import com.elka.servicedesk.view.ui.UserBaseFragment
 
 class CustomerIncidentsRequests : CustomerBaseFragment() {
+  private lateinit var imageChanger: ImageChanger
   private lateinit var binding: CustomerIncidentsRequestsFragmentBinding
 
   private val accidentsAdapterListener by lazy {
@@ -93,6 +95,8 @@ class CustomerIncidentsRequests : CustomerBaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    imageChanger = ImageChanger(this)
 
     val refresherColor = requireContext().getColor(R.color.accent)
     val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { reloadAccidents() }
@@ -183,7 +187,7 @@ class CustomerIncidentsRequests : CustomerBaseFragment() {
   }
 
   private val addAccidentDialog: AddAccidentDialog by lazy {
-    AddAccidentDialog(requireContext(), this, accidentViewModel, addAccidentDialogListener)
+    AddAccidentDialog(requireContext(), this, accidentViewModel, addAccidentDialogListener, imageChanger)
   }
 
   fun showDialogAddIncident() {

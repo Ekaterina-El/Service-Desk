@@ -89,4 +89,5 @@
   <string name="incident">Инцидент</string>
   <string name="attached_images_title">Прикрепленные изображения</string>
   <string name="logs">Журнал событий</string>
+  <string name="pick_up_photo">Прикрепить фото</string>
 </resources>

@@ -3,4 +3,5 @@
   <dimen name="app_padding">10dp</dimen>
   <dimen name="icon_back_size">30dp</dimen>
   <dimen name="images_corner_radius">3dp</dimen>
+  <dimen name="margin">3dp</dimen>
 </resources>
