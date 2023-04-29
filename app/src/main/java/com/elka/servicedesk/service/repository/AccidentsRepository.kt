@@ -83,6 +83,8 @@ object AccidentsRepository {
       division = division,
       event = event,
       param = params,
+      accident = accident,
+      accidentId = accident.id
     )
     LogsRepository.addLogSync(log)
 
