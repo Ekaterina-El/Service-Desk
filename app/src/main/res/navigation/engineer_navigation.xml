@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Engineer_navigation.xml"
+    app:startDestination="@id/engineerProfileFragment">
+
+  <fragment
+      android:id="@+id/engineerProfileFragment"
+      tools:layout="@layout/engineer_profile_fragment"
+      android:name="com.elka.servicedesk.view.ui.engineer.EngineerProfileFragment"
+      android:label="EngineerProfileFragment" />
+
+  <fragment
+      android:id="@+id/engineerLogsFragment"
+      tools:layout="@layout/logs_fragment"
+      android:name="com.elka.servicedesk.view.ui.engineer.EngineerLogsFragment"
+      android:label="EngineerLogsFragment" />
+  <fragment
+      android:id="@+id/engineerAccidentsFragment"
+      tools:layout="@layout/engineer_accidents_fragment"
+      android:name="com.elka.servicedesk.view.ui.engineer.EngineerAccidentsFragment"
+      android:label="EngineerAccidentsFragment" >
+    <action
+        android:id="@+id/action_engineerAccidentsFragment_to_accidentFragment"
+        app:destination="@id/accidentFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/engineerAccidentsInWorkFragment"
+      tools:layout="@layout/engineer_accidents_in_work_fragment"
+      android:name="com.elka.servicedesk.view.ui.engineer.EngineerAccidentsInWorkFragment"
+      android:label="EngineerAccidentsInWorkFragment" >
+    <action
+        android:id="@+id/action_engineerAccidentsInWorkFragment_to_accidentFragment"
+        app:destination="@id/accidentFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/accidentFragment"
+      tools:layout="@layout/accident_fragment"
+      android:name="com.elka.servicedesk.view.ui.accident.AccidentFragment"
+      android:label="AccidentFragment" >
+    <argument
+        android:name="accidentId"
+        app:argType="string" />
+  </fragment>
+</navigation>

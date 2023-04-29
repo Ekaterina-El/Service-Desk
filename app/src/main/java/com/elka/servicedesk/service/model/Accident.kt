@@ -23,8 +23,8 @@ data class Accident(
   var userId: String = "",
   var userLocal: User? = null,
 
-  var analystId: String? = null,
-  var analystLocal: User? = null,
+  var engineerId: String? = null,
+  var engineerLocal: User? = null,
 
   var createdDate: Date = Constants.getCurrentDate(),
   val status: AccidentStatus = AccidentStatus.ACTIVE,

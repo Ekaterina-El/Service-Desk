@@ -13,7 +13,7 @@
 
     <variable
         name="master"
-        type="com.elka.servicedesk.view.ui.analyst.AnalystAccidentsFragment" />
+        type="com.elka.servicedesk.view.ui.engineer.EngineerAccidentsFragment" />
 
     <variable
         name="viewModel"

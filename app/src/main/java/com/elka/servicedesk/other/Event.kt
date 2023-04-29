@@ -1,8 +1,8 @@
 package com.elka.servicedesk.other
 
 enum class Event(val text: String) {
-  ADDED_ANALYST("Добавлен аналитик"),
-  BLOCKED_ANALYST("Заблокирован аналитик"),
+  ADDED_ENGINEER("Добавлен инженер"),
+  BLOCKED_ENGINEER("Заблокирован инженер"),
 
   ADDED_ADMIN("Добавлен администратор"),
   BLOCKED_ADMIN("Заблокирован администратор"),
@@ -10,7 +10,7 @@ enum class Event(val text: String) {
   REGISTERED_USER("Зарегистрировался пользователь"),
 
   UPDATE_USER("Отредактированы данные пользователя"),
-  UPDATE_ANALYST("Отредактированы данные аналитика"),
+  UPDATE_ENGINEER("Отредактированы данные инженера"),
   UPDATE_ADMIN("Отредактированы данные админа"),
   UPDATE_MANAGER("Отредактированы данные менаджера"),
 

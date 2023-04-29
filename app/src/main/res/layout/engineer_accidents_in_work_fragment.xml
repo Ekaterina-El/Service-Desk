@@ -13,7 +13,7 @@
 
     <variable
         name="master"
-        type="com.elka.servicedesk.view.ui.analyst.AnalystAccidentsInWorkFragment" />
+        type="com.elka.servicedesk.view.ui.engineer.EngineerAccidentsInWorkFragment" />
 
     <variable
         name="viewModel"
@@ -58,26 +58,26 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:afterTextChanged="@{() -> viewModel.filterAnalystAccidents()}"
+                android:afterTextChanged="@{() -> viewModel.filterEngineerAccidents()}"
                 android:background="@null"
                 android:ellipsize="end"
                 android:hint="@string/search"
                 android:maxLines="1"
                 android:paddingStart="0dp"
                 android:paddingEnd="10dp"
-                android:text="@={viewModel.analystsFilter}"
+                android:text="@={viewModel.engineerFilter}"
                 tools:ignore="NestedWeights" />
 
             <ImageView
                 style="@style/icon"
                 android:src="@drawable/ic_search"
-                android:visibility="@{viewModel.analystsFilter.isEmpty() ? View.VISIBLE : View.GONE }" />
+                android:visibility="@{viewModel.engineerFilter.isEmpty() ? View.VISIBLE : View.GONE }" />
 
             <ImageView
                 style="@style/icon"
-                android:onClick="@{() -> viewModel.clearFilterAnalystAccidents()}"
+                android:onClick="@{() -> viewModel.clearFilterEngineerAccidents()}"
                 android:src="@drawable/ic_close"
-                android:visibility="@{viewModel.analystsFilter.isEmpty() ? View.GONE : View.VISIBLE }" />
+                android:visibility="@{viewModel.engineerFilter.isEmpty() ? View.GONE : View.VISIBLE }" />
           </LinearLayout>
         </LinearLayout>
       </LinearLayout>
@@ -88,7 +88,7 @@
           android:layout_height="0dp"
           android:layout_weight="1"
           android:adapter="@{accidentsAdapter}"
-          android:visibility="@{viewModel.analystsFilteredAccidents.size() == 0 ? View.GONE : View.VISIBLE}"
+          android:visibility="@{viewModel.engineerFilteredAccidents.size() == 0 ? View.GONE : View.VISIBLE}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:ignore="NestedWeights"
           tools:listitem="@layout/accident_item"
@@ -99,7 +99,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="20dp"
           android:gravity="center"
-          android:visibility="@{viewModel.analystsFilteredAccidents.size() == 0 ? View.VISIBLE : View.GONE}">
+          android:visibility="@{viewModel.engineerFilteredAccidents.size() == 0 ? View.VISIBLE : View.GONE}">
 
         <include
             android:id="@+id/layoutNoFound"

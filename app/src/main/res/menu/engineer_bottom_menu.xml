@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <item android:id="@id/analystProfileFragment"
+  <item android:id="@id/engineerProfileFragment"
       android:icon="@drawable/ic_profile"
       android:title="@string/profile" />
 
 
-  <item android:id="@id/analystAccidentsFragment"
+  <item android:id="@id/engineerAccidentsFragment"
       android:icon="@drawable/ic_repair"
       android:title="@string/accidents" />
 
-  <item android:id="@id/analystAccidentsInWorkFragment"
+  <item android:id="@id/engineerAccidentsInWorkFragment"
       android:icon="@drawable/ic_work"
       android:title="@string/accidents_in_work" />
 
-  <item android:id="@id/analystLogsFragment"
+  <item android:id="@id/engineerLogsFragment"
       android:icon="@drawable/ic_logs"
       android:title="@string/logs_title" />
 </menu>

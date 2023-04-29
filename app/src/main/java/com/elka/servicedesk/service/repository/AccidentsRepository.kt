@@ -27,7 +27,7 @@ object AccidentsRepository {
 
     accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
     accident.userLocal = UserRepository.loadUser(accident.userId)
-    accident.analystId?.let { accident.analystLocal = UserRepository.loadUser(it) }
+    accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
 
     onSuccess(accident)
     null
@@ -125,11 +125,11 @@ object AccidentsRepository {
     Errors.unknown
   }
 
-  suspend fun loadAccidentsOfAnalyst(
-    analystId: String,
+  suspend fun loadAccidentsOfEngineer(
+    engineerId: String,
     onSuccess: (List<Accident>) -> Unit
   ): ErrorApp? = try {
-    val accidents = FirebaseService.accidentsCollection.whereEqualTo(FIELD_ANALTYST_ID, analystId).get().await()
+    val accidents = FirebaseService.accidentsCollection.whereEqualTo(FIELD_ENGINEER_ID, engineerId).get().await()
       .mapNotNull { doc ->
         return@mapNotNull try {
           val accident = doc.toObject(Accident::class.java)
@@ -152,5 +152,5 @@ object AccidentsRepository {
   }
 
   private const val FIELD_DIVISION_ID = "divisionId"
-  private const val FIELD_ANALTYST_ID = "analystId"
+  private const val FIELD_ENGINEER_ID = "engineerId"
 }

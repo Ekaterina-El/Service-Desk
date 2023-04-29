@@ -1,16 +1,16 @@
-package com.elka.servicedesk.view.ui.analyst
+package com.elka.servicedesk.view.ui.engineer
 
 import androidx.fragment.app.activityViewModels
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AccidentsViewModel
-import com.elka.servicedesk.viewModel.AnalystViewModel
+import com.elka.servicedesk.viewModel.EngineerViewModel
 import com.elka.servicedesk.viewModel.DivisionsViewModel
 
-abstract class AnalystBaseFragment : UserBaseFragment() {
+abstract class EngineerBaseFragment : UserBaseFragment() {
   protected val divisionsViewModel by activityViewModels<DivisionsViewModel>()
   protected val accidentViewModel by activityViewModels<AccidentsViewModel>()
-  protected val analystViewModel by activityViewModels<AnalystViewModel>()
+  protected val engineerViewModel by activityViewModels<EngineerViewModel>()
 
   protected open val works = listOf(
     Work.LOAD_PROFILE, Work.LOAD_DIVISIONS, Work.LOAD_ACCIDENTS
@@ -28,10 +28,10 @@ abstract class AnalystBaseFragment : UserBaseFragment() {
     }
 
   fun hideMenu() {
-    analystViewModel.setMenuStatus(false)
+    engineerViewModel.setMenuStatus(false)
   }
 
   fun showMenu() {
-    analystViewModel.setMenuStatus(true)
+    engineerViewModel.setMenuStatus(true)
   }
 }

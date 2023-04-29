@@ -6,7 +6,7 @@
   <data>
     <variable
         name="master"
-        type="com.elka.servicedesk.view.ui.analyst.AnalystProfileFragment" />
+        type="com.elka.servicedesk.view.ui.engineer.EngineerProfileFragment" />
 
     <variable
         name="viewModel"
@@ -32,7 +32,8 @@
         android:focusable="true"
         style="@style/text.h1"
         android:layout_width="wrap_content"
-        android:text="Роль: Аналитик"
+        android:text="@{@string/role(viewModel.profile.role.text)}"
+        tools:text="@string/role"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

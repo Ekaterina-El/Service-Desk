@@ -9,7 +9,7 @@
 
     <variable
         name="master"
-        type="com.elka.servicedesk.view.dialog.RegistrationAnalystDialog" />
+        type="com.elka.servicedesk.view.dialog.RegistrationEngineerDialog" />
 
     <variable
         name="divisionsAdapter"
@@ -17,7 +17,7 @@
 
     <variable
         name="viewModel"
-        type="com.elka.servicedesk.viewModel.AnalystsViewModel" />
+        type="com.elka.servicedesk.viewModel.EngineersViewModel" />
 
   </data>
 
@@ -46,7 +46,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="25dp"
           android:gravity="start"
-          android:text="@string/registation_analyst"
+          android:text="@string/registation_engineer"
           android:textStyle="bold" />
 
       <TextView
@@ -54,7 +54,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="5dp"
-          android:text="@string/registration_analyst_description" />
+          android:text="@string/registration_engineer_description" />
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/layoutFirstName"
@@ -194,7 +194,7 @@
           android:layout_marginTop="6dp"
           style="@style/text.field.error"
           android:visibility="@{viewModel.divisions.size() == 0 ? View.VISIBLE : View.GONE}"
-          android:text="@string/add_analyst_division_error" />
+          android:text="@string/add_engineer_division_error" />
 
       <LinearLayout
           android:layout_width="match_parent"

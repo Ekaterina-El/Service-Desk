@@ -14,7 +14,7 @@ data class User(
   var divisionLocal: Division? = null,
   var accidentsIds: List<String> = listOf(),
 
-  // for analyst
+  // for engineer
   var divisionsLocal: List<Division> = listOf(),
   var divisionsId: List<String> = listOf(),
 

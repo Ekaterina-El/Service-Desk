@@ -27,8 +27,8 @@
         app:destination="@id/customerFragment"
         app:popUpTo="@id/app_navigation.xml" />
     <action
-        android:id="@+id/action_splashFragment_to_analystFragment"
-        app:destination="@id/analystFragment"
+        android:id="@+id/action_splashFragment_to_engineerFragment"
+        app:destination="@id/engineerFragment"
         app:popUpTo="@id/app_navigation.xml" />
   </fragment>
   <fragment
@@ -70,8 +70,8 @@
         app:destination="@id/customerFragment"
         app:popUpTo="@id/app_navigation.xml" />
     <action
-        android:id="@+id/action_authFragment_to_analystFragment"
-        app:destination="@id/analystFragment"
+        android:id="@+id/action_authFragment_to_engineerFragment"
+        app:destination="@id/engineerFragment"
         app:popUpTo="@id/app_navigation.xml" />
   </fragment>
   <fragment
@@ -90,8 +90,8 @@
       android:name="com.elka.servicedesk.view.ui.customer.CustomerFragment"
       android:label="CustomerFragment" />
   <fragment
-      android:id="@+id/analystFragment"
-      tools:layout="@layout/analyst_fragment"
-      android:name="com.elka.servicedesk.view.ui.analyst.AnalystFragment"
-      android:label="AnalystFragment" />
+      android:id="@+id/engineerFragment"
+      tools:layout="@layout/engineer_fragment"
+      android:name="com.elka.servicedesk.view.ui.engineer.EngineerFragment"
+      android:label="EngineerFragment" />
 </navigation>

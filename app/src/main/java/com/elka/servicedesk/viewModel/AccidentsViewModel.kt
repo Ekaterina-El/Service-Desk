@@ -62,40 +62,40 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   }
   // endregion
 
-  // region Analyst accidents
-  private val _analystAccidents = MutableLiveData<List<Accident>>(listOf())
-  val analystAccidents get() = _analystAccidents
+  // region Engineer accidents
+  private val _engineerAccidents = MutableLiveData<List<Accident>>(listOf())
+  val engineerAccidents get() = _engineerAccidents
 
-  val analystsFilter = MutableLiveData("")
-  private val _analystsFilteredAccidents = MutableLiveData<List<Accident>>(listOf())
-  val analystsFilteredAccidents get() = _analystsFilteredAccidents
+  val engineerFilter = MutableLiveData("")
+  private val _engineerFilteredAccidents = MutableLiveData<List<Accident>>(listOf())
+  val engineerFilteredAccidents get() = _engineerFilteredAccidents
 
-  fun loadAnalystAccidents(analystId: String) {
+  fun loadEngineerAccidents(engineerId: String) {
     val work = Work.LOAD_ACCIDENTS
     addWork(work)
 
     viewModelScope.launch {
-      _error.value = AccidentsRepository.loadAccidentsOfAnalyst(analystId) {
-        _analystAccidents.value = it.splitAndSort()
-        filterAnalystAccidents()
+      _error.value = AccidentsRepository.loadAccidentsOfEngineer(engineerId) {
+        _engineerAccidents.value = it.splitAndSort()
+        filterEngineerAccidents()
       }
       removeWork(work)
     }
   }
 
-  fun filterAnalystAccidents() {
-    val items = _analystAccidents.value!!
-    val filter = analystsFilter.value!!
+  fun filterEngineerAccidents() {
+    val items = _engineerAccidents.value!!
+    val filter = engineerFilter.value!!
 
-    _analystsFilteredAccidents.value = when (filter) {
+    _engineerFilteredAccidents.value = when (filter) {
       "" -> items
       else -> items.filterBy(filter)
     }
   }
 
-  fun clearFilterAnalystAccidents() {
-    analystsFilter.value = ""
-    filterAnalystAccidents()
+  fun clearFilterEngineerAccidents() {
+    engineerFilter.value = ""
+    filterEngineerAccidents()
   }
   // endregion
 

@@ -6,17 +6,17 @@ import androidx.lifecycle.Observer
 import com.elka.servicedesk.R
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.view.dialog.ConfirmDialog
-import com.elka.servicedesk.view.ui.analyst.AnalystAccidentsFragmentDirections
-import com.elka.servicedesk.view.ui.analyst.AnalystAccidentsInWorkFragmentDirections
+import com.elka.servicedesk.view.ui.engineer.EngineerAccidentsFragmentDirections
 import com.elka.servicedesk.view.ui.customer.CustomerIncidentsRequestsDirections
+import com.elka.servicedesk.view.ui.engineer.EngineerAccidentsInWorkFragmentDirections
 import com.elka.servicedesk.viewModel.UserViewModel
 
 abstract class UserBaseFragment: BaseFragment() {
 
   fun goAccident(accidentId: String, path: Int) {
     val dir = when(path) {
-      FROM_ACTIVE_ACCIDENTS_TO_ACCIDENT -> AnalystAccidentsFragmentDirections.actionAnalystAccidentsFragmentToAccidentFragment(accidentId)
-      FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT -> AnalystAccidentsInWorkFragmentDirections.actionAnalystAccidentsInWorkFragmentToAccidentFragment(accidentId)
+      FROM_ACTIVE_ACCIDENTS_TO_ACCIDENT -> EngineerAccidentsFragmentDirections. actionEngineerAccidentsFragmentToAccidentFragment(accidentId)
+      FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT -> EngineerAccidentsInWorkFragmentDirections.actionEngineerAccidentsInWorkFragmentToAccidentFragment(accidentId)
       FROM_CUSTOMER_ACCIDENTS_TO_ACCIDENT -> CustomerIncidentsRequestsDirections.actionCustomerIncidentsRequestsToAccidentFragment2(accidentId)
       else -> return
     }

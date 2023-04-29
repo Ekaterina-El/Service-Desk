@@ -2,15 +2,10 @@ package com.elka.servicedesk.viewModel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.Division
-import com.elka.servicedesk.service.model.User
-import com.elka.servicedesk.service.model.filterBy
-import com.elka.servicedesk.service.repository.UserRepository
-import kotlinx.coroutines.launch
 
-class AnalystsViewModel(application: Application) : BaseUserViewModel(application) {
+class EngineersViewModel(application: Application) : BaseUserViewModel(application) {
   private val _divisions = MutableLiveData<List<Division>>(listOf())
   val divisions get() = _divisions
 
@@ -33,7 +28,7 @@ class AnalystsViewModel(application: Application) : BaseUserViewModel(applicatio
     _divisions.value = items
   }
 
-  override val userRole = Role.ANALYST
+  override val userRole = Role.ENGINEER
 
 }
 

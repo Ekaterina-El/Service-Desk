@@ -18,7 +18,7 @@ class UsersViewHolder(
 
   private val menu by lazy {
     val popupMenu = PopupMenu(context, binding.wrapper)
-    if (user?.role == Role.ANALYST) popupMenu.menu.add(0, CHANGE_DIVISIONS, 0, R.string.change_divisions)
+    if (user?.role == Role.ENGINEER) popupMenu.menu.add(0, CHANGE_DIVISIONS, 0, R.string.change_divisions)
     popupMenu.menu.add(0, BLOCK, 0, R.string.block)
 
     popupMenu.setOnMenuItemClickListener {

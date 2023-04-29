@@ -12,7 +12,7 @@
 
     <variable
         name="master"
-        type="com.elka.servicedesk.view.ui.admin.AdminAnalystsFragment" />
+        type="com.elka.servicedesk.view.ui.admin.AdminEngineersFragment" />
 
     <variable
         name="viewModel"
@@ -80,7 +80,7 @@
             android:layout_marginStart="5dp"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            android:onClick="@{() -> master.openRegAnalystDialog()}"
+            android:onClick="@{() -> master.openRegEngineerDialog()}"
             app:cardCornerRadius="40dp"
             app:cardElevation="0dp">
 

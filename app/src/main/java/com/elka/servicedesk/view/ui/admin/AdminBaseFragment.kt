@@ -3,12 +3,11 @@ package com.elka.servicedesk.view.ui.admin
 import androidx.fragment.app.activityViewModels
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.view.ui.UserBaseFragment
-import com.elka.servicedesk.viewModel.AdminsViewModel
-import com.elka.servicedesk.viewModel.AnalystsViewModel
+import com.elka.servicedesk.viewModel.EngineersViewModel
 import com.elka.servicedesk.viewModel.DivisionsViewModel
 
 abstract class AdminBaseFragment: UserBaseFragment() {
-  protected val analystsViewModel by activityViewModels<AnalystsViewModel>()
+  protected val engineersViewModel by activityViewModels<EngineersViewModel>()
   protected val divisionsViewModel by activityViewModels<DivisionsViewModel>()
 
   protected open val works = listOf(
@@ -18,7 +17,7 @@ abstract class AdminBaseFragment: UserBaseFragment() {
   protected open val hasLoads: Boolean
     get() {
       val w1 = userViewModel.work.value!!.toMutableList()
-      val w2 = analystsViewModel.work.value!!
+      val w2 = engineersViewModel.work.value!!
       val w3 = divisionsViewModel.work.value!!
       w1.addAll(w3)
       w1.addAll(w2)

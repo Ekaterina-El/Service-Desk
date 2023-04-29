@@ -49,7 +49,7 @@ object UserRepository {
 
     val event = when (user.role) {
       Role.USER -> Event.REGISTERED_USER
-      Role.ANALYST -> Event.ADDED_ANALYST
+      Role.ENGINEER -> Event.ADDED_ENGINEER
       Role.ADMIN -> Event.ADDED_ADMIN
       Role.MANAGER -> null
     }
@@ -116,7 +116,7 @@ object UserRepository {
       if (division == null) setDivisionId(user.id, "")
       else user.divisionLocal = division
     }
-    if (user.role == Role.ANALYST) user.divisionsLocal =
+    if (user.role == Role.ENGINEER) user.divisionsLocal =
       DivisionsRepository.loadDivisions(user.id, user.divisionsId)
     return user
   }
@@ -132,7 +132,7 @@ object UserRepository {
           val user = doc.toObject(User::class.java)
           user.id = doc.id
 
-          if (userRole == Role.ANALYST) {
+          if (userRole == Role.ENGINEER) {
             user.divisionsLocal = DivisionsRepository.loadDivisions(user.id, user.divisionsId)
           }
           user
@@ -151,7 +151,7 @@ object UserRepository {
   suspend fun blockUser(user: User, deletedBy: User, onSuccess: () -> Unit): ErrorApp? = try {
     val event = when (user.role) {
       Role.ADMIN -> Event.BLOCKED_ADMIN
-      Role.ANALYST -> Event.BLOCKED_ANALYST
+      Role.ENGINEER -> Event.BLOCKED_ENGINEER
       else -> null
     }
 
@@ -182,7 +182,7 @@ object UserRepository {
 
     val event = when (user.role) {
       Role.USER -> Event.UPDATE_USER
-      Role.ANALYST -> Event.UPDATE_ANALYST
+      Role.ENGINEER -> Event.UPDATE_ENGINEER
       Role.ADMIN -> Event.UPDATE_ADMIN
       Role.MANAGER -> Event.UPDATE_MANAGER
     }

@@ -5,12 +5,12 @@ import com.elka.servicedesk.other.toLogFormat
 import java.util.*
 
 data class Log(
-  var id: String = "",
-  var date: Date? = null,
-  var editor: User? = null,
-  var division: Division? = null,
-  var event: Event = Event.ADDED_ANALYST,
-  var param: String = ""
+	var id: String = "",
+	var date: Date? = null,
+	var editor: User? = null,
+	var division: Division? = null,
+	var event: Event = Event.ADDED_ENGINEER,
+	var param: String = ""
 ) : java.io.Serializable {
   var dateS
     get() = date?.toLogFormat() ?: ""

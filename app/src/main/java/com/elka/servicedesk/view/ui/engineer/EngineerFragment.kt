@@ -1,4 +1,4 @@
-package com.elka.servicedesk.view.ui.analyst
+package com.elka.servicedesk.view.ui.engineer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,20 +7,18 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.elka.servicedesk.R
-import com.elka.servicedesk.databinding.AnalystFragmentBinding
-import com.elka.servicedesk.databinding.CustomerFragmentBinding
-import com.elka.servicedesk.view.ui.BaseFragment
+import com.elka.servicedesk.databinding.EngineerFragmentBinding
 
-class AnalystFragment: AnalystBaseFragment() {
-  private lateinit var binding: AnalystFragmentBinding
+class EngineerFragment: EngineerBaseFragment() {
+  private lateinit var binding: EngineerFragmentBinding
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View {
-    binding = AnalystFragmentBinding.inflate(layoutInflater, container, false)
+    binding = EngineerFragmentBinding.inflate(layoutInflater, container, false)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
-      viewModel = this@AnalystFragment.analystViewModel
+      viewModel = this@EngineerFragment.engineerViewModel
     }
     return binding.root
   }
@@ -29,7 +27,7 @@ class AnalystFragment: AnalystBaseFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     val navController =
-      (childFragmentManager.findFragmentById(R.id.analystContainer) as NavHostFragment)
+      (childFragmentManager.findFragmentById(R.id.engineerContainer) as NavHostFragment)
         .navController
     binding.bottomMenu.setupWithNavController(navController)
   }

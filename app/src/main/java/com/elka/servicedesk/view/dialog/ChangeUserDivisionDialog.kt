@@ -4,11 +4,8 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
-import com.elka.servicedesk.databinding.ChangeAnalystDivisionsBinding
 import com.elka.servicedesk.databinding.ChangeUserDivisionBinding
 import com.elka.servicedesk.service.model.Division
-import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.list.divisions.DivisionsAdapter
 import com.elka.servicedesk.view.ui.BaseFragment
 

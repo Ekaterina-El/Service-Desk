@@ -9,7 +9,7 @@
 
     <variable
         name="master"
-        type="com.elka.servicedesk.view.dialog.ChangeAnalystDivisionsDialog" />
+        type="com.elka.servicedesk.view.dialog.ChangeEngineerDivisionsDialog" />
 
     <variable
         name="countOfDivisions"
@@ -45,7 +45,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="25dp"
           android:gravity="start"
-          android:text="@string/edit_divisions_analyst"
+          android:text="@string/edit_divisions_engineer"
           android:textStyle="bold" />
 
       <LinearLayout
@@ -126,7 +126,7 @@
       <TextView
           style="@style/text.field.error"
           android:layout_marginTop="6dp"
-          android:text="@string/add_analyst_division_error"
+          android:text="@string/add_engineer_division_error"
           android:visibility="@{countOfDivisions == 0 ? View.VISIBLE : View.GONE}" />
 
       <LinearLayout
