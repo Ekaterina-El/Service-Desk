@@ -20,7 +20,7 @@ object AccidentsRepository {
     Errors.unknown
   }
 
-  suspend fun loadAccident(id: String, onSuccess: (Accident) -> Unit): ErrorApp? = try {
+  suspend fun loadAccident(id: String, onSuccess: suspend (Accident) -> Unit): ErrorApp? = try {
     val doc = FirebaseService.accidentsCollection.document(id).get().await()
     val accident = doc.toObject(Accident::class.java)!!
     accident.id = doc.id

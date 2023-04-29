@@ -4,11 +4,9 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.*
-import com.elka.servicedesk.service.model.Accident
-import com.elka.servicedesk.service.model.User
-import com.elka.servicedesk.service.model.filterBy
-import com.elka.servicedesk.service.model.splitAndSort
+import com.elka.servicedesk.service.model.*
 import com.elka.servicedesk.service.repository.AccidentsRepository
+import com.elka.servicedesk.service.repository.LogsRepository
 import kotlinx.coroutines.launch
 
 class AccidentsViewModel(application: Application) : BaseViewModelWithFields(application) {
@@ -192,7 +190,6 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   // endregion
 
   // region Single Accident
-
   fun reloadCurrentAccident() {
     if (_currentLoadedAccidentId == null) return
 
@@ -201,7 +198,10 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
     viewModelScope.launch {
       _error.value = AccidentsRepository.loadAccident(_currentLoadedAccidentId!!) { accident ->
-        _currentAccident.value = accident
+        _error.value = LogsRepository.loadAccidentLogs(accident.id) { logs ->
+          _currentAccidentLogs.value = logs.sortedByDescending { it.date }
+          _currentAccident.value = accident
+        }
       }
       removeWork(work)
     }
@@ -209,12 +209,16 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
   fun clearCurrentAccident() {
     _currentAccident.value = null
+    _currentAccidentLogs.value = listOf()
     _currentLoadedAccidentId = null
   }
 
   private var _currentLoadedAccidentId: String? = null
   private val _currentAccident = MutableLiveData<Accident?>(null)
   val currentAccident get() = _currentAccident
+
+  private val _currentAccidentLogs = MutableLiveData<List<Log>>(listOf())
+  val currentAccidentLogs get() = _currentAccidentLogs
 
   fun loadCurrentOpenAccident(accidentId: String) {
     _currentLoadedAccidentId = accidentId

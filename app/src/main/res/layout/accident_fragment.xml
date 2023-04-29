@@ -3,142 +3,164 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-  <data>
+    <data>
 
-    <variable
-        name="imagesAdapter"
-        type="com.elka.servicedesk.view.list.images.ImagesAdapter" />
+        <variable
+            name="imagesAdapter"
+            type="com.elka.servicedesk.view.list.images.ImagesAdapter" />
+
+        <variable
+            name="logsAdapter"
+            type="com.elka.servicedesk.view.list.logs.LogsAdapter" />
 
 
-    <import type="com.elka.servicedesk.other.AccidentType" />
+        <import type="com.elka.servicedesk.other.AccidentType" />
 
-    <import type="android.view.View" />
+        <import type="android.view.View" />
 
-    <variable
-        name="master"
-        type="com.elka.servicedesk.view.ui.accident.AccidentFragment" />
+        <variable
+            name="master"
+            type="com.elka.servicedesk.view.ui.accident.AccidentFragment" />
 
-    <variable
-        name="viewModel"
-        type="com.elka.servicedesk.viewModel.AccidentsViewModel" />
-  </data>
+        <variable
+            name="viewModel"
+            type="com.elka.servicedesk.viewModel.AccidentsViewModel" />
+    </data>
 
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-      android:id="@+id/swiper"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/app_padding"
-        android:paddingVertical="15dp">
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="center"
-          android:orientation="horizontal">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:onClick="@{() -> master.goBack()}"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="0dp">
-
-          <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:padding="7dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_back"
-                app:tint="@color/accent" />
-          </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            style="@style/text.h2"
-            android:layout_marginEnd="40dp"
-            android:gravity="center"
-            android:text="@{viewModel.currentAccident.type == AccidentType.INCIDENT ? @string/incident : viewModel.currentAccident.type == AccidentType.REQUEST ? @string/request : @string/loading}"
-            tools:text="@string/incident" />
-
-      </LinearLayout>
-
-      <androidx.core.widget.NestedScrollView
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="@{viewModel.currentAccident == null ? View.GONE : View.VISIBLE}"
-            tools:visibility="visible">
+            android:paddingVertical="15dp">
 
-          <TextView
-              style="@style/text"
-              android:layout_marginTop="15dp"
-              android:text="@{viewModel.currentAccident.category.text}"
-              android:textColor="@color/accent"
-              android:textStyle="bold"
-              tools:text="Запрос на выделение серверной мощности" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/app_padding"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-          <TextView
-              style="@style/text"
-              android:text="@{viewModel.currentAccident.status.text}"
-              android:textColor="@color/accent2"
-              tools:text="Активен" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:clickable="true"
 
-          <TextView
-              style="@style/text"
-              android:layout_marginTop="5dp"
-              android:text="@{viewModel.currentAccident.subject}"
-              tools:text="Тема" />
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:onClick="@{() -> master.goBack()}"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="0dp">
 
-          <TextView
-              style="@style/text.hint"
-              android:text="@{viewModel.currentAccident.message}"
-              tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="7dp">
 
-          <TextView
-              style="@style/text.hint.small"
-              android:layout_marginTop="10dp"
-              android:ellipsize="end"
-              android:maxLines="3"
-              android:text="@{viewModel.currentAccident.info}"
-              tools:text="Низкая срочность / Отдел 10 / Иванов Иван Иванович / 01/12/2022 09:43:18" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_back"
+                            app:tint="@color/accent" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
 
-          <androidx.recyclerview.widget.RecyclerView
-              android:id="@+id/images"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="10dp"
-              android:orientation="vertical"
-              app:adapter="@{imagesAdapter}"
-              app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-              tools:listitem="@layout/image_item" />
+                <TextView
+                    style="@style/text.h2"
+                    android:layout_marginEnd="40dp"
+                    android:gravity="center"
+                    android:text="@{viewModel.currentAccident.type == AccidentType.INCIDENT ? @string/incident : viewModel.currentAccident.type == AccidentType.REQUEST ? @string/request : @string/loading}"
+                    tools:text="@string/incident" />
 
-          <TextView
-              style="@style/text.h3"
-              android:layout_marginTop="20dp"
-              android:text="@string/logs" />
+            </LinearLayout>
 
-          <TextView
-              style="@style/text.hint"
-              android:text="Работаем-работаем..." />
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.currentAccident == null ? View.GONE : View.VISIBLE}"
+                    tools:visibility="visible">
+
+                    <TextView
+                        style="@style/text"
+                        android:layout_marginTop="15dp"
+                        android:paddingHorizontal="@dimen/app_padding"
+                        android:text="@{viewModel.currentAccident.category.text}"
+                        android:textColor="@color/accent"
+                        android:textStyle="bold"
+                        tools:text="Запрос на выделение серверной мощности" />
+
+                    <TextView
+                        style="@style/text"
+                        android:paddingHorizontal="@dimen/app_padding"
+                        android:text="@{viewModel.currentAccident.status.text}"
+                        android:textColor="@color/accent2"
+                        tools:text="Активен" />
+
+                    <TextView
+                        style="@style/text"
+                        android:layout_marginTop="5dp"
+                        android:paddingHorizontal="@dimen/app_padding"
+                        android:text="@{viewModel.currentAccident.subject}"
+                        tools:text="Тема" />
+
+                    <TextView
+                        style="@style/text.hint"
+                        android:paddingHorizontal="@dimen/app_padding"
+                        android:text="@{viewModel.currentAccident.message}"
+                        tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries" />
+
+                    <TextView
+                        style="@style/text.hint.small"
+                        android:paddingHorizontal="@dimen/app_padding"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="@{viewModel.currentAccident.info}"
+                        tools:text="Низкая срочность / Отдел 10 / Иванов Иван Иванович / 01/12/2022 09:43:18" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/images"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingHorizontal="@dimen/app_padding"
+                        android:orientation="vertical"
+                        app:adapter="@{imagesAdapter}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/image_item" />
+
+                    <TextView
+                        style="@style/text.h3"
+                        android:paddingHorizontal="@dimen/app_padding"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/logs" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/logsList"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:adapter="@{logsAdapter}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:ignore="NestedWeights"
+                        tools:listitem="@layout/logs_item"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
         </LinearLayout>
-      </androidx.core.widget.NestedScrollView>
-
-    </LinearLayout>
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

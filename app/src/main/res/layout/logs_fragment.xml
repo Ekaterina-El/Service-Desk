@@ -82,7 +82,7 @@
           android:adapter="@{logsAdapter}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:ignore="NestedWeights"
-          tools:listitem="@layout/user_item"
+          tools:listitem="@layout/logs_item"
           tools:visibility="visible"
           />
 
