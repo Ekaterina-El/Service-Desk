@@ -91,4 +91,10 @@
   <string name="logs">Журнал событий</string>
   <string name="pick_up_photo">Прикрепить фото</string>
   <string name="role">Роль: %1$s</string>
+    <string name="accept_close_accident">Подвердить разрешение проблемы</string>
+  <string name="deny_close_accident">Опровергнуть разрешение проблемы</string>
+  <string name="add_information">Добавить информацию</string>
+  <string name="accept_accident_to_work">Принять в работу</string>
+  <string name="close_accident">Закрыть заявку</string>
+  <string name="excalation">Экскалация</string>
 </resources>
