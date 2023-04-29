@@ -13,6 +13,7 @@ import com.elka.servicedesk.other.AccidentType
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
+import com.elka.servicedesk.service.model.allToAccidentItems
 import com.elka.servicedesk.service.model.toAccidentItems
 import com.elka.servicedesk.view.list.accidents.AccidentItem
 import com.elka.servicedesk.view.list.accidents.AccidentItemViewHolder
@@ -35,34 +36,7 @@ class EngineerAccidentsInWorkFragment : EngineerBaseFragment() {
     }
 
     private val accidentsObserver = Observer<List<Accident>> { list ->
-        val items = mutableListOf<AccidentItem>()
-        val incidents =
-            list.filter { it.type == AccidentType.INCIDENT }.sortedByDescending { it.createdDate }
-        val requests =
-            list.filter { it.type == AccidentType.REQUEST }.sortedByDescending { it.createdDate }
-
-        if (incidents.isNotEmpty()) {
-            items.add(
-                AccidentItem(
-                    type = AccidentsAdapter.TYPE_HEADER,
-                    value = AccidentType.INCIDENT.text
-                )
-            )
-
-            items.addAll(incidents.toAccidentItems())
-        }
-
-        if (requests.isNotEmpty()) {
-            items.add(
-                AccidentItem(
-                    type = AccidentsAdapter.TYPE_HEADER,
-                    value = AccidentType.REQUEST.text
-                )
-            )
-
-            items.addAll(requests.toAccidentItems())
-        }
-
+        val items = list.allToAccidentItems()
         accidentsAdapter.setItems(items)
     }
 

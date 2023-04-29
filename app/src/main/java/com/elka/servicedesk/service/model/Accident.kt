@@ -64,3 +64,33 @@ fun List<Accident>.splitAndSort(): MutableList<Accident> {
 
 
 fun List<Accident>.toAccidentItems() = this.map { AccidentItem(AccidentsAdapter.TYPE_ITEM, it) }
+
+fun List<Accident>.allToAccidentItems(): List<AccidentItem> {
+  val items = mutableListOf<AccidentItem>()
+  val incidents =
+    this.filter { it.type == AccidentType.INCIDENT }.sortedByDescending { it.createdDate }
+  val requests =
+    this.filter { it.type == AccidentType.REQUEST }.sortedByDescending { it.createdDate }
+
+  if (incidents.isNotEmpty()) {
+    items.add(
+      AccidentItem(
+        type = AccidentsAdapter.TYPE_HEADER, value = AccidentType.INCIDENT.text
+      )
+    )
+
+    items.addAll(incidents.toAccidentItems())
+  }
+
+  if (requests.isNotEmpty()) {
+    items.add(
+      AccidentItem(
+        type = AccidentsAdapter.TYPE_HEADER, value = AccidentType.REQUEST.text
+      )
+    )
+
+    items.addAll(requests.toAccidentItems())
+  }
+
+  return items
+}
