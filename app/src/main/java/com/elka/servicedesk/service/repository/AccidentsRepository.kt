@@ -214,10 +214,30 @@ object AccidentsRepository {
     Errors.unknown
   }
 
+  suspend fun closeAccidentFromUser(accident: Accident, user: User, division: Division, onSuccess: (Log) -> Unit): ErrorApp? = try {
+    // change accident status
+    changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.READY).await()
+
+    // add log
+    val log = Log(
+      editor = user,
+      division = division,
+      accidentId = accident.id,
+      accident = accident,
+      event = Event.CLOSE_ACCIDENT_BY_USER,
+    )
+    LogsRepository.addLogSync(log)
+
+    onSuccess(log)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
   private fun changeAccidentField(accidentId: String, field: String, value: Any) =
     FirebaseService.accidentsCollection.document(accidentId).update(field, value)
-
-
 
   private const val FIELD_DIVISION_ID = "divisionId"
   private const val FIELD_ENGINEER_ID = "engineerId"

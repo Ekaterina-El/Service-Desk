@@ -91,8 +91,8 @@
   <string name="logs">Журнал событий</string>
   <string name="pick_up_photo">Прикрепить фото</string>
   <string name="role">Роль: %1$s</string>
-    <string name="accept_close_accident">Подвердить разрешение проблемы</string>
-  <string name="deny_close_accident">Опровергнуть разрешение проблемы</string>
+    <string name="accept_close_accident">Подвердить разрешение</string>
+  <string name="deny_close_accident">Опровергнуть разрешение</string>
   <string name="add_information">Добавить информацию</string>
   <string name="accept_accident_to_work">Принять в работу</string>
   <string name="close_accident">Закрыть заявку</string>
@@ -100,4 +100,5 @@
     <string name="accident_was_accdepted_to_work">Принято в работу</string>
     <string name="wait_more_information">Запросить дополнительную информацию</string>
     <string name="accident_was_close">Заявка закрыта! Ожидается подтверждение от пользователя.</string>
+  <string name="accident_was_close_by_user">Закрытие завяки подтвержденно</string>
 </resources>

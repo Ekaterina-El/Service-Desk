@@ -148,7 +148,7 @@ class AccidentFragment : UserBaseFragment() {
 				ACCEPT_ACCIDENT_TO_WORK -> acceptAccidentToWork()
 				CLOSE_ACCIDENT -> closeAccident()
 				WAIT_MORE_INFORMATION -> Unit
-				ACCEPT_CLOSE_ACCIDENT -> Unit
+				ACCEPT_CLOSE_ACCIDENT -> acceptCloseAccidentByUser()
 				DENY_CLOSE_ACCIDENT -> Unit
 				EXCALATION -> Unit
 				else -> Unit
@@ -166,8 +166,8 @@ class AccidentFragment : UserBaseFragment() {
     val viewStatus = when(role) {
       Role.USER -> {
         when(accidentStatus) {
-          AccidentStatus.READY,
-          AccidentStatus.WAITING -> View.VISIBLE
+          AccidentStatus.CLOSED,
+          AccidentStatus.WAITING, -> View.VISIBLE
           else -> View.INVISIBLE
         }
       }
@@ -194,7 +194,7 @@ class AccidentFragment : UserBaseFragment() {
     when (role) {
       Role.USER -> {
         when (accidentStatus) {
-          AccidentStatus.READY -> {
+          AccidentStatus.CLOSED -> {
             menu.add(0, ACCEPT_CLOSE_ACCIDENT, 0, R.string.accept_close_accident)
             menu.add(0, DENY_CLOSE_ACCIDENT, 0, R.string.deny_close_accident)
           }
@@ -238,7 +238,7 @@ class AccidentFragment : UserBaseFragment() {
 			return
 		}
 
-		val engineer = userViewModel.profile.value!!
+		val engineer = userViewModel.profile.value!!.copy()
 		accidentsViewModel.acceptCurrentAccidentToWork(engineer) {
 			Toast.makeText(requireContext(), getString(R.string.accident_was_accdepted_to_work), Toast.LENGTH_SHORT).show()
 		}
@@ -252,6 +252,18 @@ class AccidentFragment : UserBaseFragment() {
 
 		accidentsViewModel.closeAccident() {
 			Toast.makeText(requireContext(), getString(R.string.accident_was_close), Toast.LENGTH_SHORT).show()
+		}
+	}
+
+	private fun acceptCloseAccidentByUser() {
+		if (hasLoads) {
+			showLoadingErrorMessage()
+			return
+		}
+
+		val user = userViewModel.profile.value!!.copy()
+		accidentsViewModel.acceptCloseAccidentFromUser(user) {
+			Toast.makeText(requireContext(), getString(R.string.accident_was_close_by_user), Toast.LENGTH_SHORT).show()
 		}
 	}
 

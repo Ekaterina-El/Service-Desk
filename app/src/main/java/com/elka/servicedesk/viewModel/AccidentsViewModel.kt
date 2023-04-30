@@ -300,5 +300,24 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
       removeWork(work)
     }
   }
+
+  fun acceptCloseAccidentFromUser(user: User, onClose: () -> Unit) {
+    val work = Work.CLOSE_ACCIDENT
+    addWork(work)
+
+    viewModelScope.launch {
+      val accident = _currentAccident.value!!.copy(status = AccidentStatus.READY)
+      val division = accident.divisionLocal!!
+
+      _error.value = AccidentsRepository.closeAccidentFromUser(accident, user, division) { log ->
+        addLog(log)
+
+        _currentAccident.value = accident
+        onClose()
+      }
+      removeWork(work)
+    }
+
+  }
   // endregion
 }

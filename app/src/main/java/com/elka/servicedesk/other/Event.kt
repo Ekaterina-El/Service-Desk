@@ -24,4 +24,5 @@ enum class Event(val text: String) {
 	ACCEPT_INCIDENT_TO_WORK("Инцидент принят в работу"),
 	ACCEPT_REQUEST_TO_WORK("Запрос принят в работу"),
   CLOSE_ACCIDENT_BY_ENGINEER("Отправлена заявка на подтверждении разрешения проблемы"),
+	CLOSE_ACCIDENT_BY_USER("Заявка закрыта"),
 }
