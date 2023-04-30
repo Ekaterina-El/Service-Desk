@@ -50,7 +50,7 @@ class AccidentFragment : UserBaseFragment() {
 	}
 
 	private val works = listOf(
-		Work.LOAD_ACCIDENT, Work.ACCPET_ACCIDENT_TO_WORK
+		Work.LOAD_ACCIDENT, Work.ACCPET_ACCIDENT_TO_WORK, Work.CLOSE_ACCIDENT
 	)
 
 	private val hasLoads: Boolean
@@ -146,8 +146,8 @@ class AccidentFragment : UserBaseFragment() {
 		popupMenu.setOnMenuItemClickListener {
 			when (it.itemId) {
 				ACCEPT_ACCIDENT_TO_WORK -> acceptAccidentToWork()
+				CLOSE_ACCIDENT -> closeAccident()
 				WAIT_MORE_INFORMATION -> Unit
-				CLOSE_ACCIDENT -> Unit
 				ACCEPT_CLOSE_ACCIDENT -> Unit
 				DENY_CLOSE_ACCIDENT -> Unit
 				EXCALATION -> Unit
@@ -241,6 +241,17 @@ class AccidentFragment : UserBaseFragment() {
 		val engineer = userViewModel.profile.value!!
 		accidentsViewModel.acceptCurrentAccidentToWork(engineer) {
 			Toast.makeText(requireContext(), getString(R.string.accident_was_accdepted_to_work), Toast.LENGTH_SHORT).show()
+		}
+	}
+
+	private fun closeAccident() {
+		if (hasLoads) {
+			showLoadingErrorMessage()
+			return
+		}
+
+		accidentsViewModel.closeAccident() {
+			Toast.makeText(requireContext(), getString(R.string.accident_was_close), Toast.LENGTH_SHORT).show()
 		}
 	}
 

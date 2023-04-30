@@ -8,7 +8,6 @@ import com.elka.servicedesk.service.model.*
 import com.elka.servicedesk.service.repository.AccidentsRepository
 import com.elka.servicedesk.service.repository.LogsRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class AccidentsViewModel(application: Application) : BaseViewModelWithFields(application) {
   // region All accidents
@@ -194,11 +193,18 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     _accidentCategory = null
   }
 
-  fun addAccident(accident: Accident) {
-    val items = _accidents.value!!.toMutableList()
+  fun addAccidentToEngineer(accident: Accident) {
+    val items = _engineerAccidents.value!!.toMutableList()
     items.add(accident)
-    _accidents.value = items
-    filterAccidents()
+    _engineerAccidents.value = items
+    filterEngineerAccidents()
+  }
+
+  private fun removeAccidentFromEngineerAccidents(accident: Accident) {
+    val items = _engineerAccidents.value!!.toMutableList()
+    items.removeIf { it.id == accident.id }
+    _engineerAccidents.value = items
+    filterEngineerAccidents()
   }
   // endregion
 
@@ -246,7 +252,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
       val accident = _currentAccident.value!!
       val division = accident.divisionLocal!!
 
-      _error.value = AccidentsRepository.acceptAccidentToWork(accident, engineer, division) {
+      _error.value = AccidentsRepository.acceptAccidentToWork(accident, engineer, division) {log ->
         // delete accident from allAccidents
         removeAccidentFromActiveById(accident.id)
 
@@ -254,6 +260,9 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
         accident.status = AccidentStatus.IN_WORK
         accident.engineerId = engineer.id
         accident.engineerLocal = engineer
+
+        addLog(log)
+
         addAccidentToInWork(accident)
 
         _currentAccident.value = accident
@@ -262,5 +271,34 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
       removeWork(work)
     }
 	}
-	// endregion
+
+  private fun addLog(log: Log) {
+    val logs = _currentAccidentLogs.value!!.toMutableList()
+    logs.add(log)
+    _currentAccidentLogs.value = logs.sortedByDescending { it.date }
+  }
+
+  fun closeAccident(onClose: () -> Unit) {
+    val work = Work.CLOSE_ACCIDENT
+    addWork(work)
+
+    viewModelScope.launch {
+      val accident = _currentAccident.value!!.copy()
+      val division = accident.divisionLocal!!
+      val engineer = accident.engineerLocal!!
+
+      _error.value = AccidentsRepository.closeAccidentFromEngineer(accident, engineer, division) { log ->
+        // add accident to engineerAccidents
+        removeAccidentFromEngineerAccidents(accident)
+
+        addLog(log)
+
+        accident.status = AccidentStatus.WAIN_ACCEPT_FROM_USER
+        _currentAccident.value = accident
+        onClose()
+      }
+      removeWork(work)
+    }
+  }
+  // endregion
 }

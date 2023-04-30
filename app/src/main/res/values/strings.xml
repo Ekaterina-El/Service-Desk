@@ -99,4 +99,5 @@
   <string name="excalation">Экскалация</string>
     <string name="accident_was_accdepted_to_work">Принято в работу</string>
     <string name="wait_more_information">Запросить дополнительную информацию</string>
+    <string name="accident_was_close">Заявка закрыта! Ожидается подтверждение от пользователя.</string>
 </resources>

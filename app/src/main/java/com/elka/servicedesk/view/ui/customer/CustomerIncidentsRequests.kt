@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,13 +15,10 @@ import com.elka.servicedesk.other.ImageChanger
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.allToAccidentItems
-import com.elka.servicedesk.service.model.toAccidentItems
 import com.elka.servicedesk.view.dialog.AccidentBottomSheetDialog
 import com.elka.servicedesk.view.dialog.AddAccidentDialog
-import com.elka.servicedesk.view.list.accidents.AccidentItem
 import com.elka.servicedesk.view.list.accidents.AccidentItemViewHolder
 import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
-import com.elka.servicedesk.view.ui.UserBaseFragment
 
 class CustomerIncidentsRequests : CustomerBaseFragment() {
   private lateinit var imageChanger: ImageChanger
@@ -155,7 +151,7 @@ class CustomerIncidentsRequests : CustomerBaseFragment() {
   private val addAccidentDialogListener by lazy {
     object: AddAccidentDialog.Companion.Listener {
       override fun afterAdded(accident: Accident) {
-        accidentViewModel.addAccident(accident)
+        accidentViewModel.addAccidentToEngineer(accident)
         userViewModel.afterAccident(accident)
         addAccidentDialog.dismiss()
       }

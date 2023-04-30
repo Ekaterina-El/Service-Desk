@@ -23,4 +23,5 @@ enum class Event(val text: String) {
   ADDED_REQUEST("Добавлен запрос"),
 	ACCEPT_INCIDENT_TO_WORK("Инцидент принят в работу"),
 	ACCEPT_REQUEST_TO_WORK("Запрос принят в работу"),
+  CLOSE_ACCIDENT_BY_ENGINEER("Отправлена заявка на подтверждении разрешения проблемы"),
 }
