@@ -97,4 +97,6 @@
   <string name="accept_accident_to_work">Принять в работу</string>
   <string name="close_accident">Закрыть заявку</string>
   <string name="excalation">Экскалация</string>
+    <string name="accident_was_accdepted_to_work">Принято в работу</string>
+    <string name="wait_more_information">Запросить дополнительную информацию</string>
 </resources>

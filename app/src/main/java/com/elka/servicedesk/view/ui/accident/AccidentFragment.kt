@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -49,7 +50,7 @@ class AccidentFragment : UserBaseFragment() {
 	}
 
 	private val works = listOf(
-		Work.LOAD_ACCIDENT
+		Work.LOAD_ACCIDENT, Work.ACCPET_ACCIDENT_TO_WORK
 	)
 
 	private val hasLoads: Boolean
@@ -144,7 +145,8 @@ class AccidentFragment : UserBaseFragment() {
 		val popupMenu = PopupMenu(context, binding.menu)
 		popupMenu.setOnMenuItemClickListener {
 			when (it.itemId) {
-				ACCEPT_ACCIDENT_TO_WORK -> Unit
+				ACCEPT_ACCIDENT_TO_WORK -> acceptAccidentToWork()
+				WAIT_MORE_INFORMATION -> Unit
 				CLOSE_ACCIDENT -> Unit
 				ACCEPT_CLOSE_ACCIDENT -> Unit
 				DENY_CLOSE_ACCIDENT -> Unit
@@ -208,6 +210,7 @@ class AccidentFragment : UserBaseFragment() {
             menu.add(0, ACCEPT_ACCIDENT_TO_WORK, 0, R.string.accept_accident_to_work)
           }
           AccidentStatus.IN_WORK -> {
+            menu.add(0, WAIT_MORE_INFORMATION, 0, R.string.wait_more_information)
             menu.add(0, CLOSE_ACCIDENT, 0, R.string.close_accident)
             menu.add(0, EXCALATION, 0, R.string.excalation)
           }
@@ -229,6 +232,18 @@ class AccidentFragment : UserBaseFragment() {
 		menu.show()
 	}
 
+	private fun acceptAccidentToWork() {
+		if (hasLoads) {
+			showLoadingErrorMessage()
+			return
+		}
+
+		val engineer = userViewModel.profile.value!!
+		accidentsViewModel.acceptCurrentAccidentToWork(engineer) {
+			Toast.makeText(requireContext(), getString(R.string.accident_was_accdepted_to_work), Toast.LENGTH_SHORT).show()
+		}
+	}
+
 	companion object {
 		const val ACCEPT_ACCIDENT_TO_WORK = 1
 		const val CLOSE_ACCIDENT = 2
@@ -236,5 +251,6 @@ class AccidentFragment : UserBaseFragment() {
 		const val DENY_CLOSE_ACCIDENT = 4
 		const val EXCALATION = 5
 		const val ADD_INFORMATION = 6
+		const val WAIT_MORE_INFORMATION = 7
 	}
 }

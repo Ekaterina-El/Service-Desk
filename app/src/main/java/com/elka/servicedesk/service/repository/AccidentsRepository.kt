@@ -2,6 +2,7 @@ package com.elka.servicedesk.service.repository
 
 import com.elka.servicedesk.other.*
 import com.elka.servicedesk.service.model.Accident
+import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.Log
 import com.elka.servicedesk.service.model.User
 import com.google.firebase.FirebaseNetworkException
@@ -97,12 +98,14 @@ object AccidentsRepository {
   }
 
   suspend fun loadAccidentsOfDivisions(
-    divisionsIds: List<String>, onSuccess: (List<Accident>) -> Unit
+    divisionsIds: List<String>, status: AccidentStatus, onSuccess: (List<Accident>) -> Unit
   ): ErrorApp? = try {
     val accidents = mutableListOf<Accident>()
     divisionsIds.forEach { divisionId ->
       val divisionAccidents =
-        FirebaseService.accidentsCollection.whereEqualTo(FIELD_DIVISION_ID, divisionId).get()
+        FirebaseService.accidentsCollection
+          .whereEqualTo(FIELD_DIVISION_ID, divisionId)
+          .whereEqualTo(FIELD_STATUS, status).get()
           .await().mapNotNull { doc ->
             return@mapNotNull try {
               val accident = doc.toObject(Accident::class.java)
@@ -153,6 +156,46 @@ object AccidentsRepository {
     Errors.unknown
   }
 
-  private const val FIELD_DIVISION_ID = "divisionId"
+  suspend fun acceptAccidentToWork(
+    accident: Accident,
+    engineer: User,
+    division: Division,
+    onSuccess: () -> Unit
+  ): ErrorApp? = try {
+    val accidentId = accident.id
+    accident.status = AccidentStatus.IN_WORK
+    accident.engineerId = engineer.id
+    accident.engineerLocal = engineer
+
+    // change accident status
+    changeAccidentField(accidentId, FIELD_STATUS, AccidentStatus.IN_WORK).await()
+
+    // add engineerId to accident
+    changeAccidentField(accidentId, FIELD_ENGINEER_ID, engineer.id).await()
+
+    // add log
+    val event = if (accident.type == AccidentType.INCIDENT) Event.ACCEPT_INCIDENT_TO_WORK else Event.ACCEPT_REQUEST_TO_WORK
+    val log = Log(
+      editor = engineer,
+      division = division,
+      accidentId = accidentId,
+      accident = accident,
+      event = event,
+    )
+    LogsRepository.addLogSync(log)
+
+    onSuccess()
+    null
+  }  catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  private fun changeAccidentField(accidentId: String, field: String, value: Any) =
+    FirebaseService.accidentsCollection.document(accidentId).update(field, value)
+
+	private const val FIELD_DIVISION_ID = "divisionId"
   private const val FIELD_ENGINEER_ID = "engineerId"
+  private const val FIELD_STATUS = "status"
 }

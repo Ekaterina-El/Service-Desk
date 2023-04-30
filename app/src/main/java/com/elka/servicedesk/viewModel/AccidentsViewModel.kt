@@ -8,6 +8,7 @@ import com.elka.servicedesk.service.model.*
 import com.elka.servicedesk.service.repository.AccidentsRepository
 import com.elka.servicedesk.service.repository.LogsRepository
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class AccidentsViewModel(application: Application) : BaseViewModelWithFields(application) {
   // region All accidents
@@ -36,7 +37,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     addWork(work)
 
     viewModelScope.launch {
-      _error.value = AccidentsRepository.loadAccidentsOfDivisions(divisionsIds) { list ->
+      _error.value = AccidentsRepository.loadAccidentsOfDivisions(divisionsIds, AccidentStatus.ACTIVE) { list ->
         _accidents.value = list.splitAndSort()
         filterAccidents()
       }
@@ -57,6 +58,12 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   fun clearFilterAccidents() {
     filter.value = ""
     filterAccidents()
+  }
+
+  private fun removeAccidentFromActiveById(accidentId: String) {
+    val items = _accidents.value!!.toMutableList()
+    items.removeIf { it.id == accidentId }
+    _accidents.value = items
   }
   // endregion
 
@@ -94,6 +101,12 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   fun clearFilterEngineerAccidents() {
     engineerFilter.value = ""
     filterEngineerAccidents()
+  }
+
+  private fun addAccidentToInWork(accident: Accident) {
+    val items = _engineerAccidents.value!!.toMutableList()
+    items.add(accident)
+    _engineerAccidents.value = items
   }
   // endregion
 
@@ -224,5 +237,30 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     _currentLoadedAccidentId = accidentId
     reloadCurrentAccident()
   }
-  // endregion
+
+	fun acceptCurrentAccidentToWork(engineer: User, onAccept: () -> Unit) {
+    val work = Work.ACCPET_ACCIDENT_TO_WORK
+    addWork(work)
+
+    viewModelScope.launch {
+      val accident = _currentAccident.value!!
+      val division = accident.divisionLocal!!
+
+      _error.value = AccidentsRepository.acceptAccidentToWork(accident, engineer, division) {
+        // delete accident from allAccidents
+        removeAccidentFromActiveById(accident.id)
+
+        // add accident to engineerAccidents
+        accident.status = AccidentStatus.IN_WORK
+        accident.engineerId = engineer.id
+        accident.engineerLocal = engineer
+        addAccidentToInWork(accident)
+
+        _currentAccident.value = accident
+        onAccept()
+      }
+      removeWork(work)
+    }
+	}
+	// endregion
 }

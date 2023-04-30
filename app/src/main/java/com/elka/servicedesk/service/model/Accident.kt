@@ -27,7 +27,7 @@ data class Accident(
   var engineerLocal: User? = null,
 
   var createdDate: Date = Constants.getCurrentDate(),
-  val status: AccidentStatus = AccidentStatus.ACTIVE,
+  var status: AccidentStatus = AccidentStatus.ACTIVE,
 ): java.io.Serializable {
   var createdDateS: String
     get() = createdDate.toLogFormat()

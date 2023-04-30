@@ -1,12 +1,13 @@
 package com.elka.servicedesk.service.model
 
+import com.elka.servicedesk.other.Constants
 import com.elka.servicedesk.other.Event
 import com.elka.servicedesk.other.toLogFormat
 import java.util.*
 
 data class Log(
 	var id: String = "",
-	var date: Date? = null,
+	var date: Date = Constants.getCurrentDate(),
 	var editor: User? = null,
 	var division: Division? = null,
 
@@ -17,7 +18,7 @@ data class Log(
 	var param: String = ""
 ) : java.io.Serializable {
 	var dateS
-		get() = date?.toLogFormat() ?: ""
+		get() = date.toLogFormat() ?: ""
 		set(v) {}
 
 	var text: String
