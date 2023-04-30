@@ -37,6 +37,7 @@
 
       <TextView
           style="@style/text"
+          app:statusColor="@{accident.status}"
           android:text="@{accident.status.text}"
           android:textColor="@color/accent2"
           tools:text="Активен" />

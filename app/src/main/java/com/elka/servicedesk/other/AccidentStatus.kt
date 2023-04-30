@@ -1,11 +1,10 @@
 package com.elka.servicedesk.other
 
 enum class AccidentStatus(val text: String) {
-  ACTIVE("Активен"),
+  ACTIVE("Создан"),
   IN_WORK("В работе"),
   FORWARD("Передан"),
   READY("Разрешен"),
-  WAIN_ACCEPT_FROM_USER("Ожидается подтверждение от пользователе о разрешении пробелемы"),
-  CLOSED("Закрыт"),
+  CLOSED("Закрыт инженером. Требуется подтверждение!"),
   WAITING("Ожидание"),
 }

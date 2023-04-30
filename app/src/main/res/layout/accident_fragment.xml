@@ -128,6 +128,7 @@
 
                     <TextView
                         style="@style/text"
+                        app:statusColor="@{viewModel.currentAccident.status}"
                         android:paddingHorizontal="@dimen/app_padding"
                         android:text="@{viewModel.currentAccident.status.text}"
                         android:textColor="@color/accent2"

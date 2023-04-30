@@ -293,7 +293,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
         addLog(log)
 
-        accident.status = AccidentStatus.WAIN_ACCEPT_FROM_USER
+        accident.status = AccidentStatus.CLOSED
         _currentAccident.value = accident
         onClose()
       }

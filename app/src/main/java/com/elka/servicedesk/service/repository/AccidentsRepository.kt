@@ -194,7 +194,7 @@ object AccidentsRepository {
 
   suspend fun closeAccidentFromEngineer(accident: Accident, engineer: User, division: Division, onSuccess: (Log) -> Unit): ErrorApp? = try {
     // change accident status
-    changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.WAIN_ACCEPT_FROM_USER).await()
+    changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.CLOSED).await()
 
     // add log
     val log = Log(

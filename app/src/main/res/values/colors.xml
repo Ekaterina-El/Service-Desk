@@ -9,6 +9,8 @@
   <color name="white">#FFFFFFFF</color>
 
   <color name="on_primary">#333</color>
+  <color name="in_work">#586EEB</color>
+  <color name="ready">#2C734C</color>
   <color name="primary_heavy_dark">#040643</color>
   <color name="primary_dark">@color/accent</color>
   <color name="primary">#EDFCFF</color>
