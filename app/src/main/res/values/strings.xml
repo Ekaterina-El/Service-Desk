@@ -108,4 +108,5 @@
     <string name="message">Сообщение</string>
   <string name="request_to_add_more_information_added">Запрос отправлен</string>
   <string name="more_information_added">Доп. информация добавлена</string>
+    <string name="advance_info">Дополнительная информация</string>
 </resources>

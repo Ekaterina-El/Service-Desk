@@ -27,7 +27,7 @@ object AccidentsRepository {
 		val accident = doc.toObject(Accident::class.java)!!
 		accident.id = doc.id
 
-		accident.moreInfo = accident.moreInfo.sortedByDescending { it.date }
+		accident.moreInfo = accident.moreInfo.sortedBy { it.date }
 		accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
 		accident.userLocal = UserRepository.loadUser(accident.userId)
 		accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }

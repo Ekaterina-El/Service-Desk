@@ -23,12 +23,15 @@ import com.elka.servicedesk.view.dialog.AddMoreInfoDialog
 import com.elka.servicedesk.view.list.images.ImageItem
 import com.elka.servicedesk.view.list.images.ImagesAdapter
 import com.elka.servicedesk.view.list.logs.LogsAdapter
+import com.elka.servicedesk.view.list.moreInfo.MoreInfoAdapter
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AccidentsViewModel
 
 class AccidentFragment : UserBaseFragment() {
 	private lateinit var binding: AccidentFragmentBinding
 	private val accidentsViewModel by activityViewModels<AccidentsViewModel>()
+
+	private val moreInfoAdapter by lazy { MoreInfoAdapter() }
 
 	private val logsAdapter by lazy { LogsAdapter() }
 
@@ -49,6 +52,7 @@ class AccidentFragment : UserBaseFragment() {
 		val items =
 			accident.photosURL.map { ImageItem(type = ImagesAdapter.TYPE_ITEM, it) }.toMutableList()
 		imagesAdapter.setItems(items)
+		moreInfoAdapter.setItems(accident.moreInfo)
 	}
 
 	private val works = listOf(
@@ -77,6 +81,7 @@ class AccidentFragment : UserBaseFragment() {
 			viewModel = this@AccidentFragment.accidentsViewModel
 			imagesAdapter = this@AccidentFragment.imagesAdapter
 			logsAdapter = this@AccidentFragment.logsAdapter
+			moreInfoAdapter = this@AccidentFragment.moreInfoAdapter
 		}
 
 		return binding.root
@@ -153,8 +158,7 @@ class AccidentFragment : UserBaseFragment() {
 				DENY_CLOSE_ACCIDENT -> Unit
 				EXCALATION -> Unit
 
-				ADD_INFORMATION,
-				WAIT_MORE_INFORMATION -> showDialogSendRequestToAddMoreInformation()
+				ADD_INFORMATION, WAIT_MORE_INFORMATION -> showDialogSendRequestToAddMoreInformation()
 				else -> Unit
 			}
 			return@setOnMenuItemClickListener true
@@ -245,9 +249,7 @@ class AccidentFragment : UserBaseFragment() {
 		val engineer = userViewModel.profile.value!!.copy()
 		accidentsViewModel.acceptCurrentAccidentToWork(engineer) {
 			Toast.makeText(
-				requireContext(),
-				getString(R.string.accident_was_accdepted_to_work),
-				Toast.LENGTH_SHORT
+				requireContext(), getString(R.string.accident_was_accdepted_to_work), Toast.LENGTH_SHORT
 			).show()
 		}
 	}
@@ -273,9 +275,7 @@ class AccidentFragment : UserBaseFragment() {
 		val user = userViewModel.profile.value!!.copy()
 		accidentsViewModel.acceptCloseAccidentFromUser(user) {
 			Toast.makeText(
-				requireContext(),
-				getString(R.string.accident_was_close_by_user),
-				Toast.LENGTH_SHORT
+				requireContext(), getString(R.string.accident_was_close_by_user), Toast.LENGTH_SHORT
 			).show()
 		}
 	}
@@ -289,7 +289,8 @@ class AccidentFragment : UserBaseFragment() {
 			override fun onSave(accidentMoreInfo: AccidentMoreInfo) {
 				addMoreInfoDialog.disagree()
 				accidentsViewModel.addAccidentMoreInfo(accidentMoreInfo) {
-					val strRes = if (accidentMoreInfo.user!!.role == Role.USER) R.string.more_information_added else R.string.request_to_add_more_information_added
+					val strRes =
+						if (accidentMoreInfo.user!!.role == Role.USER) R.string.more_information_added else R.string.request_to_add_more_information_added
 					Toast.makeText(requireContext(), getString(strRes), Toast.LENGTH_SHORT).show()
 				}
 			}

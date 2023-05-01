@@ -9,6 +9,11 @@ data class AccidentMoreInfo(
 	val user: User? = null
 ) {
 	var dateS: String
-		get() = date.toLogFormat()
+		get() = date.toMoreInfoFormat()
 		set(v) {}
+
+	var sender: String
+		get() = "${user!!.fullName} (${user.role.text})"
+		set(v) {}
+
 }

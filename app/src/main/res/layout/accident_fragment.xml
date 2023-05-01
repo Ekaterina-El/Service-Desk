@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="imagesAdapter"
             type="com.elka.servicedesk.view.list.images.ImagesAdapter" />
+
+        <variable
+            name="moreInfoAdapter"
+            type="com.elka.servicedesk.view.list.moreInfo.MoreInfoAdapter" />
 
         <variable
             name="logsAdapter"
@@ -167,6 +170,31 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="1"
                         tools:listitem="@layout/image_item" />
+
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.currentAccident.moreInfo.size() == 0 ? View.GONE : View.VISIBLE}"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/text.h3"
+                            android:paddingHorizontal="@dimen/app_padding"
+                            android:text="@string/advance_info" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:paddingHorizontal="@dimen/app_padding"
+                            android:orientation="vertical"
+                            app:adapter="@{moreInfoAdapter}"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="3"
+                            tools:listitem="@layout/more_info_item" />
+
+                    </LinearLayout>
 
                     <TextView
                         style="@style/text.h3"

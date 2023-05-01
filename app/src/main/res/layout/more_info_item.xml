@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.elka.servicedesk.other.Role" />
+
+        <variable
+            name="moreInfo"
+            type="com.elka.servicedesk.other.AccidentMoreInfo" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="3dp">
+
+        <LinearLayout
+            android:id="@+id/from_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:layout_marginEnd="@dimen/more_info_mb"
+            android:orientation="horizontal"
+            android:visibility="@{moreInfo.user.role == Role.USER ? View.VISIBLE : View.GONE}">
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/ic_left_message"
+                app:tint="@color/user_more_info_color" />
+
+            <LinearLayout
+                android:paddingHorizontal="10dp"
+                android:background="@drawable/more_info_user_wrapper"
+                android:paddingVertical="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                style="@style/text"
+                android:text="@{moreInfo.sender}"
+                android:layout_width="wrap_content"
+                android:textColor="@color/accent"
+                android:textStyle="bold"
+                tools:text="Пользователь" />
+
+            <TextView
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{moreInfo.message}"
+                tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s" />
+
+            <TextView
+                style="@style/text.hint.small"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:text="@{moreInfo.dateS}"
+                android:textColor="#919191"
+                tools:text="10.03.2023 14:42" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/from_engineer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="bottom"
+            android:layout_marginStart="@dimen/more_info_mb"
+            android:orientation="horizontal"
+            android:visibility="@{moreInfo.user.role == Role.ENGINEER ? View.VISIBLE : View.GONE}">
+
+            <LinearLayout
+                android:paddingHorizontal="10dp"
+                android:background="@drawable/more_info_engineer_wrapper"
+                android:paddingVertical="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    style="@style/text"
+                    android:layout_width="wrap_content"
+                    android:text="@{moreInfo.sender}"
+                    android:textColor="#F4F38F"
+                    android:textStyle="bold"
+                    tools:text="Иван Иванович (Инженер)" />
+
+                <TextView
+                    style="@style/text"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@{moreInfo.message}"
+                    android:textColor="@color/white"
+                    tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s" />
+
+                <TextView
+                    style="@style/text.hint.small"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="5dp"
+                    android:text="@{moreInfo.dateS}"
+                    android:textColor="#BDBDBD"
+                    tools:text="10.03.2023 14:42" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/ic_right_message"
+                app:tint="@color/accent" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

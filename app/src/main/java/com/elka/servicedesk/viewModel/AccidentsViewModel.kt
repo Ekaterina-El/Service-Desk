@@ -333,7 +333,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
         val moreInfo = accident.moreInfo.toMutableList()
         moreInfo.add(accidentMoreInfo)
-        accident.moreInfo = moreInfo.sortedByDescending { it.date }
+        accident.moreInfo = moreInfo.sortedBy { it.date }
         _currentAccident.value = accident
         onAdded()
       }

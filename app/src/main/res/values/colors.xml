@@ -23,4 +23,5 @@
   <color name="shadow">#66DADADA</color>
   <color name="shadow2">#9CDADADA</color>
   <color name="light_grey">#BDBDBD</color>
+    <color name="user_more_info_color">#F6F6F6</color>
 </resources>
