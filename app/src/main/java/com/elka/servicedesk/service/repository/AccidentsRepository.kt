@@ -272,6 +272,19 @@ object AccidentsRepository {
 		Errors.unknown
 	}
 
+	suspend fun deleteAllActiveAccidentForDivision(divisionId: String) {
+		FirebaseService.accidentsCollection
+			.whereEqualTo(FIELD_DIVISION_ID, divisionId)
+			.get().await().forEach { doc ->
+				val accident = doc.toObject(Accident::class.java)
+				if (accident.status != AccidentStatus.READY) deleteAccident(doc.id)
+			}
+	}
+
+	private suspend fun deleteAccident(accidentId: String) {
+		FirebaseService.accidentsCollection.document(accidentId).delete().await()
+	}
+
 	private const val FIELD_DIVISION_ID = "divisionId"
 	private const val FIELD_ENGINEER_ID = "engineerId"
 	private const val FIELD_STATUS = "status"

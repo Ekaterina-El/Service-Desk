@@ -34,7 +34,9 @@ object DivisionsRepository {
 
   suspend fun removeDivision(division: Division, editor: User, onSuccess: () -> Unit): ErrorApp? =
     try {
-      FirebaseService.divisionsCollection.document(division.id).delete().await()
+      val divisionId = division.id
+      FirebaseService.divisionsCollection.document(divisionId).delete().await()
+      AccidentsRepository.deleteAllActiveAccidentForDivision(divisionId)
 
       val log = Log(
         date = Constants.getCurrentDate(),
@@ -49,10 +51,10 @@ object DivisionsRepository {
       null
     } catch (e: FirebaseNetworkException) {
       Errors.network
-    } catch (e: java.lang.Exception) {
+    } /*catch (e: java.lang.Exception) {
       Errors.unknown
     }
-
+*/
 
   suspend fun getDivisionById(divisionId: String): Division? {
     val doc = FirebaseService.divisionsCollection.document(divisionId).get().await()
