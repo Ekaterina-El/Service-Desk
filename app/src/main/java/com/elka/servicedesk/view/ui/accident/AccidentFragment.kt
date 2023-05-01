@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AccidentFragmentBinding
+import com.elka.servicedesk.other.AccidentMoreInfo
 import com.elka.servicedesk.other.AccidentStatus
 import com.elka.servicedesk.other.Role
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.Log
+import com.elka.servicedesk.view.dialog.AddMoreInfoDialog
 import com.elka.servicedesk.view.list.images.ImageItem
 import com.elka.servicedesk.view.list.images.ImagesAdapter
 import com.elka.servicedesk.view.list.logs.LogsAdapter
@@ -42,7 +44,7 @@ class AccidentFragment : UserBaseFragment() {
 	private val accidentObserver = Observer<Accident?> { accident ->
 		if (accident == null) return@Observer
 
-    updateMenuStatus()
+		updateMenuStatus()
 
 		val items =
 			accident.photosURL.map { ImageItem(type = ImagesAdapter.TYPE_ITEM, it) }.toMutableList()
@@ -147,10 +149,12 @@ class AccidentFragment : UserBaseFragment() {
 			when (it.itemId) {
 				ACCEPT_ACCIDENT_TO_WORK -> acceptAccidentToWork()
 				CLOSE_ACCIDENT -> closeAccident()
-				WAIT_MORE_INFORMATION -> Unit
 				ACCEPT_CLOSE_ACCIDENT -> acceptCloseAccidentByUser()
 				DENY_CLOSE_ACCIDENT -> Unit
 				EXCALATION -> Unit
+
+				ADD_INFORMATION,
+				WAIT_MORE_INFORMATION -> showDialogSendRequestToAddMoreInformation()
 				else -> Unit
 			}
 			return@setOnMenuItemClickListener true
@@ -159,30 +163,30 @@ class AccidentFragment : UserBaseFragment() {
 		return@lazy popupMenu
 	}
 
-  private fun updateMenuStatus() {
-    val role = userViewModel.profile.value!!.role
-    val accidentStatus = accidentsViewModel.currentAccident.value!!.status
+	private fun updateMenuStatus() {
+		val role = userViewModel.profile.value!!.role
+		val accidentStatus = accidentsViewModel.currentAccident.value!!.status
 
-    val viewStatus = when(role) {
-      Role.USER -> {
-        when(accidentStatus) {
-          AccidentStatus.CLOSED,
-          AccidentStatus.WAITING, -> View.VISIBLE
-          else -> View.INVISIBLE
-        }
-      }
-      Role.ENGINEER -> {
-        when(accidentStatus) {
-          AccidentStatus.ACTIVE,
-          AccidentStatus.IN_WORK -> View.VISIBLE
-          else -> View.INVISIBLE
-        }
-      }
-      else -> View.INVISIBLE
-    }
+		val viewStatus = when (role) {
+			Role.USER -> {
+				when (accidentStatus) {
+					AccidentStatus.CLOSED,
+					AccidentStatus.WAITING,
+					-> View.VISIBLE
+					else -> View.INVISIBLE
+				}
+			}
+			Role.ENGINEER -> {
+				when (accidentStatus) {
+					AccidentStatus.ACTIVE, AccidentStatus.IN_WORK -> View.VISIBLE
+					else -> View.INVISIBLE
+				}
+			}
+			else -> View.INVISIBLE
+		}
 
-    binding.menu.visibility = viewStatus
-  }
+		binding.menu.visibility = viewStatus
+	}
 
 	private fun inflateMenu() {
 		val menu = menu.menu
@@ -191,34 +195,34 @@ class AccidentFragment : UserBaseFragment() {
 		val role = userViewModel.profile.value!!.role
 		val accidentStatus = accidentsViewModel.currentAccident.value!!.status
 
-    when (role) {
-      Role.USER -> {
-        when (accidentStatus) {
-          AccidentStatus.CLOSED -> {
-            menu.add(0, ACCEPT_CLOSE_ACCIDENT, 0, R.string.accept_close_accident)
-            menu.add(0, DENY_CLOSE_ACCIDENT, 0, R.string.deny_close_accident)
-          }
-          AccidentStatus.WAITING -> {
-            menu.add(0, ADD_INFORMATION, 0, R.string.add_information)
-          }
-          else -> Unit
-        }
-      }
-      Role.ENGINEER -> {
-        when (accidentStatus) {
-          AccidentStatus.ACTIVE -> {
-            menu.add(0, ACCEPT_ACCIDENT_TO_WORK, 0, R.string.accept_accident_to_work)
-          }
-          AccidentStatus.IN_WORK -> {
-            menu.add(0, WAIT_MORE_INFORMATION, 0, R.string.wait_more_information)
-            menu.add(0, CLOSE_ACCIDENT, 0, R.string.close_accident)
-            menu.add(0, EXCALATION, 0, R.string.excalation)
-          }
-          else -> Unit
-        }
-      }
-      else -> Unit
-    }
+		when (role) {
+			Role.USER -> {
+				when (accidentStatus) {
+					AccidentStatus.CLOSED -> {
+						menu.add(0, ACCEPT_CLOSE_ACCIDENT, 0, R.string.accept_close_accident)
+						menu.add(0, DENY_CLOSE_ACCIDENT, 0, R.string.deny_close_accident)
+					}
+					AccidentStatus.WAITING -> {
+						menu.add(0, ADD_INFORMATION, 0, R.string.add_information)
+					}
+					else -> Unit
+				}
+			}
+			Role.ENGINEER -> {
+				when (accidentStatus) {
+					AccidentStatus.ACTIVE -> {
+						menu.add(0, ACCEPT_ACCIDENT_TO_WORK, 0, R.string.accept_accident_to_work)
+					}
+					AccidentStatus.IN_WORK -> {
+						menu.add(0, WAIT_MORE_INFORMATION, 0, R.string.wait_more_information)
+						menu.add(0, CLOSE_ACCIDENT, 0, R.string.close_accident)
+						menu.add(0, EXCALATION, 0, R.string.excalation)
+					}
+					else -> Unit
+				}
+			}
+			else -> Unit
+		}
 
 	}
 
@@ -240,7 +244,11 @@ class AccidentFragment : UserBaseFragment() {
 
 		val engineer = userViewModel.profile.value!!.copy()
 		accidentsViewModel.acceptCurrentAccidentToWork(engineer) {
-			Toast.makeText(requireContext(), getString(R.string.accident_was_accdepted_to_work), Toast.LENGTH_SHORT).show()
+			Toast.makeText(
+				requireContext(),
+				getString(R.string.accident_was_accdepted_to_work),
+				Toast.LENGTH_SHORT
+			).show()
 		}
 	}
 
@@ -250,8 +258,9 @@ class AccidentFragment : UserBaseFragment() {
 			return
 		}
 
-		accidentsViewModel.closeAccident() {
-			Toast.makeText(requireContext(), getString(R.string.accident_was_close), Toast.LENGTH_SHORT).show()
+		accidentsViewModel.closeAccident {
+			Toast.makeText(requireContext(), getString(R.string.accident_was_close), Toast.LENGTH_SHORT)
+				.show()
 		}
 	}
 
@@ -263,8 +272,37 @@ class AccidentFragment : UserBaseFragment() {
 
 		val user = userViewModel.profile.value!!.copy()
 		accidentsViewModel.acceptCloseAccidentFromUser(user) {
-			Toast.makeText(requireContext(), getString(R.string.accident_was_close_by_user), Toast.LENGTH_SHORT).show()
+			Toast.makeText(
+				requireContext(),
+				getString(R.string.accident_was_close_by_user),
+				Toast.LENGTH_SHORT
+			).show()
 		}
+	}
+
+	private fun denyCloseAccidentByUser() {
+		throw Error("No added function")
+	}
+
+	private val addMoreInfoDialogListener by lazy {
+		object : AddMoreInfoDialog.Companion.Listener {
+			override fun onSave(accidentMoreInfo: AccidentMoreInfo) {
+
+			}
+		}
+	}
+	private val addMoreInfoDialog by lazy {
+		AddMoreInfoDialog(requireContext(), addMoreInfoDialogListener)
+	}
+
+	private fun showDialogSendRequestToAddMoreInformation() {
+		if (hasLoads) {
+			showLoadingErrorMessage()
+			return
+		}
+
+		val user = userViewModel.profile.value!!
+		addMoreInfoDialog.open(user)
 	}
 
 	companion object {

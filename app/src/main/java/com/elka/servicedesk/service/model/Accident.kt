@@ -26,6 +26,8 @@ data class Accident(
   var engineerId: String? = null,
   var engineerLocal: User? = null,
 
+  var moreInfor: List<AccidentMoreInfo> = listOf(),
+
   var createdDate: Date = Constants.getCurrentDate(),
   var status: AccidentStatus = AccidentStatus.ACTIVE,
 ): java.io.Serializable {

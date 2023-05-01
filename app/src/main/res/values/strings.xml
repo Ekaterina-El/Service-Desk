@@ -101,4 +101,9 @@
     <string name="wait_more_information">Запросить дополнительную информацию</string>
     <string name="accident_was_close">Заявка закрыта! Ожидается подтверждение от пользователя.</string>
   <string name="accident_was_close_by_user">Закрытие завяки подтвержденно</string>
+    <string name="user_add_more_information_title">Добавление дополнительной информации</string>
+  <string name="engineer_add_more_information_title">Добавление запроса на добавление дополнительной информации</string>
+  <string name="user_add_more_information_hint">Опишите более подробно возникшую проблему, что уже было предпринято, к чему это привело и другую информацию</string>
+    <string name="engineer_add_more_information_hint">Опишите требуемую информацию от пользователя</string>
+    <string name="message">Сообщение</string>
 </resources>
