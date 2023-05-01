@@ -245,7 +245,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
   }
 
 	fun acceptCurrentAccidentToWork(engineer: User, onAccept: () -> Unit) {
-    val work = Work.ACCPET_ACCIDENT_TO_WORK
+    val work = Work.ACCEPT_ACCIDENT_TO_WORK
     addWork(work)
 
     viewModelScope.launch {
@@ -319,5 +319,27 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
     }
 
   }
-  // endregion
+
+	fun addAccidentMoreInfo(accidentMoreInfo: AccidentMoreInfo, onAdded: () -> Unit) {
+    val work = Work.ADD_MORE_INFORMATION
+    addWork(work)
+
+    viewModelScope.launch {
+      val newStatus = if (accidentMoreInfo.user!!.role == Role.USER) AccidentStatus.IN_WORK else AccidentStatus.WAITING
+      val accident = _currentAccident.value!!.copy(status = newStatus)
+
+      _error.value = AccidentsRepository.addAccidentMoreInfo(accident, accidentMoreInfo) {log ->
+        addLog(log)
+
+        val moreInfo = accident.moreInfo.toMutableList()
+        moreInfo.add(accidentMoreInfo)
+        accident.moreInfo = moreInfo.sortedByDescending { it.date }
+        _currentAccident.value = accident
+        onAdded()
+      }
+      removeWork(work)
+    }
+
+  }
+	// endregion
 }

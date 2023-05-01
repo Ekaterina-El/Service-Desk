@@ -52,7 +52,7 @@ class AccidentFragment : UserBaseFragment() {
 	}
 
 	private val works = listOf(
-		Work.LOAD_ACCIDENT, Work.ACCPET_ACCIDENT_TO_WORK, Work.CLOSE_ACCIDENT
+		Work.LOAD_ACCIDENT, Work.ACCEPT_ACCIDENT_TO_WORK, Work.CLOSE_ACCIDENT, Work.ADD_MORE_INFORMATION
 	)
 
 	private val hasLoads: Boolean
@@ -287,11 +287,16 @@ class AccidentFragment : UserBaseFragment() {
 	private val addMoreInfoDialogListener by lazy {
 		object : AddMoreInfoDialog.Companion.Listener {
 			override fun onSave(accidentMoreInfo: AccidentMoreInfo) {
-
+				addMoreInfoDialog.disagree()
+				accidentsViewModel.addAccidentMoreInfo(accidentMoreInfo) {
+					val strRes = if (accidentMoreInfo.user!!.role == Role.USER) R.string.more_information_added else R.string.request_to_add_more_information_added
+					Toast.makeText(requireContext(), getString(strRes), Toast.LENGTH_SHORT).show()
+				}
 			}
 		}
 	}
-	private val addMoreInfoDialog by lazy {
+
+	private val addMoreInfoDialog: AddMoreInfoDialog by lazy {
 		AddMoreInfoDialog(requireContext(), addMoreInfoDialogListener)
 	}
 

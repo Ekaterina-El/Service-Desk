@@ -5,7 +5,7 @@ import java.util.*
 
 data class AccidentMoreInfo(
 	val date: Date = Constants.getCurrentDate(),
-	val message: String,
+	val message: String = "",
 	val user: User? = null
 ) {
 	var dateS: String

@@ -60,6 +60,7 @@ class AddMoreInfoDialog(
 	}
 
 	fun disagree() {
+		binding.moreInformation.setText("")
 		dismiss()
 	}
 

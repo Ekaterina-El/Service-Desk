@@ -25,4 +25,6 @@ enum class Event(val text: String) {
 	ACCEPT_REQUEST_TO_WORK("Запрос принят в работу"),
   CLOSE_ACCIDENT_BY_ENGINEER("Отправлена заявка на подтверждении разрешения проблемы"),
 	CLOSE_ACCIDENT_BY_USER("Заявка закрыта"),
+	USER_ADDED_MORE_INFO("Пользователь предоставил дополнительную информацию"),
+  ENGINEER_REQUEST_TO_ADD_MORE_INFO("Инженер запросил дополнительную информацию"),
 }
