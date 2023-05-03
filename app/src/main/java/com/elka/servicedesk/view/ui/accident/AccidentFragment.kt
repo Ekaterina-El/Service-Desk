@@ -56,7 +56,11 @@ class AccidentFragment : UserBaseFragment() {
 	}
 
 	private val works = listOf(
-		Work.LOAD_ACCIDENT, Work.ACCEPT_ACCIDENT_TO_WORK, Work.CLOSE_ACCIDENT, Work.ADD_MORE_INFORMATION
+		Work.LOAD_ACCIDENT,
+		Work.ACCEPT_ACCIDENT_TO_WORK,
+		Work.CLOSE_ACCIDENT,
+		Work.ADD_MORE_INFORMATION,
+		Work.EXCALATION
 	)
 
 	private val hasLoads: Boolean
@@ -156,8 +160,7 @@ class AccidentFragment : UserBaseFragment() {
 				CLOSE_ACCIDENT -> closeAccident()
 				ACCEPT_CLOSE_ACCIDENT -> acceptCloseAccidentByUser()
 				DENY_CLOSE_ACCIDENT -> Unit
-				EXCALATION -> Unit
-
+				EXCALATION -> excalactionAccident()
 				ADD_INFORMATION, WAIT_MORE_INFORMATION -> showDialogSendRequestToAddMoreInformation()
 				else -> Unit
 			}
@@ -284,21 +287,45 @@ class AccidentFragment : UserBaseFragment() {
 		throw Error("No added function")
 	}
 
+	private var isExcalation = false
 	private val addMoreInfoDialogListener by lazy {
 		object : AddMoreInfoDialog.Companion.Listener {
 			override fun onSave(accidentMoreInfo: AccidentMoreInfo) {
 				addMoreInfoDialog.disagree()
-				accidentsViewModel.addAccidentMoreInfo(accidentMoreInfo) {
-					val strRes =
-						if (accidentMoreInfo.user!!.role == Role.USER) R.string.more_information_added else R.string.request_to_add_more_information_added
-					Toast.makeText(requireContext(), getString(strRes), Toast.LENGTH_SHORT).show()
-				}
+				if (isExcalation) sendExcalation(accidentMoreInfo) else sendAddMore(accidentMoreInfo)
+				isExcalation = false
 			}
+		}
+	}
+
+	private fun sendExcalation(accidentMoreInfo: AccidentMoreInfo) {
+		accidentsViewModel.sendExcalation(accidentMoreInfo) {
+			Toast.makeText(
+				requireContext(),
+				getString(R.string.request_to_excalation_sent),
+				Toast.LENGTH_SHORT
+			).show()
+		}
+	}
+
+	private fun sendAddMore(accidentMoreInfo: AccidentMoreInfo) {
+		accidentsViewModel.addAccidentMoreInfo(accidentMoreInfo) {
+			val strRes =
+				if (accidentMoreInfo.user!!.role == Role.USER) R.string.more_information_added else R.string.request_to_add_more_information_added
+			Toast.makeText(requireContext(), getString(strRes), Toast.LENGTH_SHORT).show()
 		}
 	}
 
 	private val addMoreInfoDialog: AddMoreInfoDialog by lazy {
 		AddMoreInfoDialog(requireContext(), addMoreInfoDialogListener)
+	}
+
+	private fun excalactionAccident() {
+		isExcalation = true
+		val title = getString(R.string.excalation)
+		val hint = getString(R.string.excalation_hint)
+		val user = userViewModel.profile.value!!
+		addMoreInfoDialog.open(user, title, hint)
 	}
 
 	private fun showDialogSendRequestToAddMoreInformation() {
@@ -308,7 +335,21 @@ class AccidentFragment : UserBaseFragment() {
 		}
 
 		val user = userViewModel.profile.value!!
-		addMoreInfoDialog.open(user)
+
+		val strRes = when (user.role) {
+			Role.USER -> listOf(
+				R.string.user_add_more_information_title,
+				R.string.user_add_more_information_hint,
+			)
+			Role.ENGINEER -> listOf(
+				R.string.engineer_add_more_information_title, R.string.engineer_add_more_information_hint
+			)
+			else -> null
+		} ?: return
+
+		val title = getString(strRes[0])
+		val hint = getString(strRes[1])
+		addMoreInfoDialog.open(user, title, hint)
 	}
 
 	companion object {

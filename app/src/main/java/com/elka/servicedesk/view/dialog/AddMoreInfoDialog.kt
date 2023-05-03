@@ -34,25 +34,9 @@ class AddMoreInfoDialog(
 	}
 
 
-	fun open(user: User) {
-		val strRes = when (user.role) {
-			Role.USER -> listOf(
-				R.string.user_add_more_information_title,
-				R.string.user_add_more_information_hint,
-			)
-			Role.ENGINEER -> listOf(
-				R.string.engineer_add_more_information_title, R.string.engineer_add_more_information_hint
-			)
-			else -> null
-		}
-
-		if (strRes == null) {
-			disagree()
-			return
-		}
-
-		binding.title.text = context.getString(strRes[0])
-		binding.message.hint = context.getString(strRes[1])
+	fun open(user: User, title: String, hint: String) {
+		binding.title.text = title
+		binding.message.hint = hint
 		binding.layoutMoreInformation.error = ""
 
 		this.user = user

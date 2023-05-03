@@ -12,7 +12,7 @@ fun setStatusColor(textView: TextView, status: AccidentStatus?) {
 
 		AccidentStatus.CLOSED,
 		AccidentStatus.WAITING,
-		AccidentStatus.FORWARD -> R.color.attention
+		AccidentStatus.EXCALATION -> R.color.attention
 
 		AccidentStatus.READY -> R.color.ready
 

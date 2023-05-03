@@ -27,9 +27,11 @@ data class Accident(
   var engineerLocal: User? = null,
 
   var moreInfo: List<AccidentMoreInfo> = listOf(),
+  var reasonOfExcalation: String = "",
 
   var createdDate: Date = Constants.getCurrentDate(),
   var status: AccidentStatus = AccidentStatus.ACTIVE,
+
 ): java.io.Serializable {
   var createdDateS: String
     get() = createdDate.toLogFormat()

@@ -285,8 +285,32 @@ object AccidentsRepository {
 		FirebaseService.accidentsCollection.document(accidentId).delete().await()
 	}
 
+	suspend fun sendExcalation(accident: Accident, reason: String, onSuccess: (Log) -> Unit): ErrorApp? = try {
+		// update status
+		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.EXCALATION).await()
+
+		// add reason
+		changeAccidentField(accident.id, FIELD_REASON_OF_EXCALATION, reason).await()
+
+		// add log
+		val log = Log(
+			editor = accident.engineerLocal,
+			division = accident.divisionLocal,
+			accident = accident,
+			accidentId = accident.id,
+			event = Event.SENT_EXCALATION
+		)
+		onSuccess(log)
+		null
+	}  catch (e: FirebaseNetworkException) {
+		Errors.network
+	} catch (e: Exception) {
+		Errors.unknown
+	}
+
 	private const val FIELD_DIVISION_ID = "divisionId"
 	private const val FIELD_ENGINEER_ID = "engineerId"
+	private const val FIELD_REASON_OF_EXCALATION = "reasonOfExcalation"
 	private const val FIELD_STATUS = "status"
 	private const val FIELD_MORE_INFO = "moreInfo"
 }
