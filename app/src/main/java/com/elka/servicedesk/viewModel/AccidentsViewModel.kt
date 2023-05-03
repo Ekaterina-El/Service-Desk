@@ -123,10 +123,11 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 		addWork(work)
 
 		viewModelScope.launch {
-			_error.value = AccidentsRepository.loadAllAccidentsWithStatus(status = AccidentStatus.ESCALATION) { excalations ->
-				_failedAccidents.value = excalations.splitAndSort()
-				filterFailedAccidents()
-			}
+			_error.value =
+				AccidentsRepository.loadAllAccidentsWithStatus(status = AccidentStatus.ESCALATION) { excalations ->
+					_failedAccidents.value = excalations.splitAndSort()
+					filterFailedAccidents()
+				}
 			removeWork(work)
 		}
 	}
@@ -288,9 +289,13 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 			_accidents.value!!.map { if (it.id == currentAccident.id) currentAccident else it }
 		_engineerAccidents.value =
 			_engineerAccidents.value!!.map { if (it.id == currentAccident.id) currentAccident else it }
+		_failedAccidents.value =
+			_failedAccidents.value!!.filter { it.status == AccidentStatus.ESCALATION }
+				.map { if (it.id == currentAccident.id) currentAccident else it }
 
 		filterAccidents()
 		filterEngineerAccidents()
+		filterFailedAccidents()
 	}
 
 	fun acceptCurrentAccidentToWork(engineer: User, onAccept: () -> Unit) {
@@ -315,8 +320,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 				addAccidentToInWork(accident)
 
 				_currentAccident.value = accident
-        updateCurrentAccidentInLists()
-        onAccept()
+				updateCurrentAccidentInLists()
+				onAccept()
 			}
 			removeWork(work)
 		}
@@ -347,8 +352,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 					accident.status = AccidentStatus.CLOSED
 					_currentAccident.value = accident
 
-          updateCurrentAccidentInLists()
-          onClose()
+					updateCurrentAccidentInLists()
+					onClose()
 				}
 			removeWork(work)
 		}
@@ -367,8 +372,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
 				_currentAccident.value = accident
 
-        updateCurrentAccidentInLists()
-        onClose()
+				updateCurrentAccidentInLists()
+				onClose()
 			}
 			removeWork(work)
 		}
@@ -392,8 +397,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 				accident.moreInfo = moreInfo.sortedBy { it.date }
 				_currentAccident.value = accident
 
-        updateCurrentAccidentInLists()
-        onAdded()
+				updateCurrentAccidentInLists()
+				onAdded()
 			}
 			removeWork(work)
 		}
@@ -409,7 +414,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 			val user = accidentMoreInfo.user!!.copy()
 			val reason = accidentMoreInfo.message
 
-			_error.value = AccidentsRepository.sendExcalation(accident, reason, user) { log ->
+			_error.value = AccidentsRepository.sendEscalation(accident, reason, user) { log ->
 				addLog(log)
 
 				// change status
@@ -424,6 +429,33 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 				onSuccess()
 			}
 
+			removeWork(work)
+		}
+	}
+
+	fun changeEngineer(newEngineer: User, editor: User) {
+		val work = Work.CHANGE_ENGINEER
+		addWork(work)
+
+		viewModelScope.launch {
+			val accident = currentAccident.value!!.copy()
+			_error.value = AccidentsRepository.changeEngineer(accident, newEngineer, editor) { log: Log ->
+				addLog(log)
+
+				// change status
+				accident.status = AccidentStatus.IN_WORK
+
+				// add reason on currentAccident
+				accident.reasonOfExcalation = ""
+				accident.senderOfExcalation = null
+
+				// update engineer
+				accident.engineerId = newEngineer.id
+				accident.engineerLocal = newEngineer
+
+				_currentAccident.value = accident
+				updateCurrentAccidentInLists()
+			}
 			removeWork(work)
 		}
 	}

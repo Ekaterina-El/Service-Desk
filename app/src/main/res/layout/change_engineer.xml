@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+        name="master"
+        type="com.elka.servicedesk.view.dialog.ChangeEngineerDialog" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="25dp">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+      <TextView
+          style="@style/text.h3"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="25dp"
+          android:text="@string/changing_engineer"
+          android:gravity="start"
+          android:textStyle="bold" />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="bottom"
+          android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+          <RelativeLayout
+              android:id="@+id/divisionW"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="15dp"
+              android:background="@drawable/field_wrapper"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/engineers_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                tools:listitem="@layout/spinner_division_item" />
+          </RelativeLayout>
+
+          <TextView
+              style="@style/text.hint.field"
+              android:text="@string/engineer"
+              app:layout_constraintBottom_toTopOf="@id/divisionW"
+              app:layout_constraintStart_toStartOf="@id/divisionW"
+              app:layout_constraintTop_toTopOf="@id/divisionW" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="25dp"
+          android:gravity="end"
+          android:orientation="horizontal">
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.disagree()}"
+            android:text="@string/cancel" />
+
+        <TextView
+            style="@style/text.bold.button"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bubble_wrapper"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.agree()}"
+            android:text="@string/continue_text" />
+
+      </LinearLayout>
+    </LinearLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

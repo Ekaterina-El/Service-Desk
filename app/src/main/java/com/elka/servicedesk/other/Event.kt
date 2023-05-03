@@ -27,5 +27,6 @@ enum class Event(val text: String) {
 	CLOSE_ACCIDENT_BY_USER("Заявка закрыта"),
 	USER_ADDED_MORE_INFO("Пользователь предоставил дополнительную информацию"),
   ENGINEER_REQUEST_TO_ADD_MORE_INFO("Инженер запросил дополнительную информацию"),
-	SENT_EXCALATION("Отправлен запрос на передачу другому инженеру"),
+	SENT_ESCALATION("Отправлен запрос на передачу другому инженеру"),
+	CHANGED_ENGINEER("Заменен инжинер"),
 }

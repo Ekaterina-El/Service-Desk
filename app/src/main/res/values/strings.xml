@@ -114,4 +114,6 @@
   <string name="current_engineer">Текущий инженер</string>
   <string name="one_engineer">Нет подходящих инженеров</string>
   <string name="change_engineer">Заменить инженера</string>
+  <string name="changing_engineer">Замена инженера</string>
+  <string name="engineer">Инженер</string>
 </resources>

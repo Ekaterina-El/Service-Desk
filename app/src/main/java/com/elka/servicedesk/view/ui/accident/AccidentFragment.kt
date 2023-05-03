@@ -19,7 +19,9 @@ import com.elka.servicedesk.other.Role
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.Log
+import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.dialog.AddMoreInfoDialog
+import com.elka.servicedesk.view.dialog.ChangeEngineerDialog
 import com.elka.servicedesk.view.list.images.ImageItem
 import com.elka.servicedesk.view.list.images.ImagesAdapter
 import com.elka.servicedesk.view.list.logs.LogsAdapter
@@ -62,7 +64,8 @@ class AccidentFragment : UserBaseFragment() {
 		Work.ACCEPT_ACCIDENT_TO_WORK,
 		Work.CLOSE_ACCIDENT,
 		Work.ADD_MORE_INFORMATION,
-		Work.EXCALATION, Work.LOAD_USERS
+		Work.EXCALATION, Work.LOAD_USERS,
+		Work.CHANGE_ENGINEER
 	)
 
 	private val hasLoads: Boolean
@@ -367,12 +370,25 @@ class AccidentFragment : UserBaseFragment() {
 		addMoreInfoDialog.open(user, title, hint)
 	}
 
-	fun changeEngineer() {
+
+	private val changeEngineerDialogListener by lazy {
+		object : ChangeEngineerDialog.Companion.Listener {
+			override fun onChange(engineer: User) {
+				val admin = userViewModel.profile.value!!.copy()
+				accidentsViewModel.changeEngineer(engineer, admin)
+				changeEngineerDialog.disagree()
+			}
+		}
+	}
+	private val changeEngineerDialog: ChangeEngineerDialog by lazy { ChangeEngineerDialog(requireContext(), changeEngineerDialogListener) }
+	private fun changeEngineer() {
 		val currentEngineerId = accidentsViewModel.currentAccident.value!!.engineerId
 		val engineersWithoutCurrent = engineersViewModel.users.value!!.filter { it.id != currentEngineerId }
 
 		if (engineersWithoutCurrent.isEmpty()) {
 			Toast.makeText(requireContext(), R.string.one_engineer, Toast.LENGTH_SHORT).show()
+		} else {
+			changeEngineerDialog.open(engineersWithoutCurrent)
 		}
 	}
 

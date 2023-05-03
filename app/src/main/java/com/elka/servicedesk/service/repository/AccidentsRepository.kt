@@ -267,7 +267,7 @@ object AccidentsRepository {
 		Errors.unknown
 	}
 
-	private fun changeAccidentField(accidentId: String, field: String, value: Any) =
+	private fun changeAccidentField(accidentId: String, field: String, value: Any?) =
 		FirebaseService.accidentsCollection.document(accidentId).update(field, value)
 
 	suspend fun addAccidentMoreInfo(
@@ -313,7 +313,7 @@ object AccidentsRepository {
 		FirebaseService.accidentsCollection.document(accidentId).delete().await()
 	}
 
-	suspend fun sendExcalation(
+	suspend fun sendEscalation(
 		accident: Accident,
 		reason: String,
 		user: User,
@@ -332,8 +332,45 @@ object AccidentsRepository {
 			division = accident.divisionLocal,
 			accident = accident,
 			accidentId = accident.id,
-			event = Event.SENT_EXCALATION
+			event = Event.SENT_ESCALATION
 		)
+		LogsRepository.addLogSync(log)
+
+		onSuccess(log)
+		null
+	} catch (e: FirebaseNetworkException) {
+		Errors.network
+	} catch (e: Exception) {
+		Errors.unknown
+	}
+
+	suspend fun changeEngineer(
+		accident: Accident,
+		newEngineer: User,
+		editor: User,
+		onSuccess: (Log) -> Unit
+	): ErrorApp? = try {
+		// change status to in work
+		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.IN_WORK).await()
+
+		// nullable escalation date
+		changeAccidentField(accident.id, FIELD_REASON_OF_EXCALATION, "").await()
+		changeAccidentField(accident.id, FIELD_SENDER_OF_EXCALATION, null).await()
+
+		// update engineer id
+		changeAccidentField(accident.id, FIELD_ENGINEER_ID, newEngineer.id).await()
+
+		// add log
+		val log = Log(
+			editor = editor,
+			division = accident.divisionLocal,
+			accident = accident,
+			accidentId = accident.id,
+			event = Event.CHANGED_ENGINEER,
+			param = ": ${accident.engineerLocal!!.fullName} -> ${newEngineer.fullName}"
+		)
+		LogsRepository.addLogSync(log)
+
 		onSuccess(log)
 		null
 	} catch (e: FirebaseNetworkException) {
