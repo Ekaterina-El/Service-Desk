@@ -123,7 +123,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 		addWork(work)
 
 		viewModelScope.launch {
-			_error.value = AccidentsRepository.loadAllAccidentsWithStatus(status = AccidentStatus.EXCALATION) { excalations ->
+			_error.value = AccidentsRepository.loadAllAccidentsWithStatus(status = AccidentStatus.ESCALATION) { excalations ->
 				_failedAccidents.value = excalations.splitAndSort()
 				filterFailedAccidents()
 			}
@@ -413,7 +413,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 				addLog(log)
 
 				// change status
-				accident.status = AccidentStatus.EXCALATION
+				accident.status = AccidentStatus.ESCALATION
 
 				// add reason on currentAccident
 				accident.reasonOfExcalation = reason

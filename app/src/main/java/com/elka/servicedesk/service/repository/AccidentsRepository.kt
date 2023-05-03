@@ -320,7 +320,7 @@ object AccidentsRepository {
 		onSuccess: (Log) -> Unit
 	): ErrorApp? = try {
 		// update status
-		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.EXCALATION).await()
+		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.ESCALATION).await()
 
 		// add reason
 		changeAccidentField(accident.id, FIELD_REASON_OF_EXCALATION, reason).await()

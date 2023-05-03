@@ -26,10 +26,12 @@ import com.elka.servicedesk.view.list.logs.LogsAdapter
 import com.elka.servicedesk.view.list.moreInfo.MoreInfoAdapter
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AccidentsViewModel
+import com.elka.servicedesk.viewModel.EngineersViewModel
 
 class AccidentFragment : UserBaseFragment() {
 	private lateinit var binding: AccidentFragmentBinding
 	private val accidentsViewModel by activityViewModels<AccidentsViewModel>()
+	private val engineersViewModel by activityViewModels<EngineersViewModel>()
 
 	private val moreInfoAdapter by lazy { MoreInfoAdapter() }
 
@@ -60,14 +62,16 @@ class AccidentFragment : UserBaseFragment() {
 		Work.ACCEPT_ACCIDENT_TO_WORK,
 		Work.CLOSE_ACCIDENT,
 		Work.ADD_MORE_INFORMATION,
-		Work.EXCALATION
+		Work.EXCALATION, Work.LOAD_USERS
 	)
 
 	private val hasLoads: Boolean
 		get() {
 			val w1 = userViewModel.work.value!!.toMutableList()
 			val w2 = accidentsViewModel.work.value!!
+			val w3 = engineersViewModel.work.value!!
 			w1.addAll(w2)
+			w1.addAll(w3)
 			return getHasLoads(w1, works)
 		}
 
@@ -128,6 +132,7 @@ class AccidentFragment : UserBaseFragment() {
 
 	private fun reloadAccident() {
 		accidentsViewModel.reloadCurrentAccident()
+		engineersViewModel.loadUsers()
 	}
 
 	override fun onResume() {
@@ -159,7 +164,8 @@ class AccidentFragment : UserBaseFragment() {
 				ACCEPT_ACCIDENT_TO_WORK -> acceptAccidentToWork()
 				CLOSE_ACCIDENT -> closeAccident()
 				ACCEPT_CLOSE_ACCIDENT -> acceptCloseAccidentByUser()
-				DENY_CLOSE_ACCIDENT, EXCALATION -> excalactionAccident()
+				DENY_CLOSE_ACCIDENT, ESCALATION -> excalactionAccident()
+				CHANGE_ENGINEER -> changeEngineer()
 				ADD_INFORMATION, WAIT_MORE_INFORMATION -> showDialogSendRequestToAddMoreInformation()
 				else -> Unit
 			}
@@ -174,6 +180,12 @@ class AccidentFragment : UserBaseFragment() {
 		val accidentStatus = accidentsViewModel.currentAccident.value!!.status
 
 		val viewStatus = when (role) {
+			Role.ADMIN -> {
+				when(accidentStatus) {
+					AccidentStatus.ESCALATION -> View.VISIBLE
+					else -> View.GONE
+				}
+			}
 			Role.USER -> {
 				when (accidentStatus) {
 					AccidentStatus.CLOSED,
@@ -222,7 +234,15 @@ class AccidentFragment : UserBaseFragment() {
 					AccidentStatus.IN_WORK -> {
 						menu.add(0, WAIT_MORE_INFORMATION, 0, R.string.wait_more_information)
 						menu.add(0, CLOSE_ACCIDENT, 0, R.string.close_accident)
-						menu.add(0, EXCALATION, 0, R.string.excalation)
+						menu.add(0, ESCALATION, 0, R.string.excalation)
+					}
+					else -> Unit
+				}
+			}
+			Role.ADMIN -> {
+				when (accidentStatus) {
+					AccidentStatus.ESCALATION -> {
+						menu.add(0, CHANGE_ENGINEER, 0, R.string.change_engineer)
 					}
 					else -> Unit
 				}
@@ -282,22 +302,18 @@ class AccidentFragment : UserBaseFragment() {
 		}
 	}
 
-	private fun denyCloseAccidentByUser() {
-		throw Error("No added function")
-	}
-
-	private var isExcalation = false
+	private var isEscalation = false
 	private val addMoreInfoDialogListener by lazy {
 		object : AddMoreInfoDialog.Companion.Listener {
 			override fun onSave(accidentMoreInfo: AccidentMoreInfo) {
 				addMoreInfoDialog.disagree()
-				if (isExcalation) sendExcalation(accidentMoreInfo) else sendAddMore(accidentMoreInfo)
-				isExcalation = false
+				if (isEscalation) sendEscalation(accidentMoreInfo) else sendAddMore(accidentMoreInfo)
+				isEscalation = false
 			}
 		}
 	}
 
-	private fun sendExcalation(accidentMoreInfo: AccidentMoreInfo) {
+	private fun sendEscalation(accidentMoreInfo: AccidentMoreInfo) {
 		accidentsViewModel.sendExcalation(accidentMoreInfo) {
 			Toast.makeText(
 				requireContext(),
@@ -320,7 +336,7 @@ class AccidentFragment : UserBaseFragment() {
 	}
 
 	private fun excalactionAccident() {
-		isExcalation = true
+		isEscalation = true
 		val title = getString(R.string.excalation)
 		val hint = getString(R.string.excalation_hint)
 		val user = userViewModel.profile.value!!
@@ -351,13 +367,23 @@ class AccidentFragment : UserBaseFragment() {
 		addMoreInfoDialog.open(user, title, hint)
 	}
 
+	fun changeEngineer() {
+		val currentEngineerId = accidentsViewModel.currentAccident.value!!.engineerId
+		val engineersWithoutCurrent = engineersViewModel.users.value!!.filter { it.id != currentEngineerId }
+
+		if (engineersWithoutCurrent.isEmpty()) {
+			Toast.makeText(requireContext(), R.string.one_engineer, Toast.LENGTH_SHORT).show()
+		}
+	}
+
 	companion object {
 		const val ACCEPT_ACCIDENT_TO_WORK = 1
 		const val CLOSE_ACCIDENT = 2
 		const val ACCEPT_CLOSE_ACCIDENT = 3
 		const val DENY_CLOSE_ACCIDENT = 4
-		const val EXCALATION = 5
+		const val ESCALATION = 5
 		const val ADD_INFORMATION = 6
 		const val WAIT_MORE_INFORMATION = 7
+		const val CHANGE_ENGINEER = 8
 	}
 }

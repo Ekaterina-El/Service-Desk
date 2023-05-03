@@ -96,7 +96,7 @@
   <string name="add_information">Добавить информацию</string>
   <string name="accept_accident_to_work">Принять в работу</string>
   <string name="close_accident">Закрыть заявку</string>
-  <string name="excalation">Экскалация</string>
+  <string name="excalation">Эскалация</string>
   <string name="excalation_hint">Опишите причину по которой происшествие необходимо передать другому инженеру</string>
     <string name="accident_was_accdepted_to_work">Принято в работу</string>
     <string name="wait_more_information">Запросить дополнительную информацию</string>
@@ -112,4 +112,6 @@
     <string name="advance_info">Дополнительная информация</string>
   <string name="request_to_excalation_sent">Заявка на экскалацию отправлена.</string>
   <string name="current_engineer">Текущий инженер</string>
+  <string name="one_engineer">Нет подходящих инженеров</string>
+  <string name="change_engineer">Заменить инженера</string>
 </resources>
