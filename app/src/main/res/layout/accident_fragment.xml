@@ -144,6 +144,25 @@
 			android:layout_marginTop="10dp"
 			android:orientation="vertical"
 			android:paddingHorizontal="@dimen/app_padding"
+			android:visibility="@{viewModel.currentAccident.engineerLocal != null ? View.VISIBLE : View.GONE}">
+
+			<TextView
+			  style="@style/text.h3"
+			  android:text="@string/current_engineer" />
+
+			<TextView
+			  android:textColor="@color/accent"
+			  style="@style/text"
+			  android:text="@{viewModel.currentAccident.engineerLocal.fullName}"
+			  tools:text="Иванов Иван" />
+		  </LinearLayout>
+
+		  <LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:orientation="vertical"
+			android:paddingHorizontal="@dimen/app_padding"
 			android:visibility="@{viewModel.currentAccident.reasonOfExcalation.isEmpty() ? View.GONE : View.VISIBLE}">
 
 			<TextView

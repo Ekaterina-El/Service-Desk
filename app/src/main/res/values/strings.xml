@@ -111,4 +111,5 @@
   <string name="more_information_added">Доп. информация добавлена</string>
     <string name="advance_info">Дополнительная информация</string>
   <string name="request_to_excalation_sent">Заявка на экскалацию отправлена.</string>
+  <string name="current_engineer">Текущий инженер</string>
 </resources>
