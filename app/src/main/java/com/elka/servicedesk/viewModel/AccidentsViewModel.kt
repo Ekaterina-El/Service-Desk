@@ -406,7 +406,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 	}
 
 	fun sendExcalation(accidentMoreInfo: AccidentMoreInfo, onSuccess: () -> Unit) {
-		val work = Work.EXCALATION
+		val work = Work.ESCALATION
 		addWork(work)
 
 		viewModelScope.launch {
@@ -459,5 +459,42 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 			removeWork(work)
 		}
 	}
+
+	fun sendEscalationsAfterBlockEngineer(engineerAccidents: List<Accident>, admin: User, reason: String) {
+		val work = Work.ESCALATION
+		addWork(work)
+
+		viewModelScope.launch {
+			engineerAccidents.forEach { accident ->
+				try {
+					AccidentsRepository.sendEscalationAfterBlockEngineer(accident, reason, admin) {
+						// change status
+						accident.status = AccidentStatus.ESCALATION
+
+						// add reason on currentAccident
+						accident.reasonOfExcalation = reason
+						accident.senderOfExcalation = admin
+
+						accident.engineerId = ""
+						accident.engineerLocal = null
+
+						_currentAccident.value = accident
+						addToFailedAccidents(accident)
+						updateCurrentAccidentInLists()
+					}
+				} catch (_: Exception) {}
+			}
+			removeWork(work)
+		}
+	}
+
+	private fun addToFailedAccidents(accident: Accident) {
+		val items = _failedAccidents.value!!.toMutableList()
+		items.add(accident)
+		_failedAccidents.value!!.toMutableList()
+		filterFailedAccidents()
+	}
+
+
 	// endregion
 }

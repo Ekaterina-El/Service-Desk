@@ -64,7 +64,7 @@ class AccidentFragment : UserBaseFragment() {
 		Work.ACCEPT_ACCIDENT_TO_WORK,
 		Work.CLOSE_ACCIDENT,
 		Work.ADD_MORE_INFORMATION,
-		Work.EXCALATION, Work.LOAD_USERS,
+		Work.ESCALATION, Work.LOAD_USERS,
 		Work.CHANGE_ENGINEER
 	)
 

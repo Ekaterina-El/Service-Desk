@@ -4,174 +4,182 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elka.servicedesk.other.*
+import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.service.model.filterBy
+import com.elka.servicedesk.service.repository.AccidentsRepository
 import com.elka.servicedesk.service.repository.UserRepository
 import kotlinx.coroutines.launch
 
 abstract class BaseUserViewModel(application: Application) : BaseViewModelWithFields(application) {
-  abstract val userRole: Role
+	abstract val userRole: Role
 
-  private val _users = MutableLiveData<List<User>>(listOf())
-  val users get() = _users
+	private val _users = MutableLiveData<List<User>>(listOf())
+	val users get() = _users
 
-  val filter = MutableLiveData("")
-  private val _filteredUsers = MutableLiveData<List<User>>(listOf())
-  val filteredUsers get() = _filteredUsers
+	val filter = MutableLiveData("")
+	private val _filteredUsers = MutableLiveData<List<User>>(listOf())
+	val filteredUsers get() = _filteredUsers
 
-  fun loadUsers() {
-    val work = Work.LOAD_USERS
-    addWork(work)
+	fun loadUsers() {
+		val work = Work.LOAD_USERS
+		addWork(work)
 
-    viewModelScope.launch {
-      _error.value = UserRepository.loadUsers(userRole) {
-        _users.value = it
-        filterUsers()
-      }
-      removeWork(work)
-    }
-  }
-
-
-  private fun addNewUser(user: User) {
-    val users = _users.value!!.toMutableList()
-    users.add(user)
-    _users.value = users
-    filterUsers()
-  }
-
-  private fun removeUser(user: User) {
-    val users = _users.value!!.toMutableList()
-    users.remove(user)
-    _users.value = users
-    filterUsers()
-  }
-
-  fun updateUser(user: User, editorProfile: User) {
-    val work = Work.UPDATE_USER
-    addWork(work)
-
-    viewModelScope.launch {
-      _error.value = UserRepository.updateUser(user, editorProfile) {
-        _users.value = _users.value!!.map {
-          if (it.id == user.id) user else it
-        }
-        filterUsers()
-      }
-      removeWork(work)
-    }
-  }
-
-  fun filterUsers() {
-    val items = _users.value!!
-    val filter = filter.value!!
-
-    _filteredUsers.value = when(filter) {
-      "" -> items
-      else -> items.filterBy(filter)
-    }
-  }
-
-  fun clearFilterUsers() {
-    filter.value = ""
-    filterUsers()
-  }
-
-  fun clear() {
-    clearDialog()
-    _externalAction.value = null
-    _error.value = null
-    _fieldErrors.value = listOf()
-    filter.value = ""
-    _users.value = listOf()
-    _filteredUsers.value = listOf()
-    clearWork()
-  }
-
-  val firstName = MutableLiveData("")
-  val lastName = MutableLiveData("")
-  val email = MutableLiveData("")
+		viewModelScope.launch {
+			_error.value = UserRepository.loadUsers(userRole) {
+				_users.value = it
+				filterUsers()
+			}
+			removeWork(work)
+		}
+	}
 
 
-  override val fields: HashMap<Field, MutableLiveData<Any?>>
-    get() = hashMapOf(
-      Pair(Field.FIRST_NAME, firstName as MutableLiveData<Any?>),
-      Pair(Field.LAST_NAME, lastName as MutableLiveData<Any?>),
-      Pair(Field.EMAIL, email as MutableLiveData<Any?>),
-    )
+	private fun addNewUser(user: User) {
+		val users = _users.value!!.toMutableList()
+		users.add(user)
+		_users.value = users
+		filterUsers()
+	}
 
-  var addedUser = MutableLiveData<User?>(null)
-  var password: String? = null
+	private fun removeUser(user: User) {
+		val users = _users.value!!.toMutableList()
+		users.remove(user)
+		_users.value = users
+		filterUsers()
+	}
 
-  private var currentUserEmail: String? = null
-  private var currentUserPassword: String? = null
-  fun setCurrentUserCredentials(email: String, password: String) {
-    currentUserEmail = email
-    currentUserPassword = password
-  }
+	fun updateUser(user: User, editorProfile: User) {
+		val work = Work.UPDATE_USER
+		addWork(work)
 
-  fun tryRegistration(editorProfile: User, divisions: List<Division> = listOf()) {
-    if (!checkFields()) return
+		viewModelScope.launch {
+			_error.value = UserRepository.updateUser(user, editorProfile) {
+				_users.value = _users.value!!.map {
+					if (it.id == user.id) user else it
+				}
+				filterUsers()
+			}
+			removeWork(work)
+		}
+	}
 
-    val work = Work.REGISTRATION_USER
-    addWork(work)
+	fun filterUsers() {
+		val items = _users.value!!
+		val filter = filter.value!!
 
-    viewModelScope.launch {
-      val user = newUser
-      user.divisionsLocal = divisions
-      user.divisionsId = divisions.map { it.id }
+		_filteredUsers.value = when (filter) {
+			"" -> items
+			else -> items.filterBy(filter)
+		}
+	}
 
-      password = Generator.genPassword()
+	fun clearFilterUsers() {
+		filter.value = ""
+		filterUsers()
+	}
 
-      _error.value = UserRepository.registrationUser(user.email, password!!) { uid ->
-        user.id = uid
-        _error.value = UserRepository.addUser(user, editorProfile) {
-          user.divisionsLocal = divisions
-          user.divisionsId = divisions.map { it.id }
-          addNewUser(user)
-          addedUser.value = user
-        }
-      }
+	fun clear() {
+		clearDialog()
+		_externalAction.value = null
+		_error.value = null
+		_fieldErrors.value = listOf()
+		filter.value = ""
+		_users.value = listOf()
+		_filteredUsers.value = listOf()
+		clearWork()
+	}
 
-      UserRepository.logout {
-        _error.value = UserRepository.login(currentUserEmail!!, currentUserPassword!!) {}
-      }
-      if (_error.value == null) _externalAction.value = Action.GO_NEXT
-      removeWork(work)
-    }
-  }
-
-  fun afterNotifyAddedUser() {
-    password = null
-    addedUser.value = null
-    clearDialog()
-  }
-
-  open fun clearDialog() {
-    firstName.value = ""
-    lastName.value = ""
-    email.value = ""
-  }
-
-  fun blockUser(user: User, deletedBy: User) {
-    val work = Work.BLOCK_USER
-    addWork(work)
+	val firstName = MutableLiveData("")
+	val lastName = MutableLiveData("")
+	val email = MutableLiveData("")
 
 
-    viewModelScope.launch {
-      _error.value = UserRepository.blockUser(user, deletedBy) {
-        removeUser(user)
-      }
-      removeWork(work)
-    }
-  }
+	override val fields: HashMap<Field, MutableLiveData<Any?>>
+		get() = hashMapOf(
+			Pair(Field.FIRST_NAME, firstName as MutableLiveData<Any?>),
+			Pair(Field.LAST_NAME, lastName as MutableLiveData<Any?>),
+			Pair(Field.EMAIL, email as MutableLiveData<Any?>),
+		)
 
-  private val newUser
-    get() = User(
-      firstName = firstName.value!!,
-      lastName = lastName.value!!,
-      email = email.value!!,
-      role = userRole
-    )
+	var addedUser = MutableLiveData<User?>(null)
+	var password: String? = null
+
+	private var currentUserEmail: String? = null
+	private var currentUserPassword: String? = null
+	fun setCurrentUserCredentials(email: String, password: String) {
+		currentUserEmail = email
+		currentUserPassword = password
+	}
+
+	fun tryRegistration(editorProfile: User, divisions: List<Division> = listOf()) {
+		if (!checkFields()) return
+
+		val work = Work.REGISTRATION_USER
+		addWork(work)
+
+		viewModelScope.launch {
+			val user = newUser
+			user.divisionsLocal = divisions
+			user.divisionsId = divisions.map { it.id }
+
+			password = Generator.genPassword()
+
+			_error.value = UserRepository.registrationUser(user.email, password!!) { uid ->
+				user.id = uid
+				_error.value = UserRepository.addUser(user, editorProfile) {
+					user.divisionsLocal = divisions
+					user.divisionsId = divisions.map { it.id }
+					addNewUser(user)
+					addedUser.value = user
+				}
+			}
+
+			UserRepository.logout {
+				_error.value = UserRepository.login(currentUserEmail!!, currentUserPassword!!) {}
+			}
+			if (_error.value == null) _externalAction.value = Action.GO_NEXT
+			removeWork(work)
+		}
+	}
+
+	fun afterNotifyAddedUser() {
+		password = null
+		addedUser.value = null
+		clearDialog()
+	}
+
+	open fun clearDialog() {
+		firstName.value = ""
+		lastName.value = ""
+		email.value = ""
+	}
+
+	fun blockUser(user: User, deletedBy: User, onSuccess: ((List<Accident>) -> Unit)? = null) {
+		val work = Work.BLOCK_USER
+		addWork(work)
+
+
+		viewModelScope.launch {
+			_error.value = UserRepository.blockUser(user, deletedBy) {
+				removeUser(user)
+
+				if (user.role == Role.ENGINEER) _error.value =
+					AccidentsRepository.loadAccidentsOfEngineer(user.id) {
+						onSuccess?.invoke(it)
+					}
+				else onSuccess?.invoke(listOf())
+			}
+			removeWork(work)
+		}
+	}
+
+	private val newUser
+		get() = User(
+			firstName = firstName.value!!,
+			lastName = lastName.value!!,
+			email = email.value!!,
+			role = userRole
+		)
 }

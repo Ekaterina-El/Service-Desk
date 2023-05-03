@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
 import com.elka.servicedesk.databinding.AdminEngineersFragmentBinding
 import com.elka.servicedesk.other.Work
+import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.view.dialog.ChangeEngineerDivisionsDialog
 import com.elka.servicedesk.view.dialog.ConfirmDialog
@@ -135,7 +136,11 @@ class AdminEngineersFragment : AdminBaseFragment() {
         val message = getString(R.string.block_engineer_message, user.fullName)
         val listener = object : ConfirmDialog.Companion.Listener {
             override fun agree() {
-                engineersViewModel.blockUser(user, userViewModel.profile.value!!)
+                engineersViewModel.blockUser(user, userViewModel.profile.value!!) { engineerAccidents: List<Accident> ->
+                    val admin = userViewModel.profile.value!!
+                    val reason = getString(R.string.engineer_has_blocked)
+                    accidentViewModel.sendEscalationsAfterBlockEngineer(engineerAccidents, admin, reason)
+                }
                 confirmDialog.close()
             }
 

@@ -361,17 +361,53 @@ object AccidentsRepository {
 		changeAccidentField(accident.id, FIELD_ENGINEER_ID, newEngineer.id).await()
 
 		// add log
+		val lastEngineerFN = accident.engineerLocal?.fullName
+		val params = lastEngineerFN?.let { ": ${it} -> ${newEngineer.fullName}" } ?: ": ${newEngineer.fullName}"
 		val log = Log(
 			editor = editor,
 			division = accident.divisionLocal,
 			accident = accident,
 			accidentId = accident.id,
 			event = Event.CHANGED_ENGINEER,
-			param = ": ${accident.engineerLocal!!.fullName} -> ${newEngineer.fullName}"
+			param = params
 		)
 		LogsRepository.addLogSync(log)
 
 		onSuccess(log)
+		null
+	} catch (e: FirebaseNetworkException) {
+		Errors.network
+	} catch (e: Exception) {
+		Errors.unknown
+	}
+
+	suspend fun sendEscalationAfterBlockEngineer(
+		accident: Accident,
+		reason: String,
+		admin: User,
+		onSuccess: () -> Unit
+	): ErrorApp? = try {
+		// update status
+		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.ESCALATION).await()
+
+		// add reason
+		changeAccidentField(accident.id, FIELD_REASON_OF_EXCALATION, reason).await()
+		changeAccidentField(accident.id, FIELD_SENDER_OF_EXCALATION, admin).await()
+
+		// delete engineer id field
+		changeAccidentField(accident.id, FIELD_ENGINEER_ID, "").await()
+
+		// add log
+		val log = Log(
+			editor = admin,
+			division = accident.divisionLocal,
+			accident = accident,
+			accidentId = accident.id,
+			event = Event.SENT_ESCALATION
+		)
+		LogsRepository.addLogSync(log)
+
+		onSuccess()
 		null
 	} catch (e: FirebaseNetworkException) {
 		Errors.network

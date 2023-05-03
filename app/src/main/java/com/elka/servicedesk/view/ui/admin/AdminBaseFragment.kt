@@ -20,7 +20,7 @@ abstract class AdminBaseFragment: UserBaseFragment() {
     Work.UPDATE_USER, Work.LOAD_DIVISIONS,
     Work.BLOCK_USER, Work.LOAD_LOGS,
     Work.ADD_DIVISION, Work.REMOVE_DIVISION,
-    Work.LOAD_ACCIDENT
+    Work.LOAD_ACCIDENT, Work.ESCALATION
   )
 
   protected open val hasLoads: Boolean

@@ -148,7 +148,7 @@ object UserRepository {
     Errors.unknown
   }
 
-  suspend fun blockUser(user: User, deletedBy: User, onSuccess: () -> Unit): ErrorApp? = try {
+  suspend fun blockUser(user: User, deletedBy: User, onSuccess: suspend () -> Unit): ErrorApp? = try {
     val event = when (user.role) {
       Role.ADMIN -> Event.BLOCKED_ADMIN
       Role.ENGINEER -> Event.BLOCKED_ENGINEER
