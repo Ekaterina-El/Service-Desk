@@ -159,8 +159,7 @@ class AccidentFragment : UserBaseFragment() {
 				ACCEPT_ACCIDENT_TO_WORK -> acceptAccidentToWork()
 				CLOSE_ACCIDENT -> closeAccident()
 				ACCEPT_CLOSE_ACCIDENT -> acceptCloseAccidentByUser()
-				DENY_CLOSE_ACCIDENT -> Unit
-				EXCALATION -> excalactionAccident()
+				DENY_CLOSE_ACCIDENT, EXCALATION -> excalactionAccident()
 				ADD_INFORMATION, WAIT_MORE_INFORMATION -> showDialogSendRequestToAddMoreInformation()
 				else -> Unit
 			}
