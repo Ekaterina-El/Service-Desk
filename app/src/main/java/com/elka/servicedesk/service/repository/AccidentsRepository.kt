@@ -99,6 +99,34 @@ object AccidentsRepository {
 		Errors.unknown
 	}
 
+	suspend fun loadAllAccidentsWithStatus(
+		status: AccidentStatus,
+		onSuccess: (List<Accident>) -> Unit
+	) = try {
+		val accidents = FirebaseService.accidentsCollection.whereEqualTo(FIELD_STATUS, status).get().await()
+			.mapNotNull { doc ->
+				return@mapNotNull try {
+					val accident = doc.toObject(Accident::class.java)
+					accident.id = doc.id
+
+					accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
+					accident.userLocal = UserRepository.loadUser(accident.userId)
+					accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
+
+					accident
+				} catch (e: Exception) {
+					null
+				}
+			}
+
+		onSuccess(accidents)
+		null
+	} catch (e: FirebaseNetworkException) {
+		Errors.network
+	} catch (e: Exception) {
+		Errors.unknown
+	}
+
 	suspend fun loadAccidentsOfDivisions(
 		divisionsIds: List<String>, status: AccidentStatus, onSuccess: (List<Accident>) -> Unit
 	): ErrorApp? = try {
@@ -113,6 +141,7 @@ object AccidentsRepository {
 
 							accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
 							accident.userLocal = UserRepository.loadUser(accident.userId)
+							accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
 
 							accident
 						} catch (e: Exception) {
@@ -273,9 +302,8 @@ object AccidentsRepository {
 	}
 
 	suspend fun deleteAllActiveAccidentForDivision(divisionId: String) {
-		FirebaseService.accidentsCollection
-			.whereEqualTo(FIELD_DIVISION_ID, divisionId)
-			.get().await().forEach { doc ->
+		FirebaseService.accidentsCollection.whereEqualTo(FIELD_DIVISION_ID, divisionId).get().await()
+			.forEach { doc ->
 				val accident = doc.toObject(Accident::class.java)
 				if (accident.status != AccidentStatus.READY) deleteAccident(doc.id)
 			}
@@ -285,16 +313,22 @@ object AccidentsRepository {
 		FirebaseService.accidentsCollection.document(accidentId).delete().await()
 	}
 
-	suspend fun sendExcalation(accident: Accident, reason: String, onSuccess: (Log) -> Unit): ErrorApp? = try {
+	suspend fun sendExcalation(
+		accident: Accident,
+		reason: String,
+		user: User,
+		onSuccess: (Log) -> Unit
+	): ErrorApp? = try {
 		// update status
 		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.EXCALATION).await()
 
 		// add reason
 		changeAccidentField(accident.id, FIELD_REASON_OF_EXCALATION, reason).await()
+		changeAccidentField(accident.id, FIELD_SENDER_OF_EXCALATION, user).await()
 
 		// add log
 		val log = Log(
-			editor = accident.engineerLocal,
+			editor = user,
 			division = accident.divisionLocal,
 			accident = accident,
 			accidentId = accident.id,
@@ -302,7 +336,7 @@ object AccidentsRepository {
 		)
 		onSuccess(log)
 		null
-	}  catch (e: FirebaseNetworkException) {
+	} catch (e: FirebaseNetworkException) {
 		Errors.network
 	} catch (e: Exception) {
 		Errors.unknown
@@ -311,6 +345,7 @@ object AccidentsRepository {
 	private const val FIELD_DIVISION_ID = "divisionId"
 	private const val FIELD_ENGINEER_ID = "engineerId"
 	private const val FIELD_REASON_OF_EXCALATION = "reasonOfExcalation"
+	private const val FIELD_SENDER_OF_EXCALATION = "senderOfExcalation"
 	private const val FIELD_STATUS = "status"
 	private const val FIELD_MORE_INFO = "moreInfo"
 }

@@ -14,7 +14,7 @@ import com.elka.servicedesk.databinding.WelcomeFragmentBinding
 import com.elka.servicedesk.view.ui.BaseFragment
 import com.elka.servicedesk.viewModel.DivisionsViewModel
 
-class AdminFragment : BaseFragment() {
+class AdminFragment : AdminBaseFragment() {
   private lateinit var binding: AdminFragmentBinding
 
   override fun onCreateView(
@@ -23,6 +23,7 @@ class AdminFragment : BaseFragment() {
     binding = AdminFragmentBinding.inflate(layoutInflater, container, false)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
+      viewModel = this@AdminFragment.adminViewModel
     }
     return binding.root
   }

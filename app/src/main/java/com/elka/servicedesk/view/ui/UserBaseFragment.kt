@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.elka.servicedesk.R
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.view.dialog.ConfirmDialog
+import com.elka.servicedesk.view.ui.admin.AdminFailAccidentsFragmentDirections
 import com.elka.servicedesk.view.ui.engineer.EngineerAccidentsFragmentDirections
 import com.elka.servicedesk.view.ui.customer.CustomerIncidentsRequestsDirections
 import com.elka.servicedesk.view.ui.engineer.EngineerAccidentsInWorkFragmentDirections
@@ -18,6 +19,7 @@ abstract class UserBaseFragment: BaseFragment() {
       FROM_ACTIVE_ACCIDENTS_TO_ACCIDENT -> EngineerAccidentsFragmentDirections. actionEngineerAccidentsFragmentToAccidentFragment(accidentId)
       FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT -> EngineerAccidentsInWorkFragmentDirections.actionEngineerAccidentsInWorkFragmentToAccidentFragment(accidentId)
       FROM_CUSTOMER_ACCIDENTS_TO_ACCIDENT -> CustomerIncidentsRequestsDirections.actionCustomerIncidentsRequestsToAccidentFragment2(accidentId)
+      FROM_FAIL_ACCIDENTS_TO_ACCIDENT -> AdminFailAccidentsFragmentDirections.actionAdminFailAccidentsFragmentToAccidentFragment2(accidentId)
       else -> return
     }
 
@@ -32,6 +34,7 @@ abstract class UserBaseFragment: BaseFragment() {
     const val FROM_ACTIVE_ACCIDENTS_TO_ACCIDENT = 1
     const val FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT = 2
     const val FROM_CUSTOMER_ACCIDENTS_TO_ACCIDENT = 3
+    const val FROM_FAIL_ACCIDENTS_TO_ACCIDENT = 4
   }
 
   protected val userViewModel by activityViewModels<UserViewModel>()

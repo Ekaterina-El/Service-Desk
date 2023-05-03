@@ -27,7 +27,9 @@ data class Accident(
   var engineerLocal: User? = null,
 
   var moreInfo: List<AccidentMoreInfo> = listOf(),
+
   var reasonOfExcalation: String = "",
+  var senderOfExcalation: User? = null,
 
   var createdDate: Date = Constants.getCurrentDate(),
   var status: AccidentStatus = AccidentStatus.ACTIVE,

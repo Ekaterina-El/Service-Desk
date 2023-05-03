@@ -110,6 +110,43 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 	}
 	// endregion
 
+	// region Admin failed accidents
+	private val _failedAccidents = MutableLiveData<List<Accident>>(listOf())
+	val failedAccidents get() = _failedAccidents
+
+	val failedFilter = MutableLiveData("")
+	private val _failedFilteredAccidents = MutableLiveData<List<Accident>>(listOf())
+	val failedFilteredAccidents get() = _failedFilteredAccidents
+
+	fun loadFailedAccidents() {
+		val work = Work.LOAD_ACCIDENTS
+		addWork(work)
+
+		viewModelScope.launch {
+			_error.value = AccidentsRepository.loadAllAccidentsWithStatus(status = AccidentStatus.EXCALATION) { excalations ->
+				_failedAccidents.value = excalations.splitAndSort()
+				filterFailedAccidents()
+			}
+			removeWork(work)
+		}
+	}
+
+	fun filterFailedAccidents() {
+		val items = _failedAccidents.value!!
+		val filter = failedFilter.value!!
+
+		_failedFilteredAccidents.value = when (filter) {
+			"" -> items
+			else -> items.filterBy(filter)
+		}
+	}
+
+	fun clearFilterFailedAccidents() {
+		failedFilter.value = ""
+		filterFailedAccidents()
+	}
+	// endregion
+
 	// region Add Accident
 	val subject = MutableLiveData("")
 	val message = MutableLiveData("")
@@ -369,9 +406,10 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
 		viewModelScope.launch {
 			val accident = currentAccident.value!!.copy()
+			val user = accidentMoreInfo.user!!.copy()
 			val reason = accidentMoreInfo.message
 
-			_error.value = AccidentsRepository.sendExcalation(accident, reason) { log ->
+			_error.value = AccidentsRepository.sendExcalation(accident, reason, user) { log ->
 				addLog(log)
 
 				// change status
@@ -379,6 +417,7 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 
 				// add reason on currentAccident
 				accident.reasonOfExcalation = reason
+				accident.senderOfExcalation = user
 
 				_currentAccident.value = accident
 				updateCurrentAccidentInLists()

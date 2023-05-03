@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/admin_navigation.xml"
-    app:startDestination="@id/adminEngineersFragment">
+    app:startDestination="@id/adminFailAccidentsFragment">
   <fragment
       android:id="@+id/adminEngineersFragment"
       tools:layout="@layout/admin_engineers_fragment"
@@ -26,5 +26,23 @@
       tools:layout="@layout/admin_profile_fragment"
       android:name="com.elka.servicedesk.view.ui.admin.AdminProfileFragment"
       android:label="AdminProfileFragment" />
+  <fragment
+      android:id="@+id/adminFailAccidentsFragment"
+      tools:layout="@layout/admin_accidents_fragment"
+      android:name="com.elka.servicedesk.view.ui.admin.AdminFailAccidentsFragment"
+      android:label="AdminFailAccidentsFragment" >
+    <action
+        android:id="@+id/action_adminFailAccidentsFragment_to_accidentFragment2"
+        app:destination="@id/accidentFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/accidentFragment"
+      tools:layout="@layout/accident_fragment"
+      android:name="com.elka.servicedesk.view.ui.accident.AccidentFragment"
+      android:label="AccidentFragment" >
+    <argument
+        android:name="accidentId"
+        app:argType="string" />
+  </fragment>
 
 </navigation>
