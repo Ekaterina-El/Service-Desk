@@ -218,9 +218,16 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 		viewModelScope.launch {
 			_error.value = AccidentsRepository.addAccident(profile, accident) {
 				_addedAccident.value = it
+				addAccident(it)
 			}
 			removeWork(work)
 		}
+	}
+
+	private fun addAccident(accident: Accident) {
+		val items = _accidents.value!!.toMutableList()
+		items.add(accident)
+		_accidents.value = items.splitAndSort()
 	}
 
 	fun clearDialog() {
