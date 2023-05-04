@@ -48,7 +48,7 @@ data class Accident(
 		set(v) {}
 
 	var executionTimeS: String
-		get() = executionTime?.timeLeft()?.let {"На выполнение осталось: $it" } ?: "Сроки пропущены"
+		get() = executionTime?.timeLeft()?.let { "На выполнение осталось: $it" } ?: "Сроки пропущены"
 		set(v) {}
 
 	// senderOfEscalation*
@@ -75,15 +75,38 @@ fun List<Accident>.filterBy(s: String) = this.filter {
 	) || it.status.text.contains(s, true)
 }
 
+fun List<Accident>.splitAndSortByStatus(): List<Accident> {
+	val waitingRequests =
+		this.filter { it.status == AccidentStatus.WAITING }.sortedByDescending { it.createdDate }
+	val activeRequests =
+		this.filter { it.status == AccidentStatus.ACTIVE }.sortedByDescending { it.createdDate }
+	val inWorkRequests =
+		this.filter { it.status == AccidentStatus.IN_WORK }.sortedByDescending { it.createdDate }
+	val escalationRequests =
+		this.filter { it.status == AccidentStatus.ESCALATION }.sortedByDescending { it.createdDate }
+	val closedRequests =
+		this.filter { it.status == AccidentStatus.CLOSED }.sortedByDescending { it.createdDate }
+	val readyRequests =
+		this.filter { it.status == AccidentStatus.READY }.sortedByDescending { it.createdDate }
+
+	val accidents = mutableListOf<Accident>()
+	accidents.addAll(waitingRequests)
+	accidents.addAll(activeRequests)
+	accidents.addAll(inWorkRequests)
+	accidents.addAll(escalationRequests)
+	accidents.addAll(closedRequests)
+	accidents.addAll(readyRequests)
+
+	return accidents
+}
+
 fun List<Accident>.splitAndSort(): MutableList<Accident> {
 	val items = mutableListOf<Accident>()
-	val incidents =
-		this.filter { it.type == AccidentType.INCIDENT }.sortedByDescending { it.createdDate }
-	val requests =
-		this.filter { it.type == AccidentType.REQUEST }.sortedByDescending { it.createdDate }
 
-	items.addAll(incidents)
-	items.addAll(requests)
+	val incidentsList = this.filter { it.type == AccidentType.INCIDENT }.splitAndSortByStatus()
+	val requestsList = this.filter { it.type == AccidentType.REQUEST }.splitAndSortByStatus()
+	items.addAll(incidentsList)
+	items.addAll(requestsList)
 
 	return items
 }
