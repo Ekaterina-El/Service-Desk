@@ -36,11 +36,17 @@
           tools:text="Запрос на выделение серверной мощности" />
 
       <TextView
-          style="@style/text"
-          app:statusColor="@{accident.status}"
-          android:text="@{accident.status.text}"
-          android:textColor="@color/accent2"
-          tools:text="Активен" />
+        style="@style/text"
+        app:escalationTime="@{accident}"
+        tools:text="На выполнение осталось: 13:34:34 " />
+
+      <TextView
+        style="@style/text"
+        app:statusColor="@{accident.status}"
+        android:text="@{accident.status.text}"
+        android:textColor="@color/accent2"
+        tools:text="Активен" />
+
 
       <TextView
           android:layout_marginTop="5dp"

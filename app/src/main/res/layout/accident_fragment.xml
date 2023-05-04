@@ -122,6 +122,13 @@
 		  tools:visibility="visible">
 
 		  <TextView
+			style="@style/text.h3"
+			android:layout_marginTop="15dp"
+			android:paddingHorizontal="@dimen/app_padding"
+			app:escalationTime="@{viewModel.currentAccident}"
+			tools:text="На выполнение осталось: 13:34:34 " />
+
+		  <TextView
 			style="@style/text"
 			android:layout_marginTop="15dp"
 			android:paddingHorizontal="@dimen/app_padding"
@@ -137,6 +144,7 @@
 			android:textColor="@color/accent2"
 			app:statusColor="@{viewModel.currentAccident.status}"
 			tools:text="Активен" />
+
 
 		  <LinearLayout
 			android:layout_width="match_parent"

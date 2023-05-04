@@ -28,14 +28,30 @@ data class Accident(
 
 	var moreInfo: List<AccidentMoreInfo> = listOf(),
 
+	// 	reasonOfEscalation*
 	var reasonOfExcalation: String = "",
+	// 	senderOfEscalation*
 	var senderOfExcalation: User? = null,
 
 	var createdDate: Date = Constants.getCurrentDate(),
 	var status: AccidentStatus = AccidentStatus.ACTIVE,
 
 	) : java.io.Serializable {
+	var executionTime: Date?
+		get() {
+			val currentTime = Constants.getCurrentDate()
 
+			val timeOfEnd = createdDate.time + urgency.hours * 3600 * 1000
+			val timeLeft = timeOfEnd - currentTime.time
+			return if (timeLeft > 0) Date(timeLeft) else null // check is deadline burned
+		}
+		set(v) {}
+
+	var executionTimeS: String
+		get() = executionTime?.timeLeft()?.let {"На выполнение осталось: $it" } ?: "Сроки пропущены"
+		set(v) {}
+
+	// senderOfEscalation*
 	var senderOfExcalationS: String
 		get() = "${senderOfExcalation?.fullName} (${senderOfExcalation?.role?.text})"
 		set(v) {}
@@ -51,14 +67,11 @@ data class Accident(
 
 fun List<Accident>.filterBy(s: String) = this.filter {
 	it.subject.contains(s, true) || it.message.contains(s, true) || it.urgency.text.contains(
-		s,
-		true
+		s, true
 	) || it.category.text.contains(s, true) || it.divisionLocal?.name?.contains(
-		s,
-		true
+		s, true
 	) == true || it.userLocal?.fullName?.contains(s, true) == true || it.createdDateS.contains(
-		s,
-		true
+		s, true
 	) || it.status.text.contains(s, true)
 }
 
