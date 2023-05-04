@@ -2,10 +2,12 @@ package com.elka.servicedesk.view.ui.engineer
 
 import androidx.fragment.app.activityViewModels
 import com.elka.servicedesk.other.Work
+import com.elka.servicedesk.view.databinding.setLeftTime
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AccidentsViewModel
 import com.elka.servicedesk.viewModel.EngineerViewModel
 import com.elka.servicedesk.viewModel.DivisionsViewModel
+import java.util.*
 
 abstract class EngineerBaseFragment : UserBaseFragment() {
   protected val divisionsViewModel by activityViewModels<DivisionsViewModel>()

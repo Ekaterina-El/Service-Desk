@@ -22,8 +22,8 @@ fun setStatusColor(textView: TextView, status: AccidentStatus?) {
 	textView.setTextColor(textView.context.getColor(colorRes))
 }
 
-@BindingAdapter("app:escalationTime")
-fun setStatusColor(textView: TextView, accident: Accident?) {
+@BindingAdapter("app:leftTime")
+fun setLeftTime(textView: TextView, accident: Accident?) {
 	if (accident == null) {
 		textView.text = ""
 		return

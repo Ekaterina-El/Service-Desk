@@ -122,10 +122,11 @@
 		  tools:visibility="visible">
 
 		  <TextView
+			android:id="@+id/left_time"
 			style="@style/text.h3"
 			android:layout_marginTop="15dp"
 			android:paddingHorizontal="@dimen/app_padding"
-			app:escalationTime="@{viewModel.currentAccident}"
+			app:leftTime="@{viewModel.currentAccident}"
 			tools:text="На выполнение осталось: 13:34:34 " />
 
 		  <TextView

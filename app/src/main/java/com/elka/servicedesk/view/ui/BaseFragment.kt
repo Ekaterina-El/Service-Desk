@@ -14,8 +14,37 @@ import com.elka.servicedesk.MainActivity
 import com.elka.servicedesk.R
 import com.elka.servicedesk.other.*
 import com.google.android.material.textfield.TextInputLayout
+import java.util.*
+import kotlin.collections.HashMap
 
 abstract class BaseFragment : Fragment() {
+
+  open fun onTickTimer() {}
+
+  private var timer: Timer? = null
+  private fun startTimer() {
+    timer = Timer()
+    timer!!.schedule(object : TimerTask() {
+      override fun run() {
+        onTickTimer()
+      }
+    }, 0, 1000)
+  }
+
+  fun stopTimer() {
+    timer?.cancel()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    startTimer()
+  }
+
+  override fun onStop() {
+    super.onStop()
+    stopTimer()
+  }
+
   protected fun restartApp() {
     try {
       val i =

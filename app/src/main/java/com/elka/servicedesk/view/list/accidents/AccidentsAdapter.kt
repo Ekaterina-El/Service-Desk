@@ -10,13 +10,30 @@ import com.elka.servicedesk.view.list.BaseAdapter
 
 class AccidentsAdapter(val listener: AccidentItemViewHolder.Companion.Listener) :
   BaseAdapter<AccidentItem>() {
+
+  private val accidentItems = mutableListOf<AccidentItemViewHolder>()
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     return if (viewType == TYPE_HEADER) {
       val binding = AccidentHeaderItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
       AccidentHeaderItemViewHolder(parent.context, binding)
     } else {
       val binding = AccidentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-      AccidentItemViewHolder(parent.context, binding, listener)
+      val vh = AccidentItemViewHolder(parent.context, binding, listener)
+      accidentItems.add(vh)
+      vh
+    }
+  }
+
+  override fun clear() {
+    accidentItems.clear()
+    super.clear()
+  }
+
+  fun updateItems() {
+    try {
+      accidentItems.forEach { it.update() }
+    } catch (e: Exception) {
+
     }
   }
 

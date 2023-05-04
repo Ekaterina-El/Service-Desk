@@ -20,6 +20,7 @@ import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
 import com.elka.servicedesk.service.model.Log
 import com.elka.servicedesk.service.model.User
+import com.elka.servicedesk.view.databinding.setLeftTime
 import com.elka.servicedesk.view.dialog.AddMoreInfoDialog
 import com.elka.servicedesk.view.dialog.ChangeEngineerDialog
 import com.elka.servicedesk.view.list.images.ImageItem
@@ -29,11 +30,18 @@ import com.elka.servicedesk.view.list.moreInfo.MoreInfoAdapter
 import com.elka.servicedesk.view.ui.UserBaseFragment
 import com.elka.servicedesk.viewModel.AccidentsViewModel
 import com.elka.servicedesk.viewModel.EngineersViewModel
+import java.util.*
 
 class AccidentFragment : UserBaseFragment() {
 	private lateinit var binding: AccidentFragmentBinding
 	private val accidentsViewModel by activityViewModels<AccidentsViewModel>()
 	private val engineersViewModel by activityViewModels<EngineersViewModel>()
+
+	override fun onTickTimer() {
+		super.onTickTimer()
+		setLeftTime(binding.leftTime, accidentsViewModel.currentAccident.value)
+	}
+
 
 	private val moreInfoAdapter by lazy { MoreInfoAdapter() }
 

@@ -28,6 +28,11 @@ class EngineerAccidentsFragment : EngineerBaseFragment() {
 		}
 	}
 
+	override fun onTickTimer() {
+		super.onTickTimer()
+		accidentsAdapter.updateItems()
+	}
+
 	private val accidentsAdapter by lazy {
 		AccidentsAdapter(accidentsAdapterListener)
 	}

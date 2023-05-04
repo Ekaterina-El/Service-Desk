@@ -22,6 +22,11 @@ import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 class EngineerAccidentsInWorkFragment : EngineerBaseFragment() {
     private lateinit var binding: EngineerAccidentsInWorkFragmentBinding
 
+    override fun onTickTimer() {
+        super.onTickTimer()
+        accidentsAdapter.updateItems()
+    }
+
     private val accidentsAdapterListener by lazy {
         object : AccidentItemViewHolder.Companion.Listener {
             override fun onSelect(accident: Accident) {
@@ -34,6 +39,8 @@ class EngineerAccidentsInWorkFragment : EngineerBaseFragment() {
     private val accidentsAdapter by lazy {
         AccidentsAdapter(accidentsAdapterListener)
     }
+
+
 
     private val accidentsObserver = Observer<List<Accident>> { list ->
         val items = list.allToAccidentItems()

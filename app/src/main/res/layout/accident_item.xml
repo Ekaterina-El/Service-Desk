@@ -36,8 +36,9 @@
           tools:text="Запрос на выделение серверной мощности" />
 
       <TextView
+        android:id="@+id/accidentTimeLeft"
         style="@style/text"
-        app:escalationTime="@{accident}"
+        app:leftTime="@{accident}"
         tools:text="На выполнение осталось: 13:34:34 " />
 
       <TextView

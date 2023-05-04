@@ -33,6 +33,11 @@ class AdminFailAccidentsFragment : AdminBaseFragment() {
         AccidentsAdapter(accidentsAdapterListener)
     }
 
+    override fun onTickTimer() {
+        super.onTickTimer()
+        accidentsAdapter.updateItems()
+    }
+
     private val accidentsObserver = Observer<List<Accident>> { list ->
         val items = list.allToAccidentItems()
         accidentsAdapter.setItems(items)
