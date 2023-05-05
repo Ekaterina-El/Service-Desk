@@ -117,4 +117,5 @@
   <string name="changing_engineer">Замена инженера</string>
   <string name="engineer">Инженер</string>
   <string name="engineer_has_blocked">Инженер был заблокирован</string>
+    <string name="requests">Запросы</string>
 </resources>

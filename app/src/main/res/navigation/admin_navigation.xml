@@ -34,6 +34,9 @@
     <action
         android:id="@+id/action_adminFailAccidentsFragment_to_accidentFragment2"
         app:destination="@id/accidentFragment" />
+    <action
+      android:id="@+id/action_adminFailAccidentsFragment_to_reportFragment"
+      app:destination="@id/reportFragment" />
   </fragment>
   <fragment
       android:id="@+id/accidentFragment"
@@ -44,5 +47,10 @@
         android:name="accidentId"
         app:argType="string" />
   </fragment>
+  <fragment
+    android:id="@+id/reportFragment"
+    tools:layout="@layout/report_fragment"
+    android:name="com.elka.servicedesk.view.ui.report.ReportFragment"
+    android:label="ReportFragment" />
 
 </navigation>

@@ -6,6 +6,7 @@ import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.Log
 import com.elka.servicedesk.service.model.User
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
 
@@ -100,24 +101,24 @@ object AccidentsRepository {
 	}
 
 	suspend fun loadAllAccidentsWithStatus(
-		status: AccidentStatus,
-		onSuccess: (List<Accident>) -> Unit
+		status: AccidentStatus, onSuccess: (List<Accident>) -> Unit
 	) = try {
-		val accidents = FirebaseService.accidentsCollection.whereEqualTo(FIELD_STATUS, status).get().await()
-			.mapNotNull { doc ->
-				return@mapNotNull try {
-					val accident = doc.toObject(Accident::class.java)
-					accident.id = doc.id
+		val accidents =
+			FirebaseService.accidentsCollection.whereEqualTo(FIELD_STATUS, status).get().await()
+				.mapNotNull { doc ->
+					return@mapNotNull try {
+						val accident = doc.toObject(Accident::class.java)
+						accident.id = doc.id
 
-					accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
-					accident.userLocal = UserRepository.loadUser(accident.userId)
-					accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
+						accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
+						accident.userLocal = UserRepository.loadUser(accident.userId)
+						accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
 
-					accident
-				} catch (e: Exception) {
-					null
+						accident
+					} catch (e: Exception) {
+						null
+					}
 				}
-			}
 
 		onSuccess(accidents)
 		null
@@ -314,10 +315,7 @@ object AccidentsRepository {
 	}
 
 	suspend fun sendEscalation(
-		accident: Accident,
-		reason: String,
-		user: User,
-		onSuccess: (Log) -> Unit
+		accident: Accident, reason: String, user: User, onSuccess: (Log) -> Unit
 	): ErrorApp? = try {
 		// update status
 		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.ESCALATION).await()
@@ -345,10 +343,7 @@ object AccidentsRepository {
 	}
 
 	suspend fun changeEngineer(
-		accident: Accident,
-		newEngineer: User,
-		editor: User,
-		onSuccess: (Log) -> Unit
+		accident: Accident, newEngineer: User, editor: User, onSuccess: (Log) -> Unit
 	): ErrorApp? = try {
 		// change status to in work
 		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.IN_WORK).await()
@@ -362,7 +357,8 @@ object AccidentsRepository {
 
 		// add log
 		val lastEngineerFN = accident.engineerLocal?.fullName
-		val params = lastEngineerFN?.let { ": ${it} -> ${newEngineer.fullName}" } ?: ": ${newEngineer.fullName}"
+		val params =
+			lastEngineerFN?.let { ": ${it} -> ${newEngineer.fullName}" } ?: ": ${newEngineer.fullName}"
 		val log = Log(
 			editor = editor,
 			division = accident.divisionLocal,
@@ -382,10 +378,7 @@ object AccidentsRepository {
 	}
 
 	suspend fun sendEscalationAfterBlockEngineer(
-		accident: Accident,
-		reason: String,
-		admin: User,
-		onSuccess: () -> Unit
+		accident: Accident, reason: String, admin: User, onSuccess: () -> Unit
 	): ErrorApp? = try {
 		// update status
 		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.ESCALATION).await()
@@ -415,10 +408,37 @@ object AccidentsRepository {
 		Errors.unknown
 	}
 
+	suspend fun loadAllRequests(onSuccess: (List<Accident>) -> Unit): ErrorApp? = try {
+		val requests = FirebaseService.accidentsCollection.whereEqualTo(FIELD_TYPE, AccidentType.REQUEST)
+			.get().await().mapNotNull { doc -> doc.toAccident() }
+
+		onSuccess(requests)
+		null
+	} catch (e: FirebaseNetworkException) {
+		Errors.network
+	} catch (e: Exception) {
+		Errors.unknown
+	}
+
+	private suspend fun DocumentSnapshot.toAccident(): Accident? = try {
+		val accident = this.toObject(Accident::class.java)!!
+		accident.id = this.id
+
+		accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
+		accident.userLocal = UserRepository.loadUser(accident.userId)
+		accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
+
+		accident
+	} catch (e: Exception) {
+		null
+	}
+
+
 	private const val FIELD_DIVISION_ID = "divisionId"
 	private const val FIELD_ENGINEER_ID = "engineerId"
 	private const val FIELD_REASON_OF_EXCALATION = "reasonOfExcalation"
 	private const val FIELD_SENDER_OF_EXCALATION = "senderOfExcalation"
 	private const val FIELD_STATUS = "status"
 	private const val FIELD_MORE_INFO = "moreInfo"
+	private const val FIELD_TYPE = "type"
 }

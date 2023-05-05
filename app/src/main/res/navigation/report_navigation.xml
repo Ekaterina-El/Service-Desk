@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/report_navigation.xml"
+  app:startDestination="@id/reportRequestsByDivisions">
+
+  <fragment
+	android:id="@+id/reportRequestsByDivisions"
+	tools:layout="@layout/report_query_by_divisions_fragment"
+	android:name="com.elka.servicedesk.view.ui.report.ReportRequestsByDivisions"
+	android:label="ReportRequestsByDivisions" >
+	<action
+	  android:id="@+id/action_reportRequestsByDivisions_to_accidentFragment"
+	  app:destination="@id/accidentFragment" />
+  </fragment>
+  <fragment
+	android:id="@+id/accidentFragment"
+	tools:layout="@layout/accident_fragment"
+	android:name="com.elka.servicedesk.view.ui.accident.AccidentFragment"
+	android:label="AccidentFragment" >
+	<argument
+	  android:name="accidentId"
+	  app:argType="string" />
+  </fragment>
+</navigation>

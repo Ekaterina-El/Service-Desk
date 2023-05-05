@@ -114,6 +114,21 @@ fun List<Accident>.splitAndSort(): MutableList<Accident> {
 
 fun List<Accident>.toAccidentItems() = this.map { AccidentItem(AccidentsAdapter.TYPE_ITEM, it) }
 
+fun List<Accident>.accidentsByDivisions(): List<AccidentItem> {
+	val items = mutableListOf<AccidentItem>()
+
+	this.groupBy { it.divisionLocal?.name ?: "" }.forEach {
+		// add header
+		val headerName = if (it.key == "") "Другие" else it.key
+		items.add(AccidentItem(type = AccidentsAdapter.TYPE_HEADER, value = headerName))
+
+		val divisionAccidents = it.value.splitAndSortByStatus().toAccidentItems()
+		items.addAll(divisionAccidents)
+	}
+
+	return items
+}
+
 fun List<Accident>.allToAccidentItems(): List<AccidentItem> {
 	val items = mutableListOf<AccidentItem>()
 	val incidents =

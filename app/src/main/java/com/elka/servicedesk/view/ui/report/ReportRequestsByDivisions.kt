@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
+import com.elka.servicedesk.databinding.ReportQueryByDivisionsFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
-import com.elka.servicedesk.service.model.allToAccidentItems
+import com.elka.servicedesk.service.model.accidentsByDivisions
 import com.elka.servicedesk.view.list.accidents.AccidentItemViewHolder
 import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 
-class ReportRequestsByDivisions: ReportBaseFragment() {
+class ReportRequestsByDivisions : ReportBaseFragment() {
 	private lateinit var binding: ReportQueryByDivisionsFragmentBinding
 
 	private val accidentsAdapterListener by lazy {
@@ -37,8 +39,16 @@ class ReportRequestsByDivisions: ReportBaseFragment() {
 	}
 
 	private val accidentsObserver = Observer<List<Accident>> { list ->
-		val items = list.allToAccidentItems()
+		val items = list.accidentsByDivisions()
 		accidentsAdapter.setItems(items)
+	}
+
+	private val onBackPressedCallback by lazy {
+		object : OnBackPressedCallback(true) {
+			override fun handleOnBackPressed() {
+				navController.popBackStack()
+			}
+		}
 	}
 
 	override val workObserver = Observer<List<Work>> {
@@ -67,6 +77,8 @@ class ReportRequestsByDivisions: ReportBaseFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
+
 		val refresherColor = requireContext().getColor(R.color.accent)
 		val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { reloadAccidents() }
 
@@ -82,14 +94,14 @@ class ReportRequestsByDivisions: ReportBaseFragment() {
 
 	private fun reloadAccidents() {
 		if (hasLoads) return
-		reportViewModel.loadRequestByDivisions()
+		reportViewModel.loadRequests()
 	}
 
 	override fun onResume() {
 		super.onResume()
 
 		showMenu()
-		if (reportViewModel.requestByDivisions.value!!.isEmpty()) reloadAccidents()
+		if (reportViewModel.requestsByDivisions.value!!.isEmpty()) reloadAccidents()
 
 		userViewModel.work.observe(this, workObserver)
 		userViewModel.error.observe(this, errorObserver)
@@ -97,7 +109,7 @@ class ReportRequestsByDivisions: ReportBaseFragment() {
 
 		reportViewModel.work.observe(this, workObserver)
 		reportViewModel.error.observe(this, errorObserver)
-		reportViewModel.requestByDivisionsFiltered.observe(this, accidentsObserver)
+		reportViewModel.requestsByDivisionsFiltered.observe(this, accidentsObserver)
 	}
 
 	override fun onStop() {
@@ -109,6 +121,6 @@ class ReportRequestsByDivisions: ReportBaseFragment() {
 
 		reportViewModel.work.removeObserver(workObserver)
 		reportViewModel.error.removeObserver(errorObserver)
-		reportViewModel.requestByDivisionsFiltered.removeObserver(accidentsObserver)
+		reportViewModel.requestsByDivisionsFiltered.removeObserver(accidentsObserver)
 	}
 }

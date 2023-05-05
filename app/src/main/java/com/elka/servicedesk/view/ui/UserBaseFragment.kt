@@ -10,6 +10,7 @@ import com.elka.servicedesk.view.ui.admin.AdminFailAccidentsFragmentDirections
 import com.elka.servicedesk.view.ui.engineer.EngineerAccidentsFragmentDirections
 import com.elka.servicedesk.view.ui.customer.CustomerIncidentsRequestsDirections
 import com.elka.servicedesk.view.ui.engineer.EngineerAccidentsInWorkFragmentDirections
+import com.elka.servicedesk.view.ui.report.ReportRequestsByDivisionsDirections
 import com.elka.servicedesk.viewModel.UserViewModel
 
 abstract class UserBaseFragment: BaseFragment() {
@@ -20,6 +21,7 @@ abstract class UserBaseFragment: BaseFragment() {
       FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT -> EngineerAccidentsInWorkFragmentDirections.actionEngineerAccidentsInWorkFragmentToAccidentFragment(accidentId)
       FROM_CUSTOMER_ACCIDENTS_TO_ACCIDENT -> CustomerIncidentsRequestsDirections.actionCustomerIncidentsRequestsToAccidentFragment2(accidentId)
       FROM_FAIL_ACCIDENTS_TO_ACCIDENT -> AdminFailAccidentsFragmentDirections.actionAdminFailAccidentsFragmentToAccidentFragment2(accidentId)
+      FROM_REPORT_QUERT_BY_DIVISIONS_TO_ACCIDENT -> ReportRequestsByDivisionsDirections.actionReportRequestsByDivisionsToAccidentFragment(accidentId)
       else -> return
     }
 
@@ -35,6 +37,7 @@ abstract class UserBaseFragment: BaseFragment() {
     const val FROM_IN_WORK_ACCIDENTS_TO_ACCIDENT = 2
     const val FROM_CUSTOMER_ACCIDENTS_TO_ACCIDENT = 3
     const val FROM_FAIL_ACCIDENTS_TO_ACCIDENT = 4
+    const val FROM_REPORT_QUERT_BY_DIVISIONS_TO_ACCIDENT = 5
   }
 
   protected val userViewModel by activityViewModels<UserViewModel>()

@@ -12,61 +12,40 @@ import com.elka.servicedesk.service.repository.AccidentsRepository
 import kotlinx.coroutines.launch
 
 class ReportViewModel(application: Application) : MenuBaseViewModel(application) {
-	// region By divisions
-	private val _accidents = MutableLiveData<List<Accident>>(listOf())
-	val accidents get() = _accidents
+	// region Requests by divisions
+	private val _requestsByDivisions = MutableLiveData<List<Accident>>(listOf())
+	val requestsByDivisions get() = _requestsByDivisions
 
-	val filter = MutableLiveData("")
-	private val _filteredAccidents = MutableLiveData<List<Accident>>(listOf())
-	val filteredAccidents get() = _filteredAccidents
+	val requestsByDivisionsFilter = MutableLiveData("")
+	private val _requestsByDivisionsFiltered = MutableLiveData<List<Accident>>(listOf())
+	val requestsByDivisionsFiltered get() = _requestsByDivisionsFiltered
 
-	fun loadAccidents(accidentIds: List<String>) {
+	fun loadRequests() {
 		val work = Work.LOAD_ACCIDENTS
 		addWork(work)
 
 		viewModelScope.launch {
-			_error.value = AccidentsRepository.loadAccidents(accidentIds) { list ->
-				_accidents.value = list.splitAndSort()
-				filterAccidents()
+			_error.value = AccidentsRepository.loadAllRequests() { list ->
+				_requestsByDivisions.value = list.splitAndSort()
+				filterRequestsByDivisions()
 			}
 			removeWork(work)
 		}
 	}
 
-	fun loadAccidentsOfDivisions(divisionsIds: List<String>) {
-		val work = Work.LOAD_ACCIDENTS
-		addWork(work)
+	fun filterRequestsByDivisions() {
+		val items = _requestsByDivisions.value!!
+		val filter = requestsByDivisionsFilter.value!!
 
-		viewModelScope.launch {
-			_error.value =
-				AccidentsRepository.loadAccidentsOfDivisions(divisionsIds, AccidentStatus.ACTIVE) { list ->
-					_accidents.value = list.splitAndSort()
-					filterAccidents()
-				}
-			removeWork(work)
-		}
-	}
-
-	fun filterAccidents() {
-		val items = _accidents.value!!
-		val filter = filter.value!!
-
-		_filteredAccidents.value = when (filter) {
+		_requestsByDivisionsFiltered.value = when (filter) {
 			"" -> items
 			else -> items.filterBy(filter)
 		}
 	}
 
-	fun clearFilterAccidents() {
-		filter.value = ""
-		filterAccidents()
-	}
-
-	private fun removeAccidentFromActiveById(accidentId: String) {
-		val items = _accidents.value!!.toMutableList()
-		items.removeIf { it.id == accidentId }
-		_accidents.value = items
+	fun clearFilterRequestsByDivisions() {
+		requestsByDivisionsFilter.value = ""
+		filterRequestsByDivisions()
 	}
 	// endregion
-
 }
