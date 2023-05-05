@@ -26,7 +26,9 @@ abstract class BaseFragment : Fragment() {
     timer = Timer()
     timer!!.schedule(object : TimerTask() {
       override fun run() {
-        onTickTimer()
+        try {
+          onTickTimer()
+        } catch (_: Exception) {}
       }
     }, 0, 1000)
   }

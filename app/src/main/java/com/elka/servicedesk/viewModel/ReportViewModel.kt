@@ -25,7 +25,7 @@ class ReportViewModel(application: Application) : MenuBaseViewModel(application)
 		addWork(work)
 
 		viewModelScope.launch {
-			_error.value = AccidentsRepository.loadAllRequests() { list ->
+			_error.value = AccidentsRepository.loadAllRequests { list ->
 				_requestsByDivisions.value = list.splitAndSort()
 				filterRequestsByDivisions()
 			}
@@ -46,6 +46,43 @@ class ReportViewModel(application: Application) : MenuBaseViewModel(application)
 	fun clearFilterRequestsByDivisions() {
 		requestsByDivisionsFilter.value = ""
 		filterRequestsByDivisions()
+	}
+	// endregion
+
+	// region Incidents with missed deadlines by divisions
+	private val _incidentsWithMissedDeadline = MutableLiveData<List<Accident>>(listOf())
+	val incidentsWithMissedDeadline get() = _incidentsWithMissedDeadline
+
+	val incidentsWithMissedDeadlineFilter = MutableLiveData("")
+	private val _incidentsWithMissedDeadlineFiltered = MutableLiveData<List<Accident>>(listOf())
+	val incidentsWithMissedDeadlineFiltered get() = _incidentsWithMissedDeadlineFiltered
+
+	fun loadIncidentsWithMissedDeadline() {
+		val work = Work.LOAD_ACCIDENTS
+		addWork(work)
+
+		viewModelScope.launch {
+			_error.value = AccidentsRepository.loadIncidentsWithMissedDeadline { list ->
+				_incidentsWithMissedDeadline.value = list.splitAndSort()
+				filterIncidentsWithMissedDeadline()
+			}
+			removeWork(work)
+		}
+	}
+
+	fun filterIncidentsWithMissedDeadline() {
+		val items = _incidentsWithMissedDeadline.value!!
+		val filter = incidentsWithMissedDeadlineFilter.value!!
+
+		_incidentsWithMissedDeadlineFiltered.value = when (filter) {
+			"" -> items
+			else -> items.filterBy(filter)
+		}
+	}
+
+	fun clearFilterIncidentsWithMissedDeadline() {
+		incidentsWithMissedDeadlineFilter.value = ""
+		filterIncidentsWithMissedDeadline()
 	}
 	// endregion
 }

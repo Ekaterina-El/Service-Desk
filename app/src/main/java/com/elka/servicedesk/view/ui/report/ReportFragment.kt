@@ -26,6 +26,8 @@ class ReportFragment : ReportBaseFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
+
 		val navController =
 			(childFragmentManager.findFragmentById(R.id.reportContainer) as NavHostFragment)
 				.navController

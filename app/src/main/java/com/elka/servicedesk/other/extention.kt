@@ -1,5 +1,9 @@
 package com.elka.servicedesk.other
 
+import com.elka.servicedesk.service.model.Accident
+import com.elka.servicedesk.service.repository.DivisionsRepository
+import com.elka.servicedesk.service.repository.UserRepository
+import com.google.firebase.firestore.DocumentSnapshot
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -24,3 +28,16 @@ fun Date.timeLeft(): String {
 }
 
 fun Int.addZero() = if (this < 10) "0$this" else "$this"
+
+suspend fun DocumentSnapshot.toAccident(): Accident? = try {
+	val accident = this.toObject(Accident::class.java)!!
+	accident.id = this.id
+
+	accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
+	accident.userLocal = UserRepository.loadUser(accident.userId)
+	accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
+
+	accident
+} catch (e: Exception) {
+	null
+}

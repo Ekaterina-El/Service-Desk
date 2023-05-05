@@ -3,4 +3,8 @@
   <item android:id="@id/reportRequestsByDivisions"
 	android:icon="@drawable/ic_request"
 	android:title="@string/requests" />
+
+  <item android:id="@id/reportIncidentsWithMissedDeadlinesFragment"
+	android:icon="@drawable/ic_request"
+	android:title="@string/missedTimer" />
 </menu>

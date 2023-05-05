@@ -420,17 +420,16 @@ object AccidentsRepository {
 		Errors.unknown
 	}
 
-	private suspend fun DocumentSnapshot.toAccident(): Accident? = try {
-		val accident = this.toObject(Accident::class.java)!!
-		accident.id = this.id
+	suspend fun loadIncidentsWithMissedDeadline(onSuccess: (List<Accident>) -> Unit): ErrorApp? = try {
+		val requests = FirebaseService.accidentsCollection.whereEqualTo(FIELD_TYPE, AccidentType.INCIDENT)
+			.get().await().mapNotNull { doc -> doc.toAccident() }.filter { it.executionTime == null }
 
-		accident.divisionLocal = DivisionsRepository.loadDivision(accident.divisionId)
-		accident.userLocal = UserRepository.loadUser(accident.userId)
-		accident.engineerId?.let { accident.engineerLocal = UserRepository.loadUser(it) }
-
-		accident
-	} catch (e: Exception) {
+		onSuccess(requests)
 		null
+	} catch (e: FirebaseNetworkException) {
+		Errors.network
+	} catch (e: Exception) {
+		Errors.unknown
 	}
 
 

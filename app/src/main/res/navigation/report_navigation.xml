@@ -23,4 +23,13 @@
 	  android:name="accidentId"
 	  app:argType="string" />
   </fragment>
+  <fragment
+	android:id="@+id/reportIncidentsWithMissedDeadlinesFragment"
+	tools:layout="@layout/report_incidents_with_missed_deadlines_fragment"
+	android:name="com.elka.servicedesk.view.ui.report.ReportIncidentsWithMissedDeadlinesFragment"
+	android:label="ReportIncidentsWithMissedDeadlinesFragment" >
+	<action
+	  android:id="@+id/action_reportIncidentsWithMissedDeadlinesFragment_to_accidentFragment"
+	  app:destination="@id/accidentFragment" />
+  </fragment>
 </navigation>

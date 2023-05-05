@@ -1,5 +1,6 @@
 package com.elka.servicedesk.view.ui.report
 
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.view.ui.UserBaseFragment
@@ -20,6 +21,14 @@ abstract class ReportBaseFragment : UserBaseFragment() {
 
 			return getHasLoads(w1, works)
 		}
+
+	protected val onBackPressedCallback by lazy {
+		object : OnBackPressedCallback(true) {
+			override fun handleOnBackPressed() {
+				navController.popBackStack()
+			}
+		}
+	}
 
 	fun hideMenu() {
 		reportViewModel.setMenuStatus(false)

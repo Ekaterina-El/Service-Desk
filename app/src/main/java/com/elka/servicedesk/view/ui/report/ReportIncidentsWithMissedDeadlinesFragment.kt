@@ -1,30 +1,30 @@
-package com.elka.servicedesk.view.ui.admin
+package com.elka.servicedesk.view.ui.report
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elka.servicedesk.R
-import com.elka.servicedesk.databinding.AdminAccidentsFragmentBinding
-import com.elka.servicedesk.databinding.EngineerAccidentsInWorkFragmentBinding
+import com.elka.servicedesk.databinding.ReportIncidentsWithMissedDeadlinesFragmentBinding
 import com.elka.servicedesk.other.Action
 import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Accident
-import com.elka.servicedesk.service.model.allToAccidentItems
+import com.elka.servicedesk.service.model.accidentsByDivisions
 import com.elka.servicedesk.view.list.accidents.AccidentItemViewHolder
 import com.elka.servicedesk.view.list.accidents.AccidentsAdapter
 
-class AdminFailAccidentsFragment : AdminBaseFragment() {
-	private lateinit var binding: AdminAccidentsFragmentBinding
+class ReportIncidentsWithMissedDeadlinesFragment : ReportBaseFragment() {
+	private lateinit var binding: ReportIncidentsWithMissedDeadlinesFragmentBinding
 
 	private val accidentsAdapterListener by lazy {
 		object : AccidentItemViewHolder.Companion.Listener {
 			override fun onSelect(accident: Accident) {
 				hideMenu()
-				goAccident(accident.id, FROM_FAIL_ACCIDENTS_TO_ACCIDENT)
+				goAccident(accident.id, FROM_REPORT_INCIDENTS_WITH_MISSED_DEADLINE_TO_ACCIDENT)
 			}
 		}
 	}
@@ -39,10 +39,9 @@ class AdminFailAccidentsFragment : AdminBaseFragment() {
 	}
 
 	private val accidentsObserver = Observer<List<Accident>> { list ->
-		val items = list.allToAccidentItems()
+		val items = list.accidentsByDivisions()
 		accidentsAdapter.setItems(items)
 	}
-
 	override val workObserver = Observer<List<Work>> {
 		binding.swiper.isRefreshing = hasLoads
 	}
@@ -55,12 +54,13 @@ class AdminFailAccidentsFragment : AdminBaseFragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
 	): View {
-		binding = AdminAccidentsFragmentBinding.inflate(layoutInflater, container, false)
+		binding =
+			ReportIncidentsWithMissedDeadlinesFragmentBinding.inflate(layoutInflater, container, false)
 		binding.apply {
 			lifecycleOwner = viewLifecycleOwner
-			master = this@AdminFailAccidentsFragment
-			viewModel = this@AdminFailAccidentsFragment.accidentViewModel
-			accidentsAdapter = this@AdminFailAccidentsFragment.accidentsAdapter
+			master = this@ReportIncidentsWithMissedDeadlinesFragment
+			viewModel = this@ReportIncidentsWithMissedDeadlinesFragment.reportViewModel
+			accidentsAdapter = this@ReportIncidentsWithMissedDeadlinesFragment.accidentsAdapter
 		}
 
 		return binding.root
@@ -68,6 +68,8 @@ class AdminFailAccidentsFragment : AdminBaseFragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+//		activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
 		val refresherColor = requireContext().getColor(R.color.accent)
 		val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { reloadAccidents() }
@@ -84,22 +86,22 @@ class AdminFailAccidentsFragment : AdminBaseFragment() {
 
 	private fun reloadAccidents() {
 		if (hasLoads) return
-		accidentViewModel.loadFailedAccidents()
+		reportViewModel.loadIncidentsWithMissedDeadline()
 	}
 
 	override fun onResume() {
 		super.onResume()
 
 		showMenu()
-		if (accidentViewModel.failedAccidents.value!!.isEmpty()) reloadAccidents()
+		if (reportViewModel.incidentsWithMissedDeadline.value!!.isEmpty()) reloadAccidents()
 
 		userViewModel.work.observe(this, workObserver)
 		userViewModel.error.observe(this, errorObserver)
 		userViewModel.externalAction.observe(this, externalActionObserver)
 
-		accidentViewModel.work.observe(this, workObserver)
-		accidentViewModel.error.observe(this, errorObserver)
-		accidentViewModel.failedFilteredAccidents.observe(this, accidentsObserver)
+		reportViewModel.work.observe(this, workObserver)
+		reportViewModel.error.observe(this, errorObserver)
+		reportViewModel.incidentsWithMissedDeadlineFiltered.observe(this, accidentsObserver)
 	}
 
 	override fun onStop() {
@@ -109,13 +111,8 @@ class AdminFailAccidentsFragment : AdminBaseFragment() {
 		userViewModel.error.removeObserver(errorObserver)
 		userViewModel.externalAction.removeObserver(externalActionObserver)
 
-		accidentViewModel.work.removeObserver(workObserver)
-		accidentViewModel.error.removeObserver(errorObserver)
-		accidentViewModel.failedFilteredAccidents.removeObserver(accidentsObserver)
-	}
-
-	fun openReports() {
-		hideMenu()
-		navController.navigate(AdminFailAccidentsFragmentDirections.actionAdminFailAccidentsFragmentToReportFragment())
+		reportViewModel.work.removeObserver(workObserver)
+		reportViewModel.error.removeObserver(errorObserver)
+		reportViewModel.incidentsWithMissedDeadlineFiltered.removeObserver(accidentsObserver)
 	}
 }

@@ -24,7 +24,7 @@ class ReportRequestsByDivisions : ReportBaseFragment() {
 		object : AccidentItemViewHolder.Companion.Listener {
 			override fun onSelect(accident: Accident) {
 				hideMenu()
-				goAccident(accident.id, FROM_REPORT_QUERT_BY_DIVISIONS_TO_ACCIDENT)
+				goAccident(accident.id, FROM_REPORT_REQUESTS_BY_DIVISIONS_TO_ACCIDENT)
 			}
 		}
 	}
@@ -43,13 +43,6 @@ class ReportRequestsByDivisions : ReportBaseFragment() {
 		accidentsAdapter.setItems(items)
 	}
 
-	private val onBackPressedCallback by lazy {
-		object : OnBackPressedCallback(true) {
-			override fun handleOnBackPressed() {
-				navController.popBackStack()
-			}
-		}
-	}
 
 	override val workObserver = Observer<List<Work>> {
 		binding.swiper.isRefreshing = hasLoads
@@ -77,7 +70,7 @@ class ReportRequestsByDivisions : ReportBaseFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
+//		activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
 		val refresherColor = requireContext().getColor(R.color.accent)
 		val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { reloadAccidents() }
