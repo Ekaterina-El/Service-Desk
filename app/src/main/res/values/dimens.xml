@@ -6,4 +6,5 @@
   <dimen name="margin">3dp</dimen>
     <dimen name="more_info_r">7dp</dimen>
   <dimen name="more_info_mb">60dp</dimen>
+  <dimen name="exit_padding">10dp</dimen>
 </resources>
