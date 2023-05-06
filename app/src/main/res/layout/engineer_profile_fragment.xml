@@ -18,42 +18,85 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-  <LinearLayout
-      android:orientation="vertical"
-      android:gravity="center"
-      android:paddingHorizontal="@dimen/app_padding"
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-    <TextView
-        android:onClick="@{() -> master.logout()}"
-        android:id="@+id/companyName"
+      <androidx.cardview.widget.CardView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="5dp"
         android:clickable="true"
-        android:focusable="true"
-        style="@style/text.h1"
-        android:layout_width="wrap_content"
-        android:text="@{@string/role(viewModel.profile.role.text)}"
-        tools:text="@string/role"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> master.logout()}"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="0dp">
 
-    <TextView
-        android:id="@+id/slogan"
-        style="@style/text.h3"
-        tools:text="Иванов Иван"
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:padding="@dimen/exit_padding">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_exit"
+            app:tint="@color/accent" />
+
+        </RelativeLayout>
+      </androidx.cardview.widget.CardView>
+
+
+      <LinearLayout
+        android:orientation="vertical"
         android:gravity="center"
-        android:text="@{viewModel.profile.fullName}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/companyName" />
+        android:paddingHorizontal="@dimen/app_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/divisionChips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal" />
-  </LinearLayout>
+        <TextView
+          android:id="@+id/companyName"
+          android:clickable="true"
+          android:focusable="true"
+          style="@style/text.h1"
+          android:layout_width="wrap_content"
+          android:text="@{@string/role(viewModel.profile.role.text)}"
+          tools:text="@string/role"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+          android:id="@+id/slogan"
+          style="@style/text.h3"
+          tools:text="Иванов Иван"
+          android:gravity="center"
+          android:text="@{viewModel.profile.fullName}"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/companyName" />
+
+        <TextView
+          style="@style/text"
+          android:gravity="center"
+          android:layout_marginTop="10dp"
+          android:text="@{@string/avg_time_title(viewModel.profile.avgTimeOfEndingS, viewModel.profile.countOfEnded)}"
+          tools:text="@string/avg_time_title" />
+
+
+        <com.google.android.material.chip.ChipGroup
+          android:id="@+id/divisionChips"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:orientation="horizontal" />
+
+
+      </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

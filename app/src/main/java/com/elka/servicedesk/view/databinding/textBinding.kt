@@ -24,7 +24,9 @@ fun setStatusColor(textView: TextView, status: AccidentStatus?) {
 
 @BindingAdapter("app:leftTime")
 fun setLeftTime(textView: TextView, accident: Accident?) {
-	if (accident == null || accident.type == AccidentType.REQUEST) {
+	if (accident == null
+		|| accident.type == AccidentType.REQUEST
+		|| accident.status != AccidentStatus.IN_WORK) {
 		textView.text = ""
 		textView.visibility = View.GONE
 		return

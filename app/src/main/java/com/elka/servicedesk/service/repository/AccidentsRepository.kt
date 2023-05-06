@@ -230,10 +230,11 @@ object AccidentsRepository {
 		// change accident status
 		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.CLOSED).await()
 
-		if (accident.type == AccidentType.INCIDENT) {
+		val pickUpTime = accident.pickUpTime
+		if (accident.type == AccidentType.INCIDENT && pickUpTime != null ) {
 			val engineerUpdated = UserRepository.loadUser(accident.engineerId!!)!!
 			val newCountOfEnded = engineerUpdated.countOfEnded + 1
-			val timeOnComplete = Constants.getCurrentDate().time - accident.createdDate.time
+			val timeOnComplete = Constants.getCurrentDate().time - pickUpTime.time
 			val newAvgTime = engineerUpdated.avgTimeOfEnding +  timeOnComplete / newCountOfEnded
 
 			UserRepository.updateEngineerState(engineerUpdated.id, newCountOfEnded, newAvgTime)

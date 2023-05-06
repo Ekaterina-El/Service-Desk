@@ -4,7 +4,6 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-
 	<import type="android.view.View" />
 
 	<variable
@@ -51,8 +50,6 @@
         android:layout_marginTop="10dp"
 		android:text="@{@string/avg_time_title(user.avgTimeOfEndingS, user.countOfEnded)}"
 		tools:text="@string/avg_time_title" />
-
-
 	</LinearLayout>
 
 

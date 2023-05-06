@@ -40,9 +40,11 @@ data class Accident(
 	) : java.io.Serializable {
 	var executionTime: Date?
 		get() {
+			if (pickUpTime == null) return null
+
 			val currentTime = Constants.getCurrentDate()
 
-			val timeOfEnd = createdDate.time + urgency.hours * 3600 * 1000
+			val timeOfEnd = pickUpTime!!.time + urgency.hours * 3600 * 1000
 			val timeLeft = timeOfEnd - currentTime.time
 			return if (timeLeft > 0) Date(timeLeft) else null // check is deadline burned
 		}
