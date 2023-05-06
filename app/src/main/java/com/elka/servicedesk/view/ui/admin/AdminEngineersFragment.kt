@@ -16,18 +16,18 @@ import com.elka.servicedesk.view.dialog.ChangeEngineerDivisionsDialog
 import com.elka.servicedesk.view.dialog.ConfirmDialog
 import com.elka.servicedesk.view.dialog.InformDialog
 import com.elka.servicedesk.view.dialog.RegistrationEngineerDialog
-import com.elka.servicedesk.view.list.users.UsersAdapter
-import com.elka.servicedesk.view.list.users.UsersViewHolder
+import com.elka.servicedesk.view.list.engineers.EngineerViewHolder
+import com.elka.servicedesk.view.list.engineers.EngineersAdapter
 
 class AdminEngineersFragment : AdminBaseFragment() {
     private lateinit var binding: AdminEngineersFragmentBinding
 
-    private val usersAdapter by lazy {
-        UsersAdapter(object : UsersViewHolder.Companion.Listener {
-            override fun onSelect(admin: User) {}
+    private val engineersAdapter by lazy {
+        EngineersAdapter(object : EngineerViewHolder.Companion.Listener {
+            override fun onSelect(user: User) {}
 
-            override fun onBlock(admin: User) {
-                openConfirmDeleteDialog(admin)
+            override fun onBlock(user: User) {
+                openConfirmDeleteDialog(user)
             }
 
             override fun onChangeDivisions(user: User) {
@@ -37,7 +37,7 @@ class AdminEngineersFragment : AdminBaseFragment() {
     }
 
     private val usersObserver = Observer<List<User>> {
-        usersAdapter.setItems(it)
+        engineersAdapter.setItems(it)
     }
 
     override val workObserver = Observer<List<Work>> {
@@ -52,7 +52,7 @@ class AdminEngineersFragment : AdminBaseFragment() {
             lifecycleOwner = viewLifecycleOwner
             master = this@AdminEngineersFragment
             viewModel = this@AdminEngineersFragment.engineersViewModel
-            usersAdapter = this@AdminEngineersFragment.usersAdapter
+            usersAdapter = this@AdminEngineersFragment.engineersAdapter
         }
 
         return binding.root

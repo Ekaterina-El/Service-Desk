@@ -11,9 +11,11 @@ import java.util.concurrent.TimeUnit
 val local: Locale by lazy { Locale.getDefault() }
 val logSdf: SimpleDateFormat by lazy { SimpleDateFormat("dd/MM/yyyy HH:mm:ss", local) }
 val moreInfoSdf: SimpleDateFormat by lazy { SimpleDateFormat("dd.MM.yyyy HH:mm", local) }
+val avgTime: SimpleDateFormat by lazy { SimpleDateFormat("HH:mm:ss", local) }
 
 fun Date.toLogFormat(): String = logSdf.format(this)
 fun Date.toMoreInfoFormat(): String = moreInfoSdf.format(this)
+fun Date.toAvgTime(): String = avgTime.format(this)
 
 fun Date.timeLeft(): String {
 	val totalS = this.time / 1000
@@ -41,3 +43,6 @@ suspend fun DocumentSnapshot.toAccident(): Accident? = try {
 } catch (e: Exception) {
 	null
 }
+
+fun Long.toDateFormatHMS() = Date(this).timeLeft()
+

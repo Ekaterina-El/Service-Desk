@@ -226,6 +226,15 @@ object AccidentsRepository {
 		// change accident status
 		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.CLOSED).await()
 
+		if (accident.type == AccidentType.INCIDENT) {
+			val engineerUpdated = UserRepository.loadUser(accident.engineerId!!)!!
+			val newCountOfEnded = engineerUpdated.countOfEnded + 1
+			val timeOnComplete = Constants.getCurrentDate().time - accident.createdDate.time
+			val newAvgTime = engineerUpdated.avgTimeOfEnding +  timeOnComplete / newCountOfEnded
+
+			UserRepository.updateEngineerState(engineerUpdated.id, newCountOfEnded, newAvgTime)
+		}
+
 		// add log
 		val log = Log(
 			editor = engineer,
@@ -352,6 +361,9 @@ object AccidentsRepository {
 		changeAccidentField(accident.id, FIELD_REASON_OF_EXCALATION, "").await()
 		changeAccidentField(accident.id, FIELD_SENDER_OF_EXCALATION, null).await()
 
+		// set create date as now
+		changeAccidentField(accident.id, FIELD_DATE_OF_CREATE, Constants.getCurrentDate()).await()
+
 		// update engineer id
 		changeAccidentField(accident.id, FIELD_ENGINEER_ID, newEngineer.id).await()
 
@@ -436,6 +448,7 @@ object AccidentsRepository {
 	private const val FIELD_DIVISION_ID = "divisionId"
 	private const val FIELD_ENGINEER_ID = "engineerId"
 	private const val FIELD_REASON_OF_EXCALATION = "reasonOfExcalation"
+	private const val FIELD_DATE_OF_CREATE = "createdDate"
 	private const val FIELD_SENDER_OF_EXCALATION = "senderOfExcalation"
 	private const val FIELD_STATUS = "status"
 	private const val FIELD_MORE_INFO = "moreInfo"

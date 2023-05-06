@@ -8,7 +8,7 @@
 
     <variable
         name="usersAdapter"
-        type="com.elka.servicedesk.view.list.users.UsersAdapter" />
+        type="com.elka.servicedesk.view.list.engineers.EngineersAdapter" />
 
     <variable
         name="master"
@@ -112,7 +112,7 @@
           android:adapter="@{usersAdapter}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:ignore="NestedWeights"
-          tools:listitem="@layout/user_item"
+          tools:listitem="@layout/engineer_item"
           tools:visibility="visible"
           />
 

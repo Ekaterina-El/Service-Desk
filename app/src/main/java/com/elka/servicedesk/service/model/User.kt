@@ -1,6 +1,10 @@
 package com.elka.servicedesk.service.model
 
 import com.elka.servicedesk.other.Role
+import com.elka.servicedesk.other.toAvgTime
+import com.elka.servicedesk.other.toDateFormatHMS
+import com.elka.servicedesk.other.toLogFormat
+import java.util.Date
 
 data class User(
   var id: String = "",
@@ -17,6 +21,8 @@ data class User(
   // for engineer
   var divisionsLocal: List<Division> = listOf(),
   var divisionsId: List<String> = listOf(),
+  var countOfEnded: Int = 0,
+  var avgTimeOfEnding: Long = 0,
 
   var role: Role = Role.USER
 ) : java.io.Serializable {
@@ -24,6 +30,10 @@ data class User(
 
   var fullName
     get() = listOf(lastName, firstName).joinToString(" ")
+    set(v) {}
+
+  var avgTimeOfEndingS: String
+    get() = avgTimeOfEnding.toDateFormatHMS()
     set(v) {}
 }
 

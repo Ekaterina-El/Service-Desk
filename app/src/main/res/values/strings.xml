@@ -119,4 +119,5 @@
   <string name="engineer_has_blocked">Инженер был заблокирован</string>
     <string name="requests">Запросы</string>
   <string name="missedTimer">С превышеным временем</string>
+  <string name="avg_time_title">Среднее время разрешения инцидентов: %1$s (всего инцидентов разрешено: %2$d)</string>
 </resources>

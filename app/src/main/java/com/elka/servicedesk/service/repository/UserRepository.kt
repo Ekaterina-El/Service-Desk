@@ -271,7 +271,17 @@ object UserRepository {
     changeList(FIELD_ACCIDENTS_IDS, userId, accidentId, Action.ADD)
   }
 
-  const val FIELD_ROLE = "role"
+	suspend fun updateEngineerState(engineerId: String, newCountOfEnded: Int, newAvgTime: Long) {
+    // update countOfEnded
+    FirebaseService.usersCollection.document(engineerId).update(FIELD_COUNT_OF_ENDED, newCountOfEnded).await()
+
+    // update avgTimeOfEnding
+    FirebaseService.usersCollection.document(engineerId).update(FIELD_AVG_TIME_OF_END, newAvgTime).await()
+	}
+
+	const val FIELD_COUNT_OF_ENDED = "countOfEnded"
+	const val FIELD_AVG_TIME_OF_END = "avgTimeOfEnding"
+	const val FIELD_ROLE = "role"
   const val FIELD_DIVISIONS_ID = "divisionsId"
   const val FIELD_ACCIDENTS_IDS = "accidentsIds"
   const val FIELD_DIVISION_ID = "divisionId"
