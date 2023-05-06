@@ -156,14 +156,20 @@
 			android:visibility="@{viewModel.currentAccident.engineerLocal != null ? View.VISIBLE : View.GONE}">
 
 			<TextView
+			  android:textColor="@color/accent"
 			  style="@style/text.h3"
 			  android:text="@string/current_engineer" />
 
 			<TextView
-			  android:textColor="@color/accent"
 			  style="@style/text"
 			  android:text="@{viewModel.currentAccident.engineerLocal.fullName}"
 			  tools:text="Иванов Иван" />
+
+			<TextView
+			  style="@style/text.hint.small"
+			  android:text="@{viewModel.currentAccident.pickUpTimeS}"
+			  tools:text="Принял: 12/12/2023 12:12:23" />
+
 		  </LinearLayout>
 
 		  <LinearLayout

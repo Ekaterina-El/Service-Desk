@@ -9,6 +9,7 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
+import java.util.*
 
 object AccidentsRepository {
 	suspend fun loadAccidents(
@@ -187,7 +188,7 @@ object AccidentsRepository {
 	}
 
 	suspend fun acceptAccidentToWork(
-		accident: Accident, engineer: User, division: Division, onSuccess: (Log) -> Unit
+		accident: Accident, engineer: User, division: Division, timeOfPickUp: Date, onSuccess: (Log) -> Unit
 	): ErrorApp? = try {
 		val accidentId = accident.id
 		accident.status = AccidentStatus.IN_WORK
@@ -198,7 +199,7 @@ object AccidentsRepository {
 		changeAccidentField(accidentId, FIELD_STATUS, AccidentStatus.IN_WORK).await()
 
 		// update pick-up time
-		changeAccidentField(accidentId, FIELD_PICK_UP_TIME, Constants.getCurrentDate()).await()
+		changeAccidentField(accidentId, FIELD_PICK_UP_TIME, timeOfPickUp).await()
 
 		// add engineerId to accident
 		changeAccidentField(accidentId, FIELD_ENGINEER_ID, engineer.id).await()

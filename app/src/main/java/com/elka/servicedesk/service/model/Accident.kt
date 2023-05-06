@@ -58,7 +58,7 @@ data class Accident(
 		set(v) {}
 
 	var pickUpTimeS: String
-		get() = pickUpTime?.toLogFormat() ?: ""
+		get() = pickUpTime?.toLogFormat()?.let {"Принял: ${pickUpTime?.toLogFormat()}" } ?: ""
 		set(v) {}
 
 	var createdDateS: String

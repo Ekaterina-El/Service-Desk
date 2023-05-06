@@ -312,8 +312,9 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 		viewModelScope.launch {
 			val accident = _currentAccident.value!!
 			val division = accident.divisionLocal!!
+			val timeOfPickUp = Constants.getCurrentDate()
 
-			_error.value = AccidentsRepository.acceptAccidentToWork(accident, engineer, division) { log ->
+			_error.value = AccidentsRepository.acceptAccidentToWork(accident, engineer, division, timeOfPickUp) { log ->
 				// delete accident from allAccidents
 				removeAccidentFromActiveById(accident.id)
 
@@ -321,6 +322,8 @@ class AccidentsViewModel(application: Application) : BaseViewModelWithFields(app
 				accident.status = AccidentStatus.IN_WORK
 				accident.engineerId = engineer.id
 				accident.engineerLocal = engineer
+				accident.engineerLocal = engineer
+				accident.pickUpTime = timeOfPickUp
 
 				addLog(log)
 
