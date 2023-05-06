@@ -34,6 +34,7 @@ data class Accident(
 	var senderOfExcalation: User? = null,
 
 	var createdDate: Date = Constants.getCurrentDate(),
+	var pickUpTime: Date? = null,
 	var status: AccidentStatus = AccidentStatus.ACTIVE,
 
 	) : java.io.Serializable {

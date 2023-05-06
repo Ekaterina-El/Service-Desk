@@ -197,6 +197,9 @@ object AccidentsRepository {
 		// change accident status
 		changeAccidentField(accidentId, FIELD_STATUS, AccidentStatus.IN_WORK).await()
 
+		// update pick-up time
+		changeAccidentField(accidentId, FIELD_PICK_UP_TIME, Constants.getCurrentDate()).await()
+
 		// add engineerId to accident
 		changeAccidentField(accidentId, FIELD_ENGINEER_ID, engineer.id).await()
 
@@ -333,6 +336,12 @@ object AccidentsRepository {
 		changeAccidentField(accident.id, FIELD_REASON_OF_EXCALATION, reason).await()
 		changeAccidentField(accident.id, FIELD_SENDER_OF_EXCALATION, user).await()
 
+		// update engineer id
+		changeAccidentField(accident.id, FIELD_ENGINEER_ID, null).await()
+
+		// update pick-up time
+		changeAccidentField(accident.id, FIELD_PICK_UP_TIME, null).await()
+
 		// add log
 		val log = Log(
 			editor = user,
@@ -366,6 +375,9 @@ object AccidentsRepository {
 
 		// update engineer id
 		changeAccidentField(accident.id, FIELD_ENGINEER_ID, newEngineer.id).await()
+
+		// update pick-up time
+		changeAccidentField(accident.id, FIELD_PICK_UP_TIME, Constants.getCurrentDate()).await()
 
 		// add log
 		val lastEngineerFN = accident.engineerLocal?.fullName
@@ -451,6 +463,7 @@ object AccidentsRepository {
 	private const val FIELD_DATE_OF_CREATE = "createdDate"
 	private const val FIELD_SENDER_OF_EXCALATION = "senderOfExcalation"
 	private const val FIELD_STATUS = "status"
+	private const val FIELD_PICK_UP_TIME = "pickUpTime"
 	private const val FIELD_MORE_INFO = "moreInfo"
 	private const val FIELD_TYPE = "type"
 }
