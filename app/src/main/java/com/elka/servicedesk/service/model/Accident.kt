@@ -57,6 +57,10 @@ data class Accident(
 		get() = "${senderOfExcalation?.fullName} (${senderOfExcalation?.role?.text})"
 		set(v) {}
 
+	var pickUpTimeS: String
+		get() = pickUpTime?.toLogFormat() ?: ""
+		set(v) {}
+
 	var createdDateS: String
 		get() = createdDate.toLogFormat()
 		set(v) {}
