@@ -106,6 +106,7 @@ class AccidentFragment : UserBaseFragment() {
 		return binding.root
 	}
 
+
 	fun goBack() {
 		accidentsViewModel.clearCurrentAccident()
 		navController.popBackStack()
@@ -133,6 +134,8 @@ class AccidentFragment : UserBaseFragment() {
 		// add on back press listener
 		activity.onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
+		engineersViewModel.loadUsers()
+
 		// work with swipe refresher
 		val refresherColor = requireContext().getColor(R.color.accent)
 		val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener { reloadAccident() }
@@ -151,6 +154,8 @@ class AccidentFragment : UserBaseFragment() {
 
 		userViewModel.error.observe(this, errorObserver)
 		userViewModel.work.observe(this, workObserver)
+		engineersViewModel.error.observe(this, errorObserver)
+		engineersViewModel.work.observe(this, workObserver)
 		accidentsViewModel.error.observe(this, errorObserver)
 		accidentsViewModel.work.observe(this, workObserver)
 		accidentsViewModel.currentAccident.observe(this, accidentObserver)
@@ -160,6 +165,8 @@ class AccidentFragment : UserBaseFragment() {
 	override fun onStop() {
 		super.onStop()
 
+		engineersViewModel.error.removeObserver(errorObserver)
+		engineersViewModel.work.removeObserver(workObserver)
 		userViewModel.error.removeObserver(errorObserver)
 		userViewModel.work.removeObserver(workObserver)
 		accidentsViewModel.error.removeObserver(errorObserver)

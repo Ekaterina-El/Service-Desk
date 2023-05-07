@@ -12,7 +12,6 @@ abstract class BaseViewModelWithFields(application: Application) : BaseViewModel
     listOf(
       Field.FIRST_NAME,
       Field.LAST_NAME,
-      Field.PHONE_NUMBER,
       Field.EMAIL,
       Field.PASSWORD,
       Field.DIVISION,

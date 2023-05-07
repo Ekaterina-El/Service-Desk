@@ -58,6 +58,7 @@ class AddDivisionDialog(
       return
     }
 
+    binding.divisionName.setText("")
     binding.layoutDivisionName.error = ""
     listener.onSave(Division(name = divisionName))
   }

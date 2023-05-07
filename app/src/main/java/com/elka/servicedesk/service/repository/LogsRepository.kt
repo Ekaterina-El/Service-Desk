@@ -26,25 +26,35 @@ object LogsRepository {
 		return log
 	}
 
-	suspend fun loadLogs(divisionIds: List<String>?, onSuccess: (List<Log>) -> Unit): ErrorApp? =
-		try {
-			val logs = FirebaseService.logsCollection.get().await().mapNotNull { doc ->
-				return@mapNotNull try {
-					doc.toLog()
-				} catch (e: Exception) {
-					null
-				}
+	suspend fun loadLogs(
+		divisionIds: List<String>?, accidentIds: List<String>?, onSuccess: (List<Log>) -> Unit
+	): ErrorApp? = try {
+		val logs = FirebaseService.logsCollection.get().await().mapNotNull { doc ->
+			return@mapNotNull try {
+				doc.toLog()
+			} catch (e: Exception) {
+				null
 			}
-
-			val logsRes =
-				if (divisionIds == null) logs else logs.filter { divisionIds.contains(it.division?.id) }
-			onSuccess(logsRes)
-			null
-		} catch (e: FirebaseNetworkException) {
-			Errors.network
-		} catch (e: Exception) {
-			Errors.unknown
 		}
+
+		val logsOfDivisions =
+			if (divisionIds != null) logs.filter { divisionIds.contains(it.division?.id) }.toMutableList()
+			else logs.toMutableList()
+
+		val logsOfAccidents =
+			if (accidentIds != null) logs.filter { accidentIds.contains(it.accidentId) } else logs.toMutableList()
+
+		val idsOfDivisionsLogs = logsOfDivisions.map { it.id }
+		val diffLogsOfAccidents = logsOfAccidents.filter { !idsOfDivisionsLogs.contains(it.id) }
+		logsOfDivisions.addAll(diffLogsOfAccidents)
+
+		onSuccess(logsOfDivisions)
+		null
+	} catch (e: FirebaseNetworkException) {
+		Errors.network
+	} catch (e: Exception) {
+		Errors.unknown
+	}
 
 	suspend fun loadAccidentLogs(accidentId: String, onSuccess: (List<Log>) -> Unit): ErrorApp? =
 		try {
@@ -58,7 +68,7 @@ object LogsRepository {
 						}
 					}
 
-      onSuccess(logs)
+			onSuccess(logs)
 			null
 		} catch (e: FirebaseNetworkException) {
 			Errors.network

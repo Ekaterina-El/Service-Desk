@@ -93,25 +93,31 @@ class AdminFailAccidentsFragment : AdminBaseFragment() {
 		showMenu()
 		if (accidentViewModel.failedAccidents.value!!.isEmpty()) reloadAccidents()
 
-		userViewModel.work.observe(this, workObserver)
 		userViewModel.error.observe(this, errorObserver)
 		userViewModel.externalAction.observe(this, externalActionObserver)
 
-		accidentViewModel.work.observe(this, workObserver)
 		accidentViewModel.error.observe(this, errorObserver)
 		accidentViewModel.failedFilteredAccidents.observe(this, accidentsObserver)
+
+		userViewModel.work.observe(this, workObserver)
+		engineersViewModel.work.observe(this, workObserver)
+		divisionsViewModel.work.observe(this, workObserver)
+		accidentViewModel.work.observe(this, workObserver)
 	}
 
 	override fun onStop() {
 		super.onStop()
 
-		userViewModel.work.removeObserver(workObserver)
 		userViewModel.error.removeObserver(errorObserver)
 		userViewModel.externalAction.removeObserver(externalActionObserver)
 
-		accidentViewModel.work.removeObserver(workObserver)
 		accidentViewModel.error.removeObserver(errorObserver)
 		accidentViewModel.failedFilteredAccidents.removeObserver(accidentsObserver)
+
+		userViewModel.work.removeObserver(workObserver)
+		engineersViewModel.work.removeObserver(workObserver)
+		divisionsViewModel.work.removeObserver(workObserver)
+		accidentViewModel.work.removeObserver(workObserver)
 	}
 
 	fun openReports() {

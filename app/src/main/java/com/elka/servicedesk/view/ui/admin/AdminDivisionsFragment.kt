@@ -72,22 +72,29 @@ class AdminDivisionsFragment : AdminBaseFragment() {
 
     if (divisionsViewModel.divisions.value!!.isEmpty()) divisionsViewModel.loadDivisions()
 
-    divisionsViewModel.work.observe(this, workObserver)
     divisionsViewModel.error.observe(this, errorObserver)
     divisionsViewModel.filteredDivisions.observe(this, divisionsObserver)
     userViewModel.error.observe(this, errorObserver)
+
+
     userViewModel.work.observe(this, workObserver)
+    engineersViewModel.work.observe(this, workObserver)
+    divisionsViewModel.work.observe(this, workObserver)
+    accidentViewModel.work.observe(this, workObserver)
   }
 
   override fun onStop() {
     super.onStop()
 
-    divisionsViewModel.work.removeObserver(workObserver)
     divisionsViewModel.error.removeObserver(errorObserver)
     divisionsViewModel.filteredDivisions.removeObserver(divisionsObserver)
 
     userViewModel.error.removeObserver(errorObserver)
+
     userViewModel.work.removeObserver(workObserver)
+    engineersViewModel.work.removeObserver(workObserver)
+    divisionsViewModel.work.removeObserver(workObserver)
+    accidentViewModel.work.removeObserver(workObserver)
   }
 
   private val addDivisionDialog: AddDivisionDialog by lazy {

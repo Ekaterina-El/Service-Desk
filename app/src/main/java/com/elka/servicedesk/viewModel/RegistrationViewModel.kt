@@ -10,13 +10,11 @@ import com.elka.servicedesk.other.Work
 import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.User
 import com.elka.servicedesk.service.repository.UserRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RegistrationViewModel(application: Application) : BaseViewModelWithFields(application) {
   val firstName = MutableLiveData("")
   val lastName = MutableLiveData("")
-  val phoneNumber = MutableLiveData("")
   val email = MutableLiveData("")
   val password = MutableLiveData("")
 
@@ -31,7 +29,6 @@ class RegistrationViewModel(application: Application) : BaseViewModelWithFields(
     get() = hashMapOf(
       Pair(Field.FIRST_NAME, firstName as MutableLiveData<Any?>),
       Pair(Field.LAST_NAME, lastName as MutableLiveData<Any?>),
-      Pair(Field.PHONE_NUMBER, phoneNumber as MutableLiveData<Any?>),
       Pair(Field.EMAIL, email as MutableLiveData<Any?>),
       Pair(Field.DIVISION, division as MutableLiveData<Any?>),
       Pair(Field.PASSWORD, password as MutableLiveData<Any?>),
@@ -40,7 +37,6 @@ class RegistrationViewModel(application: Application) : BaseViewModelWithFields(
   fun clear() {
     firstName.value = ""
     lastName.value = ""
-    phoneNumber.value = ""
     email.value = ""
     password.value = ""
     _division.value = null
@@ -74,7 +70,6 @@ class RegistrationViewModel(application: Application) : BaseViewModelWithFields(
   private val newUser get() = User(
     firstName = firstName.value!!,
     lastName = lastName.value!!,
-    phoneNumber = phoneNumber.value!!,
     email = email.value!!,
     divisionId = division.value!!.id,
     role = Role.USER

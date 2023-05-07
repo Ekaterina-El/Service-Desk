@@ -149,23 +149,6 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/layoutPhoneNumber"
-          style="@style/FieldWrapper"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:hint="@string/phoneNumber">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:text="@={viewModel.phoneNumber}"
-            style="@style/FieldContent"
-            android:autofillHints="phone"
-            android:imeOptions="actionNext"
-            android:inputType="phone|number"
-            android:lines="1"
-            android:maxLines="1" />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/layoutPassword"
           style="@style/FieldWrapper"
           android:layout_width="match_parent"

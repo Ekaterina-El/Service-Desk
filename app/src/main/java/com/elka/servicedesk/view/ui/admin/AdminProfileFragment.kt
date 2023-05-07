@@ -31,16 +31,24 @@ class AdminProfileFragment : AdminBaseFragment() {
 
   override fun onResume() {
     super.onResume()
-    userViewModel.work.observe(this, workObserver)
     userViewModel.error.observe(this, errorObserver)
     userViewModel.externalAction.observe(this, externalActionObserver)
+
+    userViewModel.work.observe(this, workObserver)
+    engineersViewModel.work.observe(this, workObserver)
+    divisionsViewModel.work.observe(this, workObserver)
+    accidentViewModel.work.observe(this, workObserver)
   }
 
   override fun onStop() {
     super.onStop()
-    userViewModel.work.removeObserver(workObserver)
     userViewModel.error.removeObserver(errorObserver)
     userViewModel.externalAction.removeObserver(externalActionObserver)
+
+    userViewModel.work.removeObserver(workObserver)
+    engineersViewModel.work.removeObserver(workObserver)
+    divisionsViewModel.work.removeObserver(workObserver)
+    accidentViewModel.work.removeObserver(workObserver)
   }
 }
 

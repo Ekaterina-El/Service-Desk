@@ -56,7 +56,7 @@
         android:id="@+id/companyName"
         style="@style/text.h1"
         android:layout_width="wrap_content"
-        android:text="Роль: Менаджер"
+        android:text="Роль: Менеджер"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

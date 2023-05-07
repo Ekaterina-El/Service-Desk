@@ -80,21 +80,27 @@ class AdminEngineersFragment : AdminBaseFragment() {
         divisionsViewModel.loadDivisions()
         if (engineersViewModel.users.value!!.isEmpty()) engineersViewModel.loadUsers()
 
-        engineersViewModel.work.observe(this, workObserver)
         engineersViewModel.error.observe(this, errorObserver)
         engineersViewModel.filteredUsers.observe(this, usersObserver)
         userViewModel.error.observe(this, errorObserver)
+
         userViewModel.work.observe(this, workObserver)
+        engineersViewModel.work.observe(this, workObserver)
+        divisionsViewModel.work.observe(this, workObserver)
+        accidentViewModel.work.observe(this, workObserver)
     }
 
     override fun onStop() {
         super.onStop()
-        engineersViewModel.work.removeObserver(workObserver)
         engineersViewModel.error.removeObserver(errorObserver)
         engineersViewModel.filteredUsers.removeObserver(usersObserver)
 
         userViewModel.error.removeObserver(errorObserver)
+
         userViewModel.work.removeObserver(workObserver)
+        engineersViewModel.work.removeObserver(workObserver)
+        divisionsViewModel.work.removeObserver(workObserver)
+        accidentViewModel.work.removeObserver(workObserver)
     }
 
     private val regEngineerDialog: RegistrationEngineerDialog by lazy {

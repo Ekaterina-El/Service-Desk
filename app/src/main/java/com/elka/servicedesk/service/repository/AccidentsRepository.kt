@@ -6,7 +6,6 @@ import com.elka.servicedesk.service.model.Division
 import com.elka.servicedesk.service.model.Log
 import com.elka.servicedesk.service.model.User
 import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -188,7 +187,11 @@ object AccidentsRepository {
 	}
 
 	suspend fun acceptAccidentToWork(
-		accident: Accident, engineer: User, division: Division, timeOfPickUp: Date, onSuccess: (Log) -> Unit
+		accident: Accident,
+		engineer: User,
+		division: Division,
+		timeOfPickUp: Date,
+		onSuccess: (Log) -> Unit
 	): ErrorApp? = try {
 		val accidentId = accident.id
 		accident.status = AccidentStatus.IN_WORK
@@ -231,11 +234,11 @@ object AccidentsRepository {
 		changeAccidentField(accident.id, FIELD_STATUS, AccidentStatus.CLOSED).await()
 
 		val pickUpTime = accident.pickUpTime
-		if (accident.type == AccidentType.INCIDENT && pickUpTime != null ) {
+		if (accident.type == AccidentType.INCIDENT && pickUpTime != null) {
 			val engineerUpdated = UserRepository.loadUser(accident.engineerId!!)!!
 			val newCountOfEnded = engineerUpdated.countOfEnded + 1
 			val timeOnComplete = Constants.getCurrentDate().time - pickUpTime.time
-			val newAvgTime = engineerUpdated.avgTimeOfEnding +  timeOnComplete / newCountOfEnded
+			val newAvgTime = engineerUpdated.avgTimeOfEnding + timeOnComplete / newCountOfEnded
 
 			UserRepository.updateEngineerState(engineerUpdated.id, newCountOfEnded, newAvgTime)
 		}
@@ -435,8 +438,9 @@ object AccidentsRepository {
 	}
 
 	suspend fun loadAllRequests(onSuccess: (List<Accident>) -> Unit): ErrorApp? = try {
-		val requests = FirebaseService.accidentsCollection.whereEqualTo(FIELD_TYPE, AccidentType.REQUEST)
-			.get().await().mapNotNull { doc -> doc.toAccident() }
+		val requests =
+			FirebaseService.accidentsCollection.whereEqualTo(FIELD_TYPE, AccidentType.REQUEST)
+				.get().await().mapNotNull { doc -> doc.toAccident() }
 
 		onSuccess(requests)
 		null
@@ -446,17 +450,20 @@ object AccidentsRepository {
 		Errors.unknown
 	}
 
-	suspend fun loadIncidentsWithMissedDeadline(onSuccess: (List<Accident>) -> Unit): ErrorApp? = try {
-		val requests = FirebaseService.accidentsCollection.whereEqualTo(FIELD_TYPE, AccidentType.INCIDENT)
-			.get().await().mapNotNull { doc -> doc.toAccident() }.filter { it.executionTime == null }
+	suspend fun loadIncidentsWithMissedDeadline(onSuccess: (List<Accident>) -> Unit): ErrorApp? =
+		try {
+			val requests =
+				FirebaseService.accidentsCollection.whereEqualTo(FIELD_TYPE, AccidentType.INCIDENT)
+					.get().await().mapNotNull { doc -> doc.toAccident() }
+					.filter { it.executionTime == null && it.status == AccidentStatus.IN_WORK }
 
-		onSuccess(requests)
-		null
-	} catch (e: FirebaseNetworkException) {
-		Errors.network
-	} catch (e: Exception) {
-		Errors.unknown
-	}
+			onSuccess(requests)
+			null
+		} catch (e: FirebaseNetworkException) {
+			Errors.network
+		} catch (e: Exception) {
+			Errors.unknown
+		}
 
 
 	private const val FIELD_DIVISION_ID = "divisionId"
